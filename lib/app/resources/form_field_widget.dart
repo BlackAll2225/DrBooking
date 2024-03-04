@@ -23,7 +23,8 @@ class FormFieldWidget extends StatelessWidget {
       this.maxLine = 1,
       this.paddingVerti = 0,
       this.fillColor = Colors.white,
-      this.directLTR = true
+      this.directLTR = true,
+      this.borderColor = Colors.white
       });
   final FocusNode? focusNode;
   final Icon? icon;
@@ -44,6 +45,8 @@ class FormFieldWidget extends StatelessWidget {
   final double? paddingVerti;
   final Color? fillColor;
   final bool directLTR ;
+  final Color borderColor;
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,31 +61,31 @@ class FormFieldWidget extends StatelessWidget {
       focusNode: focusNode,
       decoration: InputDecoration(
         labelStyle: TextStyle(
-            color: Colors.white,
+            color: borderColor,
             fontSize: UtilsReponsive.formatFontSize(18, context)),
         fillColor:fillColor,
         filled: true,
         contentPadding:
-            EdgeInsets.symmetric(horizontal: padding!, vertical: paddingVerti!),
+            EdgeInsets.symmetric(horizontal:UtilsReponsive.height( padding!, context), vertical: UtilsReponsive.width(paddingVerti!, context)),
         errorText: errorText != "" ? errorText : null,
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radiusBorder ?? 20),
-          borderSide: BorderSide(color: Colors.white, width: 1),
+          borderRadius: BorderRadius.circular(UtilsReponsive.height(radiusBorder ?? 20, context)),
+          borderSide: BorderSide(color: borderColor, width: 1),
         ),
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
-          borderRadius: BorderRadius.circular(radiusBorder ?? 20),
+          borderSide: BorderSide(color: borderColor),
+          borderRadius: BorderRadius.circular(UtilsReponsive.height(radiusBorder ?? 20, context)),
         ),
         disabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
-          borderRadius: BorderRadius.circular(radiusBorder ?? 20),
+          borderSide: BorderSide(color: borderColor),
+          borderRadius: BorderRadius.circular(UtilsReponsive.height(radiusBorder ?? 20, context)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
-          borderRadius: BorderRadius.circular(radiusBorder ?? 20),
+          borderSide: BorderSide(color: borderColor),
+          borderRadius: BorderRadius.circular(UtilsReponsive.height(radiusBorder ?? 20, context)),
         ),
         // labelText: labelText,
-        labelText: labelText,
+        hintText: labelText,
         hintTextDirection: TextDirection.ltr,
         hintMaxLines: 3,
         prefixIcon: icon,

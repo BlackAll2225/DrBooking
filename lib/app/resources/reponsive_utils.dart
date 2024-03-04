@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-int _screenHeight = 932;
-int _screenWidth = 430;
+int _screenHeight = 812;
+int _screenWidth = 375;
 
 class UtilsReponsive {
   static double _heightPercent(double inputFigmaSize) {

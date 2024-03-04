@@ -1,10 +1,12 @@
 
 import 'package:shared_preferences/shared_preferences.dart';
-
+const REMOTE_MODE = "REMOTE";
+const LOCAL_MODE = "LOCAL";
 class BaseCommon {
   static BaseCommon? _instance;
   String? accessToken;
   String? refreshToken;
+  String? mode;
 
   BaseCommon._internal();
 
@@ -35,7 +37,8 @@ class BaseCommon {
     await prefs.remove('refreshToken');
   }
 
-  Future<void> init() async {
+  Future<void> init({required String mode}) async {
+    this.mode = mode;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     accessToken = prefs.getString('accessToken') ?? '';
     refreshToken = prefs.getString('refreshToken') ?? '';
