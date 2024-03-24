@@ -16,8 +16,6 @@ class TabAccountController extends BaseController {
     ,NavAccount(title: 'Các chi nhánh', icon: Icon(Icons.location_city_outlined), path: 'path', textColor: Colors.black, backgroundColor:ColorsManager.primary)
     ,NavAccount(title: 'Trung tâm trợ giúp', icon: Icon(Icons.phone), path: 'path', textColor: Colors.black, backgroundColor:ColorsManager.primary)
     ,NavAccount(title: 'Thông tin chung', icon: Icon(Icons.info), path: 'path', textColor: Colors.black, backgroundColor:ColorsManager.primary)
-
-
   ];
   @override
   void onInit() {
@@ -34,5 +32,4 @@ class TabAccountController extends BaseController {
     super.onClose();
   }
 
-  void increment() => count.value++;
 }

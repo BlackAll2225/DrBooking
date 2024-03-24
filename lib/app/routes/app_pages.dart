@@ -1,5 +1,3 @@
-import 'package:drbooking/app/modules/personal-information/bindings/personal_information_binding.dart';
-import 'package:drbooking/app/modules/personal-information/views/personal_information_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/booking/bindings/booking_binding.dart';
@@ -26,8 +24,12 @@ import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/map-explore/bindings/map_explore_binding.dart';
 import '../modules/map-explore/views/map_explore_view.dart';
+import '../modules/medical_record/bindings/medical_record_binding.dart';
+import '../modules/medical_record/views/medical_record_view.dart';
 import '../modules/new_profile/bindings/new_profile_binding.dart';
 import '../modules/new_profile/views/new_profile_view.dart';
+import '../modules/personal-information/bindings/personal_information_binding.dart';
+import '../modules/personal-information/views/personal_information_view.dart';
 import '../modules/profile_detail/bindings/profile_detail_binding.dart';
 import '../modules/profile_detail/views/profile_detail_view.dart';
 import '../modules/sign_in/bindings/sign_in_binding.dart';
@@ -171,6 +173,11 @@ class AppPages {
       name: _Paths.PERSONAL_INFORMATION,
       page: () => const PersonalInformationView(),
       binding: PersonalInformationBinding(),
+    ),
+    GetPage(
+      name: _Paths.MEDICAL_RECORD,
+      page: () => const MedicalRecordView(),
+      binding: MedicalRecordBinding(),
     ),
   ];
 }

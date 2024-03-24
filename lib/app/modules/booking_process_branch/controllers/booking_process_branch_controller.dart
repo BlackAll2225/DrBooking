@@ -1,10 +1,27 @@
+import 'dart:developer';
+
+import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_controller.dart';
+import 'package:drbooking/app/data/local/doctor_local.dart';
+import 'package:drbooking/app/data/remote/doctor_remote.dart';
+import 'package:drbooking/app/data/respository/doctor_api.dart';
+import 'package:drbooking/app/model/branch.dart';
+import 'package:drbooking/app/model/clinic.dart';
+import 'package:drbooking/app/model/request_booking.dart';
+import 'package:drbooking/app/resources/util_common.dart';
+import 'package:drbooking/app/routes/app_pages.dart';
+import 'package:get/get.dart';
 
 class BookingProcessBranchController extends BaseController {
-  //TODO: Implement BookingProcessBranchController
-
+  BookingProcessBranchController({required this.requestParamBooking});
+  RxList<Clinic> listClinic = <Clinic>[].obs;
+  final isLocal = BaseCommon.instance.mode == LOCAL_MODE;
+  late DoctorApi doctorApi;
+  RequestParamBooking requestParamBooking;
   @override
-  void onInit() {
+  Future<void> onInit() async {
+    doctorApi = DoctorRemote();
+    await fetchDataClinic();
     super.onInit();
   }
 
@@ -18,4 +35,21 @@ class BookingProcessBranchController extends BaseController {
     super.onClose();
   }
 
+  fetchDataClinic() async {
+    isLoading(true);
+    await doctorApi.getListClinic(param: "take=10&&skip=0").then((value) {
+      listClinic.value = value;
+    }).catchError((error) {
+      isLoading(false);
+      log("err" + error.toString());
+      isLockButton(false);
+      UtilCommon.snackBar(text: '${error.message}');
+    });
+    isLoading(false);
+  }
+
+  onTapBranchCard({required Clinic clinic}) {
+    requestParamBooking.clinic = clinic;
+    Get.toNamed(Routes.BOOKING_PROCESS_SERVICE, arguments: requestParamBooking);
+  }
 }

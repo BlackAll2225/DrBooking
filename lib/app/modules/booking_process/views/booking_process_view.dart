@@ -1,13 +1,16 @@
 import 'package:drbooking/app/base/base_view.dart';
+import 'package:drbooking/app/modules/doctor/views/doctor_view.dart';
 import 'package:drbooking/app/resources/assets_manager.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/form_field_widget.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
 import 'package:drbooking/app/resources/text_style.dart';
+import 'package:drbooking/app/resources/util_common.dart';
 import 'package:drbooking/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 import '../controllers/booking_process_controller.dart';
 
@@ -69,7 +72,7 @@ class BookingProcessView extends BaseView<BookingProcessController> {
                   color: ColorsManager.primary,
                 ),
                 SizedBoxConst.size(context: context),
-                _cardProfile(context),
+                Obx(()=>_cardProfile(context)),
                 SizedBoxConst.size(context: context),
                 TextConstant.subTile1(context,
                     text: 'Thông tin lịch khám',
@@ -118,14 +121,14 @@ class BookingProcessView extends BaseView<BookingProcessController> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             TextConstant.subTile2(context,
-                                text: controller.selectedBranch.value),
+                                text: controller.selectedClinic.value.name),
                             const Icon(Icons.arrow_drop_down)
                           ],
                         )),
                   ),
                 ),
                 Visibility(
-                  visible: controller.isSpecialChoice,
+                  visible: true,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -172,8 +175,10 @@ class BookingProcessView extends BaseView<BookingProcessController> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  TextConstant.subTile2(context,
-                                      text: controller.selectSpecial.value),
+                                  Expanded(
+                                    child: TextConstant.subTile2(context,
+                                        text: controller.selectedSpecialty.value.name),
+                                  ),
                                   const Icon(Icons.arrow_drop_down)
                                 ],
                               )),
@@ -184,8 +189,8 @@ class BookingProcessView extends BaseView<BookingProcessController> {
                 ),
                 SizedBoxConst.size(context: context),
                 Obx(() => Visibility(
-                      visible: controller.optionsSpecials
-                          .contains(controller.selectSpecial.value),
+                      visible: controller.listSpecialty.value
+                          .contains(controller.selectedSpecialty.value),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -207,7 +212,7 @@ class BookingProcessView extends BaseView<BookingProcessController> {
                           SizedBoxConst.size(context: context),
                           GestureDetector(
                             onTap: () async {
-                              Get.toNamed(Routes.DOCTOR);
+                              Get.to(()=>DoctorView(), transition: Transition.downToUp);
                             },
                             child: Container(
                                 width: double.infinity,
@@ -224,7 +229,7 @@ class BookingProcessView extends BaseView<BookingProcessController> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     TextConstant.subTile2(context,
-                                        text: 'Nguyễn Văn A'),
+                                        text: controller.selectedDoctor.value.fullname),
                                     const Icon(Icons.arrow_drop_down)
                                   ],
                                 )),
@@ -377,10 +382,10 @@ class BookingProcessView extends BaseView<BookingProcessController> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextConstant.subTile1(context,
-                  text: 'Nguyễn Văn A', fontWeight: FontWeight.bold),
+                  text: '${controller.requestData.value.profile?.fullname}', fontWeight: FontWeight.bold),
               SizedBoxConst.size(context: context),
               TextConstant.subTile2(context,
-                  text: '12/12/1999',
+                  text: UtilCommon.convertDateTime(controller.requestData.value.profile!.dateOfBirth),
                   color: Colors.grey,
                   fontWeight: FontWeight.bold)
             ],

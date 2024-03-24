@@ -1,5 +1,7 @@
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/common/widget/app_bar_custom.dart';
+import 'package:drbooking/app/model/branch.dart';
+import 'package:drbooking/app/model/clinic.dart';
 import 'package:drbooking/app/resources/assets_manager.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
@@ -26,19 +28,22 @@ class BookingProcessBranchView
             },
             title: "Chọn chi nhánh"),
         Expanded(
-            child: ListView.separated(
-                padding: EdgeInsets.all(UtilsReponsive.height(20, context)),
-                itemBuilder: (context, index) =>GestureDetector(onTap:(){
-                  Get.toNamed(Routes.BOOKING_PROCESS_SERVICE);
-                },child: _cardBranch(context)),
-                separatorBuilder: (context, index) =>
-                    SizedBoxConst.size(context: context),
-                itemCount: 4))
+            child: Obx(()=>controller.isLoading.value? Center(child: CircularProgressIndicator(color: ColorsManager.primary,),)
+               :ListView.separated(
+                  padding: EdgeInsets.all(UtilsReponsive.height(20, context)),
+                  itemBuilder: (context, index) =>GestureDetector(onTap:(){
+                    controller.onTapBranchCard(clinic:  controller.listClinic[index]);
+                    // Get.toNamed(Routes.BOOKING_PROCESS_SERVICE, arguments: controller.requestParamBooking);
+                  },child: _cardBranch(context,clinic: controller.listClinic[index])),
+                  separatorBuilder: (context, index) =>
+                      SizedBoxConst.size(context: context),
+                  itemCount: controller.listClinic.value.length),
+            ))
       ],
     )));
   }
 
-  _cardBranch(BuildContext context) {
+  _cardBranch(BuildContext context, {required Clinic clinic}) {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
@@ -70,7 +75,7 @@ class BookingProcessBranchView
                         style: Theme.of(context).textTheme.titleSmall,
                         children: <TextSpan>[
                       TextSpan(
-                        text: 'Lê Văn Việt',
+                        text: clinic.name,
                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             color: Colors.black,
                             fontSize: UtilsReponsive.height(14, context)),
@@ -95,7 +100,7 @@ class BookingProcessBranchView
                       ),
                       TextSpan(
                         text:
-                            '123 Lê Văn Việt, Phường Hiệp Phú, Quận 9, TP.HCM',
+                            clinic.fullAddress,
                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             color: Colors.black,
                             fontSize: UtilsReponsive.height(14, context)),
@@ -113,30 +118,13 @@ class BookingProcessBranchView
                             fontSize: UtilsReponsive.height(14, context)),
                       ),
                       TextSpan(
-                        text: '0393 1828 090',
+                        text: clinic.phoneNumber,
                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             color: Colors.black,
                             fontSize: UtilsReponsive.height(14, context)),
                       ),
                     ])),
                 SizedBoxConst.size(context: context),
-                RichText(
-                    text: TextSpan(
-                        style: Theme.of(context).textTheme.titleSmall,
-                        children: <TextSpan>[
-                      TextSpan(
-                        text: 'Giờ làm việc: ',
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: const Color(0xff979797),
-                            fontSize: UtilsReponsive.height(14, context)),
-                      ),
-                      TextSpan(
-                        text: '08:00 - 22:00',
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: Colors.black,
-                            fontSize: UtilsReponsive.height(14, context)),
-                      ),
-                    ])),
               ],
             ),
           ))

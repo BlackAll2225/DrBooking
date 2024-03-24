@@ -38,10 +38,13 @@ class HomeView extends BaseView<HomeController> {
   }
   Container _bottomNav2(BuildContext context) {
     return Container(
+  // color: Colors.grey.withOpacity(0.1),
 
         height: UtilsReponsive.height(80, context),
         padding: EdgeInsets.only(bottom: UtilsReponsive.height(15, context)),
         child: BottomNavigationBar(
+  // backgroundColor: Colors.grey.withOpacity(0.1),
+
           items:const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: LineIcon(LineIcons.home),

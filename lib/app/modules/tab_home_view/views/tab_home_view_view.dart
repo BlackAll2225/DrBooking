@@ -1,7 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/model/booking/booking_preview.dart';
-import 'package:drbooking/app/model/doctor/doctor_preview.dart';
-import 'package:drbooking/app/modules/doctor_detail/views/doctor_detail_view.dart';
+import 'package:drbooking/app/model/doctor/doctor.dart';
 import 'package:drbooking/app/resources/assets_manager.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
@@ -40,17 +41,17 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                         fit: BoxFit.contain,
                       ),
                     ),
-                    const Expanded(
+                     Expanded(
                       flex: 3,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          TextConstant.subTile3(context,text:
                             'Xin chào, ',
                           ),
-                          Text(
-                            'Nguyen Van A, ',
+                        TextConstant.subTile3(context,text:
+                            '${BaseCommon.instance.accountSession?.fullName}',
                           ),
                         ],
                       ),
@@ -137,12 +138,13 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                         SizedBoxConst.size(context: context),
                     itemBuilder: (context, index) => GestureDetector(
                       onTap: () {
-                        Get.toNamed(Routes.DOCTOR_DETAIL);
+                        controller.opTapCardDoctor(idDoctor:controller.listDoctorPreview[index].id);
                       },
                       child: _cardDoctor(context,
                           doctor: controller.listDoctorPreview[index]),
                     ),
-                  ))
+                  )),
+                  SizedBoxConst.size(context: context)
             ],
           ),
         ));
@@ -151,9 +153,18 @@ class TabHomeView extends BaseView<TabHomeViewController> {
   Container _cardNewestBooking(BuildContext context,
       {required BookingPreview booking}) {
     return Container(
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(15)),
+       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+          boxShadow: const [
+                    BoxShadow(
+                      color: Colors.grey,
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+      ),
       margin: EdgeInsets.all(UtilsReponsive.height(10, context)),
       padding: EdgeInsets.all(UtilsReponsive.height(10, context)),
       width: UtilsReponsive.width(250, context),
@@ -200,10 +211,23 @@ class TabHomeView extends BaseView<TabHomeViewController> {
     );
   }
 
-  Container _cardDoctor(BuildContext context, {required DoctorPreview doctor}) {
+  Container _cardDoctor(BuildContext context, {required Doctor doctor}) {
     return Container(
+      padding: EdgeInsets.all(10),
       // color: Colors.red,
-      height: UtilsReponsive.height(100, context),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+          boxShadow: const [
+                    BoxShadow(
+                      color: Colors.grey,
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+      ),
+      height: UtilsReponsive.height(120, context),
       width: double.infinity,
       child: Column(
         children: [
@@ -211,33 +235,45 @@ class TabHomeView extends BaseView<TabHomeViewController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                          color: ColorsManager.primary, shape: BoxShape.circle),
-                      child: Image.asset(ImageAssets.logo)),
-                  SizedBoxConst.sizeWith(context: context, size: 5),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextConstant.subTile1(context, text: doctor.name),
-                      TextConstant.subTile2(context,
-                          text: doctor.special,
-                          size: 12,
-                          color: Colors.grey.withOpacity(0.8)),
+              Expanded(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                            color: ColorsManager.primary, shape: BoxShape.circle),
+                        child: CachedNetworkImage(
+                                            fit: BoxFit.fill,
+                                            imageUrl: doctor.avatarUrl,
+                                            placeholder: (context, url) =>
+                                                const CircularProgressIndicator(color: Colors.white,),
+                                            errorWidget: (context, url, error) =>
+                                                Image.asset(ImageAssets.logo),
+                                          ),),
+                    SizedBoxConst.sizeWith(context: context, size: 5),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextConstant.subTile1(context, text: doctor.fullname),
                           TextConstant.subTile2(context,
-                          text: doctor.branch,
-                          size: 12,
-                          color: Colors.grey.withOpacity(0.8)),
-                    ],
-                  )
-                ],
+                              text: doctor.medicalSpecialtyName,
+                              size: 12,
+                              color: Colors.grey.withOpacity(0.8)),
+                              TextConstant.subTile2(context,
+                              text: doctor.email,
+                              size: 12,
+                              color: Colors.grey.withOpacity(0.8)),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
+              SizedBoxConst.sizeWith(context: context),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: ColorsManager.primary,
@@ -258,7 +294,9 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                onPressed: () async {},
+                onPressed: () async {
+                  controller.opTapCardDoctor(idDoctor: doctor.id);
+                },
               ),
             ],
           ),
@@ -276,7 +314,7 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                           color: const Color(0xff979797), fontSize: 12),
                     ),
                     TextSpan(
-                      text: '   ${doctor.exp} năm',
+                      text: '   ${doctor.rating} năm',
                       style: Theme.of(context)
                           .textTheme
                           .bodyLarge!
@@ -291,7 +329,7 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                   RatingBar.builder(
                       unratedColor: const Color(0xff979797),
                       itemSize: 12,
-                      initialRating: doctor.rate,
+                      initialRating: doctor.rating,
                       direction: Axis.horizontal,
                       itemCount: 5,
                       itemBuilder: (context, _) => const Icon(
@@ -303,7 +341,7 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                     width: 4,
                   ),
                   Text(
-                    '(${doctor.countReview})',
+                    '(${doctor.rating})',
                     style: Theme.of(context)
                         .textTheme
                         .titleSmall!

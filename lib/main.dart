@@ -7,7 +7,7 @@ import 'app/routes/app_pages.dart';
 
 void main() async {
   BaseCommon baseCommon = BaseCommon.instance;
-  baseCommon.mode = LOCAL_MODE;
+  baseCommon.mode = REMOTE_MODE;
   runApp(
     GetMaterialApp(
       title: "DrBooking",

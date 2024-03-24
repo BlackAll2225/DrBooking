@@ -1,3 +1,5 @@
+import 'package:drbooking/app/model/profile.dart';
+
 abstract class ProfileApi {
-  Future<String> getProfile();
+  Future<List<Profile>> getProfiles({required String idAccount});
 }

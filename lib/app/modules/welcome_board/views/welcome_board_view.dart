@@ -63,7 +63,7 @@ class WelcomeBoardView extends BaseView<WelcomeBoardController> {
                             children: [
                               TextButton(
                                   onPressed: () {
-                                    // Get.offAllNamed(Routes.SIGN_IN);
+                                    Get.offAllNamed(Routes.HOME);
                                   },
                                   child: Text(
                                     'Bỏ qua',

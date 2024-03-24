@@ -1,4 +1,5 @@
 import 'package:drbooking/app/base/base_controller.dart';
+import 'package:drbooking/app/modules/tab-profile/controllers/tab_profile_controller.dart';
 import 'package:drbooking/app/modules/tab-profile/views/tab_profile_view.dart';
 import 'package:drbooking/app/modules/tab_account/controllers/tab_account_controller.dart';
 import 'package:drbooking/app/modules/tab_account/views/tab_account_view.dart';
@@ -43,13 +44,13 @@ class HomeController extends BaseController {
         indexSelected(0);
         break;
       case 1:
-        Get.find<TabCalendarController>();
+        Get.find<TabCalendarController>().fetchListBooking();
         indexSelected(1);
         break;
       case 2:
         break;
       case 3:
-        Get.find<TabHistoryController>();
+       await Get.find<TabProfileController>().fetchAlClients();
         indexSelected(3);
         break;
       case 4:

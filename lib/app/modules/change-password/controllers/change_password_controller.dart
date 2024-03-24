@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:drbooking/app/base/base_controller.dart';
-import 'package:drbooking/app/resources/util_notify.dart';
+import 'package:drbooking/app/resources/util_common.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -32,7 +32,7 @@ class ChangePasswordController extends BaseController {
 
   bool validate(){
     if(oldPasswordController.text.isEmpty||newPasswordController.text.isEmpty||rePasswordController.text.isEmpty){
-     UtilNoti.snackFail(text: 'Vui lòng nhập đủ thông tin',isFail: true);
+     UtilCommon.snackBar(text: 'Vui lòng nhập đủ thông tin',isFail: true);
       return false;
     }
      if(newPasswordController.text!=rePasswordController.text){
@@ -58,7 +58,7 @@ class ChangePasswordController extends BaseController {
   changePassword()async {
     if(validate()){
      Get.back();
-          UtilNoti.snackFail(text: 'Cập nhật thành công');
+          UtilCommon.snackBar(text: 'Cập nhật thành công');
     }
   }
 }

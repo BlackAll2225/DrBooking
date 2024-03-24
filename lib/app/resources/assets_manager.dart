@@ -4,6 +4,15 @@ class ImageAssets {
   static String welcome3 =  'assets/images/welcome3.json';
   static String logo =  'assets/images/logo.png';
 
+  static String iconGeneralCheck = 'assets/images/mecical-check.png';
+  static String iconSpecialCheck = 'assets/images/medical-check1.png';
+  static String iconLabCheck = 'assets/images/medical-lab.png';
+  static String iconRequestCheck = 'assets/images/medical-check3.png';
+
+  static String imageWall = 'assets/images/doctor-ex.jpeg';
+
+
+
 }
 
 class IconAssets {}

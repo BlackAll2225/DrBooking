@@ -19,8 +19,6 @@ class SignUpView extends BaseView<SignUpController> {
         child: Container(
           height: double.infinity,
           color: ColorsManager.primary.withOpacity(0.15),
-          // color: ColorsManager.primary.withOpacity(0.8),
-          // margin: EdgeInsets.only(left: 16, right: 16),
           child: SingleChildScrollView(
             child: Form(
               child: Padding(
@@ -48,13 +46,14 @@ class SignUpView extends BaseView<SignUpController> {
                     SizedBoxConst.size(context: context, size: 5),
                     Obx(
                       () => FormFieldWidget(
-                          controllerEditting: controller.phoneTextController,
+                          isEnabled: !controller.isLockButton.value,
+                          controllerEditting: controller.nameTextController,
                           radiusBorder: 10,
                           borderColor: Colors.black,
                           padding: 10,
                           textInputType: TextInputType.text,
-                          errorText: "${controller.errorPhoneInput}",
-                          setValueFunc: (value) => controller.validatePhone()),
+                          errorText: "${controller.errorNameInput}",
+                          setValueFunc: (value) => controller.validateName()),
                     ),
                     SizedBoxConst.size(context: context, size: 20),
                     TextConstant.subTile2(
@@ -64,6 +63,7 @@ class SignUpView extends BaseView<SignUpController> {
                     SizedBoxConst.size(context: context, size: 5),
                     Obx(
                       () => FormFieldWidget(
+                          isEnabled: !controller.isLockButton.value,
                           controllerEditting: controller.phoneTextController,
                           radiusBorder: 10,
                           borderColor: Colors.black,
@@ -80,6 +80,7 @@ class SignUpView extends BaseView<SignUpController> {
                     SizedBoxConst.size(context: context, size: 5),
                     Obx(
                       () => FormFieldWidget(
+                          isEnabled: !controller.isLockButton.value,
                           controllerEditting: controller.emailController,
                           radiusBorder: 10,
                           borderColor: Colors.black,
@@ -96,6 +97,7 @@ class SignUpView extends BaseView<SignUpController> {
                     SizedBoxConst.size(context: context, size: 5),
                     Obx(
                       () => FormFieldWidget(
+                          isEnabled: !controller.isLockButton.value,
                           borderColor: Colors.black,
                           controllerEditting: controller.passwordTextController,
                           radiusBorder: 10,
@@ -124,6 +126,7 @@ class SignUpView extends BaseView<SignUpController> {
                     SizedBoxConst.size(context: context, size: 5),
                     Obx(
                       () => FormFieldWidget(
+                          isEnabled: !controller.isLockButton.value,
                           borderColor: Colors.black,
                           controllerEditting:
                               controller.rePasswordTextController,

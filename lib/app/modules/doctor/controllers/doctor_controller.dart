@@ -45,7 +45,7 @@ class DoctorController extends BaseController {
 
    getListDoctorRandom() async {
     isLoading.value = true;
-    listDoctorPreview.value = await doctorApi.getListDoctorRandom();
+    // listDoctorPreview.value = await doctorApi.getListDoctorRandom();
     isLoading.value = false;
   }
 

@@ -1,4 +1,5 @@
 import 'package:drbooking/app/base/base_view.dart';
+import 'package:drbooking/app/model/service/button_service.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
 import 'package:drbooking/app/resources/text_style.dart';
@@ -49,92 +50,40 @@ class BookingProcessServiceView
       ),
       Expanded(
           child: Padding(
-            padding:  EdgeInsets.all(UtilsReponsive.height(20, context)),
-            child: Column(
-                  children: [
-            Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    Get.toNamed(Routes.BOOKING_PROCESS, arguments: false);
-                  },
-                  child: Container(
-                              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(UtilsReponsive.height(10, context)),
-                  color: ColorsManager.primary),
-                              child:Row(
-                  children: [
-                    Expanded(child: Image.asset('assets/images/mecical-check.png')),
-                    Expanded(
-                      flex: 3,
-                      child: TextConstant.titleH2(context, text: "Khám tổng quát",color: Colors.white))
-                  ],
-                              ),
-                            ),
-                )),
-            SizedBoxConst.size(context: context,size: 50),
-            Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    Get.toNamed(Routes.BOOKING_PROCESS, arguments: true);
-                  },
-                  child: Container(
-                              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(UtilsReponsive.height(10, context)),
-                  color: ColorsManager.primary),
-                              child:Row(
-                  children: [
-                   Expanded(child: Image.asset('assets/images/medical-check1.png')),
-                    Expanded(
-                      flex: 3,
-                      child: TextConstant.titleH2(context, text: "Khám Chuyên Khoa",color: Colors.white))
-                  ],
-                              ),
-                            ),
-                )),
-            SizedBoxConst.size(context: context,size: 50),
-            Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    Get.toNamed(Routes.BOOKING_PROCESS, arguments: false);
-                  },
-                  child: Container(
-                              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(UtilsReponsive.height(10, context)),
-                  color: ColorsManager.primary),
-                              child:Row(
-                  children: [
-                    Expanded(child: Image.asset('assets/images/medical-lab.png')),
-                    Expanded(
-                      flex: 3,
-                      child: TextConstant.titleH2(context, text: "Xét nghiệm",color: Colors.white))
-                  ],
-                              ),
-                            ),
-                )),
-            SizedBoxConst.size(context: context,size: 50),
-            Expanded(
-                child: GestureDetector(
-                  onTap:() {
-                    Get.toNamed(Routes.BOOKING_PROCESS, arguments: true);
-                  },
-                  child: Container(
-                              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(UtilsReponsive.height(10, context)),
-                  color: ColorsManager.primary),
-                              child:Row(
-                  children: [
-                              Expanded(child: Image.asset('assets/images/medical-check3.png')),
-                    Expanded(
-                      flex: 3,
-                      child: TextConstant.titleH2(context, text: "Khám theo yêu cầu",color: Colors.white))
-                  ],
-                              ),
-                            ),
-                )),
-            SizedBoxConst.size(context: context,size: 50),
-                  ],
-                ),
-          ))
+        padding: EdgeInsets.all(UtilsReponsive.height(20, context)),
+        child: Column(
+            children: controller.listService
+                .map((e) =>   _buttonService(context, buttonData: e))
+                .toList()),
+      ))
     ])));
+  }
+
+//'assets/images/mecical-check.png'
+  Expanded _buttonService(BuildContext context,
+      {required ButtonService buttonData}) {
+    Color colorButton = ColorsManager.primary;
+    return Expanded(
+        child: GestureDetector(
+      onTap: () {
+        controller.onTapService(buttonData);
+      },
+      child: Container(
+        margin:EdgeInsets.symmetric(vertical: UtilsReponsive.height(25, context)),
+        decoration: BoxDecoration(
+            borderRadius:
+                BorderRadius.circular(UtilsReponsive.height(10, context)),
+            color: colorButton),
+        child: Row(
+          children: [
+            Expanded(child: Image.asset(buttonData.imageUrl)),
+            Expanded(
+                flex: 3,
+                child: TextConstant.titleH2(context,
+                    text: buttonData.content, color: Colors.white))
+          ],
+        ),
+      ),
+    ));
   }
 }

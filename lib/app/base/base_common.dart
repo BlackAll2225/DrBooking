@@ -1,4 +1,9 @@
 
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:drbooking/app/model/auth/account_session.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 const REMOTE_MODE = "REMOTE";
 const LOCAL_MODE = "LOCAL";
@@ -7,6 +12,7 @@ class BaseCommon {
   String? accessToken;
   String? refreshToken;
   String? mode;
+  AccountSession? accountSession;
 
   BaseCommon._internal();
 
@@ -23,10 +29,10 @@ class BaseCommon {
     };
   }
 
-  Future<void> saveToken() async {
+  Future<void> saveToken(String jwt) async {
+    accessToken = jwt;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('accessToken', accessToken ?? "");
-    await prefs.setString('refreshToken', refreshToken ?? "");
+    await prefs.setString('accessToken', jwt);
   }
 
   Future<void> removeToken() async {
@@ -43,4 +49,13 @@ class BaseCommon {
     accessToken = prefs.getString('accessToken') ?? '';
     refreshToken = prefs.getString('refreshToken') ?? '';
   }
+
+  decodeJWT()async{
+    final jwt = JWT.decode(accessToken!);
+    AccountSession dataSession = AccountSession.fromJson(jwt.payload);
+    accountSession = dataSession;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('accountSession', jsonEncode(dataSession));  
+  }
+
 }

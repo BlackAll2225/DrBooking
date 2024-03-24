@@ -1,9 +1,11 @@
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/common/widget/app_bar_custom.dart';
+import 'package:drbooking/app/model/profile.dart';
 import 'package:drbooking/app/resources/assets_manager.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
 import 'package:drbooking/app/resources/text_style.dart';
+import 'package:drbooking/app/resources/util_common.dart';
 import 'package:drbooking/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 
@@ -22,26 +24,30 @@ class BookingView extends BaseView<BookingController> {
         children: [
           AppBarCustom(callback: () => Get.back(), title: "Chọn hồ sơ"),
           Expanded(
-              child: Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                  padding: EdgeInsetsDirectional.all(
-                      UtilsReponsive.height(10, context)),
-                  child: ListView.separated(
-                      padding: EdgeInsets.only(
-                          top: UtilsReponsive.height(10, context)),
-                      itemCount: 5,
+              child: Obx(() => controller.isLoading.value
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        color: ColorsManager.primary,
+                      ),
+                    )
+                  : ListView.separated(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: UtilsReponsive.height(10, context),
+                          vertical: UtilsReponsive.height(20, context)),
+                      itemCount: controller.listProfile.value.length,
                       separatorBuilder: (context, index) =>
                           SizedBoxConst.size(context: context),
                       itemBuilder: (context, index) => GestureDetector(
-                          onTap: () => Get.toNamed(Routes.BOOKING_PROCESS_BRANCH),
-                          child: _cardProfile(context)))))
+                          onTap: () =>
+                              controller.onTapProfileCard(profile: controller.listProfile[index]),
+                          child: _cardProfile(context,
+                              profile: controller.listProfile[index])))))
         ],
       ),
     ));
   }
 
-  Container _cardProfile(BuildContext context) {
+  Container _cardProfile(BuildContext context, {required Profile profile}) {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
@@ -74,10 +80,10 @@ class BookingView extends BaseView<BookingController> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextConstant.subTile1(context,
-                  text: 'Nguyễn Văn A', fontWeight: FontWeight.bold),
+                  text: profile.fullname, fontWeight: FontWeight.bold),
               SizedBoxConst.size(context: context),
               TextConstant.subTile2(context,
-                  text: '12/12/1999',
+                  text: UtilCommon.convertDateTime(profile.dateOfBirth),
                   color: Colors.grey,
                   fontWeight: FontWeight.bold)
             ],

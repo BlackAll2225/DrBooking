@@ -1,13 +1,22 @@
+import 'dart:developer';
+
+import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_controller.dart';
+import 'package:drbooking/app/data/remote/profile_remote.dart';
+import 'package:drbooking/app/data/respository/profile_api.dart';
+import 'package:drbooking/app/model/profile.dart';
 import 'package:get/get.dart';
 
 class TabProfileController extends BaseController {
   //TODO: Implement TabProfileController
 
-  final count = 0.obs;
+  RxList<Profile> listProfile = <Profile>[].obs;
+  ProfileApi profileApi = ProfileRemote();
+
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+    await fetchAlClients();
   }
 
   @override
@@ -20,5 +29,18 @@ class TabProfileController extends BaseController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  fetchAlClients() async {
+    try {
+      if (!isFetchData.value) {
+        isLoading(true);
+        isFetchData(true);
+        listProfile.value = await profileApi.getProfiles(
+            idAccount: BaseCommon.instance.accountSession!.clientId);
+        isFetchData(false);
+        isLoading(false);
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+  }
 }

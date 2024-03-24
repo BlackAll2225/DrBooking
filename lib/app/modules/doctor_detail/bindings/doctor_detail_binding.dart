@@ -6,8 +6,12 @@ import '../controllers/doctor_detail_controller.dart';
 class DoctorDetailBinding extends BaseBindings {
   @override
   void injectService() {
+    final parames = Get.parameters;
+    String idDoctor = parames['idDoctor']?? '';
     Get.lazyPut<DoctorDetailController>(
-      () => DoctorDetailController(),
+      () => DoctorDetailController(
+        idDoctor : idDoctor
+      ),
     );
   }
 }

@@ -1,10 +1,12 @@
 import 'package:drbooking/app/data/respository/profile_api.dart';
+import 'package:drbooking/app/model/profile.dart';
 
 class ProfileLocal implements ProfileApi{
   @override
-  Future<String> getProfile() async{
-    // TODO: implement getProfile
-    throw UnimplementedError();
+  Future<List<Profile>> getProfiles({required String idAccount}) async{
+   await Future.delayed(Duration(seconds: 1));
+   
+   return [];
   }
 
 }

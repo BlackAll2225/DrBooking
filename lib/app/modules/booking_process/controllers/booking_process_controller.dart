@@ -1,4 +1,11 @@
 import 'package:drbooking/app/base/base_controller.dart';
+import 'package:drbooking/app/data/remote/doctor_remote.dart';
+import 'package:drbooking/app/data/respository/doctor_api.dart';
+import 'package:drbooking/app/model/clinic.dart';
+import 'package:drbooking/app/model/doctor/doctor.dart';
+import 'package:drbooking/app/model/doctor/specicalty.dart';
+import 'package:drbooking/app/model/request_booking.dart';
+import 'package:drbooking/app/model/service/button_service.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
 import 'package:drbooking/app/resources/text_style.dart';
 import 'package:flutter/material.dart';
@@ -6,25 +13,34 @@ import 'package:get/get.dart';
 
 class BookingProcessController extends BaseController {
   //TODO: Implement BookingProcessController
-  BookingProcessController({required this.isSpecialChoice});
-  final bool isSpecialChoice;
-  final selectedBranch = 'Chi nhánh Lê Văn Việt'.obs;
-  List<String> options = [
-    'Chi nhánh Lê Văn Việt',
-    'Chi nhánh Võ Văn Ngân',
-    'Chi nhánh Lê Thị Riêng',
-  ];
+  BookingProcessController({required this.requestParamBooking});
+  final RequestParamBooking requestParamBooking;
 
-  final selectSpecial = 'Vui lòng chọn chuyên khoa'.obs;
-  List<String> optionsSpecials = [
-    'Chuyên Khoa Mật',
-    'Khoa Tim Mạch',
-    'Khoa Gan',
-  ];
+  DoctorApi doctorApi = DoctorRemote();
 
-  final selectDoctor = 'Mặc định'.obs;
+  RxList<Clinic> listClinic = <Clinic>[].obs;
+  Rx<Clinic> selectedClinic =
+      Clinic(createdAt: DateTime.now(), name: 'Vui lòng chọn chi nhánh').obs;
+
+  RxList<Specialty> listSpecialty = <Specialty>[].obs;
+  Rx<Specialty> selectedSpecialty =
+      Specialty(createdAt: DateTime.now(), name: 'Vui lòng chọn chi nhánh').obs;
+
+  RxList<Doctor> listDoctors = <Doctor>[].obs;
+  Rx<Doctor> selectedDoctor = Doctor.emptyFactory().obs;
+  
+  Rx<RequestParamBooking> requestData = RequestParamBooking().obs;
+
   @override
-  void onInit() {
+  Future<void> onInit() async {
+    requestData.value = requestParamBooking;
+    selectedClinic.value = requestParamBooking.clinic ??
+        Clinic(createdAt: DateTime.now(), name: 'Vui lòng chọn chi nhánh');
+    selectedSpecialty.value = requestParamBooking.specialty ??
+        Specialty(createdAt: DateTime.now(), name: 'Vui lòng chọn chuyên khoa');
+    await fetchDataClinic();
+    await fetchDataDoctor(idClinic: requestParamBooking.clinic!.id);
+    await fetchDataSpecialtys(idClinic: requestParamBooking.clinic!.id);
     super.onInit();
   }
 
@@ -38,6 +54,37 @@ class BookingProcessController extends BaseController {
     super.onClose();
   }
 
+  fetchDataClinic() async {
+    await doctorApi.getListClinic(param: "take=10&&skip=0").then((value) {
+      listClinic.value = value;
+    });
+  }
+
+  fetchDataSpecialtys({required String idClinic}) async {
+    //reset selected
+    selectedSpecialty.value =
+        Specialty(createdAt: DateTime.now(), name: 'Vui lòng chọn chuyên khoa');
+    await doctorApi
+        .getListSpecialtyByIdClinic(idClinic: idClinic)
+        .then((value) {
+      listSpecialty.value = value;
+    });
+  }
+  onTapCardDoctor(Doctor doctor){
+    selectedDoctor.value = doctor;
+  }
+
+  fetchDataDoctor({required String idClinic}) async {
+    await doctorApi.getListDoctorRandom(param: idClinic).then((value) {
+      listDoctors.value = value;
+    });
+  }
+
+ onTapClinic(Clinic clinic) async {
+    selectedClinic.value = clinic;
+    await fetchDataSpecialtys(idClinic: clinic.id);
+    await fetchDataDoctor(idClinic: clinic.id);
+  }
   showBottomBranch() async {
     Get.bottomSheet(Container(
       decoration: BoxDecoration(
@@ -54,10 +101,10 @@ class BookingProcessController extends BaseController {
           TextConstant.subTile1(Get.context!, text: 'Chi nhánh'),
           Expanded(
               child: ListView.builder(
-            itemCount: options.length,
+            itemCount: listClinic.length,
             itemBuilder: (context, index) => GestureDetector(
               onTap: () {
-                selectedBranch.value = options[index];
+                onTapClinic(listClinic[index]);
                 Get.back();
               },
               child: Card(
@@ -67,8 +114,9 @@ class BookingProcessController extends BaseController {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TextConstant.subTile2(context, text: options[index]),
-                      options[index] == selectedBranch.value
+                      TextConstant.subTile2(context,
+                          text: listClinic[index].name),
+                      listClinic[index] == selectedClinic.value
                           ? Icon(Icons.check)
                           : SizedBox.shrink()
                     ],
@@ -80,6 +128,14 @@ class BookingProcessController extends BaseController {
         ],
       ),
     ));
+  }
+
+  onTapSpecial(Specialty specialty) async {
+    selectedSpecialty.value = specialty;
+  }
+
+  onTapCalendar()async{
+
   }
 
   showBottomSpecial() async {
@@ -98,10 +154,10 @@ class BookingProcessController extends BaseController {
           TextConstant.subTile1(Get.context!, text: 'Chuyên khoa'),
           Expanded(
               child: ListView.builder(
-            itemCount: optionsSpecials.length,
+            itemCount: listSpecialty.length,
             itemBuilder: (context, index) => GestureDetector(
               onTap: () {
-                selectSpecial.value = optionsSpecials[index];
+                onTapSpecial(listSpecialty[index]);
                 Get.back();
               },
               child: Card(
@@ -111,9 +167,11 @@ class BookingProcessController extends BaseController {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TextConstant.subTile2(context,
-                          text: optionsSpecials[index]),
-                      optionsSpecials[index] == selectSpecial.value
+                      Expanded(
+                        child: TextConstant.subTile2(context,
+                            text: listSpecialty[index].name),
+                      ),
+                      listSpecialty[index] == selectedSpecialty.value
                           ? Icon(Icons.check)
                           : SizedBox.shrink()
                     ],
@@ -126,5 +184,4 @@ class BookingProcessController extends BaseController {
       ),
     ));
   }
-
 }

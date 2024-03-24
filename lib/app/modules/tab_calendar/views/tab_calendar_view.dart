@@ -16,6 +16,8 @@ class TabCalendarView extends BaseView<TabCalendarController> {
   @override
   Widget buildView(BuildContext context) {
     return Container(
+      height: double.infinity,
+      color: Colors.white,
       padding: EdgeInsets.all(UtilsReponsive.height(15, context)),
       child: SingleChildScrollView(
         padding: EdgeInsets.only(top: UtilsReponsive.height(30, context)),
@@ -63,7 +65,7 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                             height: double.infinity,
                             decoration: BoxDecoration(
                                 color: !controller.isHistory.value
-                                    ? Colors.grey
+                                    ? Colors.grey.withOpacity(0.2)
                                     : ColorsManager.primary,
                                 borderRadius: BorderRadius.only(
                                     bottomRight: Radius.circular(
@@ -84,15 +86,22 @@ class TabCalendarView extends BaseView<TabCalendarController> {
               ),
             ),
             SizedBoxConst.size(context: context),
-           Obx(() => controller.isLoading.value?Center(child: CupertinoActivityIndicator(color: ColorsManager.primary,),): ListView.separated(
-              physics: const NeverScrollableScrollPhysics(),
-              primary: false,
-              shrinkWrap: true,
-              itemCount: controller.listBookingPreview.value.length,
-              separatorBuilder: (context, index) =>
-                  SizedBoxConst.size(context: context),
-              itemBuilder: (context, index) => _itemCard(context, booking: controller.listBookingPreview[index]),
-            )),
+            Obx(() => controller.isLoading.value
+                ? Center(
+                    child: CupertinoActivityIndicator(
+                      color: ColorsManager.primary,
+                    ),
+                  )
+                : ListView.separated(
+                    physics: const NeverScrollableScrollPhysics(),
+                    primary: false,
+                    shrinkWrap: true,
+                    itemCount: controller.listBookingPreview.value.length,
+                    separatorBuilder: (context, index) =>
+                        SizedBoxConst.size(context: context),
+                    itemBuilder: (context, index) => _itemCard(context,
+                        booking: controller.listBookingPreview[index]),
+                  )),
             SizedBoxConst.size(
                 context: context, size: UtilsReponsive.height(15, context)),
           ],
@@ -118,14 +127,13 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                 margin:
                     EdgeInsets.only(top: UtilsReponsive.height(15, context)),
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(10),
-                  color: Colors.white, // Màu nền của container
+                  color: Colors.white,
                   boxShadow: const [
                     BoxShadow(
-                      color: Colors.white,
-                      spreadRadius: 1,
-                      blurRadius: 1,
+                      color: Colors.grey,
+                      spreadRadius: 2,
+                      blurRadius: 2,
                       offset: Offset(0, 3),
                     ),
                   ],
@@ -147,7 +155,8 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                               ),
                               SizedBoxConst.sizeWith(context: context, size: 5),
                               TextConstant.subTile3(context,
-                                  text: FormatDataCustom.convertDatetoFullDate(date: booking.date)),
+                                  text: FormatDataCustom.convertDatetoFullDate(
+                                      date: booking.date)),
                             ],
                           ),
                         ),
@@ -184,8 +193,7 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                           color: ColorsManager.primary,
                         ),
                         SizedBoxConst.sizeWith(context: context, size: 5),
-                        TextConstant.subTile3(context,
-                            text: booking.branch),
+                        TextConstant.subTile3(context, text: booking.branch),
                       ],
                     ),
                     SizedBoxConst.size(context: context),
@@ -216,11 +224,12 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                       horizontal: UtilsReponsive.height(10, context),
                       vertical: UtilsReponsive.height(5, context)),
                   decoration: BoxDecoration(
-                      color: booking.isNew?Colors.green:Colors.brown,
+                      color: booking.isNew ? Colors.green : Colors.brown,
                       borderRadius: BorderRadius.circular(
                           UtilsReponsive.height(8, context))),
                   child: TextConstant.subTile3(context,
-                      text: booking.isNew?"Khám mới":"Tái khám", color: Colors.white),
+                      text: booking.isNew ? "Khám mới" : "Tái khám",
+                      color: Colors.white),
                 ),
               )
             ],

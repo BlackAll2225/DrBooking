@@ -1,7 +1,5 @@
-import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_controller.dart';
 import 'package:drbooking/app/data/local/booking_local.dart';
-import 'package:drbooking/app/data/remote/booking_remote.dart';
 import 'package:drbooking/app/data/respository/booking_api.dart';
 import 'package:drbooking/app/model/booking/booking_preview.dart';
 import 'package:get/get.dart';
@@ -15,9 +13,7 @@ class TabCalendarController extends BaseController {
   RxList<BookingPreview> listBookingPreview = <BookingPreview>[].obs;
   @override
   Future<void> onInit() async {
-    bookingApi = BaseCommon.instance.mode == LOCAL_MODE
-        ? BookingLocal()
-        : BookingRemote();
+    bookingApi =  BookingLocal();
     await fetchListBooking();
 
     super.onInit();

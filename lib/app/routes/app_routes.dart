@@ -30,6 +30,8 @@ abstract class Routes {
   static const MAP_EXPLORE = _Paths.MAP_EXPLORE;
   static const CHANGE_PASSWORD = _Paths.CHANGE_PASSWORD;
   static const PERSONAL_INFORMATION = _Paths.PERSONAL_INFORMATION;
+  static const ABC = _Paths.ABC;
+  static const MEDICAL_RECORD = _Paths.MEDICAL_RECORD;
 }
 
 abstract class _Paths {
@@ -61,4 +63,6 @@ abstract class _Paths {
   static const MAP_EXPLORE = '/map-explore';
   static const CHANGE_PASSWORD = '/change-password';
   static const PERSONAL_INFORMATION = '/personal-information';
+  static const ABC = '/abc';
+  static const MEDICAL_RECORD = '/medical-record';
 }

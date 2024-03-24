@@ -1,16 +1,25 @@
+import 'dart:developer';
+
+import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_controller.dart';
+import 'package:drbooking/app/data/local/auth_local.dart';
+import 'package:drbooking/app/data/remote/auth_remote.dart';
+import 'package:drbooking/app/data/respository/auth_api.dart';
+import 'package:drbooking/app/resources/util_common.dart';
 import 'package:drbooking/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SignInController extends BaseController {
-
   RxBool checkpassword = true.obs;
   RxBool enableButton = false.obs;
   RxString errorPhoneInput = "".obs;
   RxString errorPasswordInput = "".obs;
   TextEditingController phoneTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
+
+  AuthApi authApi =
+      BaseCommon.instance.mode == LOCAL_MODE ? AuthLocal() : AuthRemote();
 
   String? deviceToken;
   @override
@@ -60,36 +69,23 @@ class SignInController extends BaseController {
   }
 
   login() async {
-    try {
+
       if (!isLockButton.value && enableButton.value) {
       isLockButton(true);
-
-        // UserModel userLogin = await UserApi.login(
-        //     phone.value, passowrd.value, deviceToken.toString());
-
-        // Get.find<StartAppController>().accessToken = userLogin.userToken!;
-        // Get.find<StartAppController>().name.value = userLogin.userFullName!;
-        // Get.find<StartAppController>().numberPhone.value = userLogin.userPhone!;
-        // Get.find<StartAppController>().email(userLogin.userEmail ?? "");
-
-        // String refeshToken = userLogin.refreshToken ?? "";
-        // log("Login: $refeshToken");
-        // await DatabaseLocal.instance.saveRefeshToken(refeshToken);
-        // Get.snackbar('Thông báo', 'Đăng nhập thành công',
-        //     backgroundColor: Colors.green.withOpacity(0.7),
-        //     colorText: Colors.white);
-        // if (userLogin.userFullName!.trim().isEmpty) {
-        //   Get.offAllNamed(Routes.UPDATE_FIRSTTIME);
-        // } else {
-        Get.offAllNamed(Routes.HOME);
-        // }
-      }
-      isLockButton(false);
-    } catch (e) {
-      Get.snackbar('Thông báo', 'Đăng nhập thất bại',
-          backgroundColor: Colors.red.withOpacity(0.7),
-          colorText: Colors.white);
-      isLockButton(false);
-    }
+      await authApi.login(
+        phone: "1-956-938-3810", password: "string"
+          // phone: phoneTextController.text,
+          // password: passwordTextController.text
+          ).then((jwt)async{
+            await BaseCommon.instance.saveToken(jwt);
+            await BaseCommon.instance.decodeJWT();
+            Get.offAllNamed(Routes.HOME);
+            isLockButton(false);
+          }).catchError((error){
+              log(error.toString());
+              isLockButton(false);
+              UtilCommon.snackBar(text: '${error.message}');
+          });
+    } 
   }
 }
