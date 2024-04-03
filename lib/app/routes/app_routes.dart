@@ -32,6 +32,9 @@ abstract class Routes {
   static const PERSONAL_INFORMATION = _Paths.PERSONAL_INFORMATION;
   static const ABC = _Paths.ABC;
   static const MEDICAL_RECORD = _Paths.MEDICAL_RECORD;
+  static const BOOKING_GENERAL = _Paths.BOOKING_GENERAL;
+  static const BOOKING_SPECIALTY = _Paths.BOOKING_SPECIALTY;
+  static const BOOKING_MEDICAL_SERIVCE = _Paths.BOOKING_MEDICAL_SERIVCE;
 }
 
 abstract class _Paths {
@@ -65,4 +68,7 @@ abstract class _Paths {
   static const PERSONAL_INFORMATION = '/personal-information';
   static const ABC = '/abc';
   static const MEDICAL_RECORD = '/medical-record';
+  static const BOOKING_GENERAL = '/booking-general';
+  static const BOOKING_SPECIALTY = '/booking-specialty';
+  static const BOOKING_MEDICAL_SERIVCE = '/booking-medical-serivce';
 }

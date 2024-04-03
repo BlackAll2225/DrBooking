@@ -15,6 +15,7 @@ class NewProfileView extends BaseView<NewProfileController> {
   const NewProfileView({Key? key}) : super(key: key);
   @override
   Widget buildView(BuildContext context) {
+                            controller.dateCurrent.value;
     return Scaffold(
       body: SafeArea(
           child: Column(
@@ -63,6 +64,7 @@ class NewProfileView extends BaseView<NewProfileController> {
                     ])),
                 SizedBoxConst.size(context: context),
                 FormFieldWidget(
+                    controllerEditting: controller.nameTextController,
                     radiusBorder: 15,
                     padding: 15,
                     fillColor: ColorsManager.primary.withOpacity(0.15),
@@ -101,11 +103,18 @@ class NewProfileView extends BaseView<NewProfileController> {
                               ),
                             ])),
                         SizedBoxConst.size(context: context),
-                        FormFieldWidget(
-                            radiusBorder: 15,
-                            padding: 15,
-                            fillColor: ColorsManager.primary.withOpacity(0.15),
-                            setValueFunc: (value) {})
+                        GestureDetector(
+                          onTap: ()async {
+                          await  controller.onTapBirth(context);
+                          },
+                          child: FormFieldWidget(
+                              isEnabled: false,
+                              controllerEditting: controller.birthTextController,
+                              radiusBorder: 15,
+                              padding: 15,
+                              fillColor: ColorsManager.primary.withOpacity(0.15),
+                              setValueFunc: (value) {}),
+                        )
                       ],
                     )),
                     Expanded(
@@ -140,11 +149,18 @@ class NewProfileView extends BaseView<NewProfileController> {
                               ),
                             ])),
                         SizedBoxConst.size(context: context),
-                        FormFieldWidget(
-                            radiusBorder: 15,
-                            padding: 15,
-                            fillColor: ColorsManager.primary.withOpacity(0.15),
-                            setValueFunc: (value) {})
+                        GestureDetector(
+                              onTap: () {
+                                controller.onTapGender();
+                              },
+                          child: FormFieldWidget(
+                            isEnabled: false,
+                            controllerEditting: controller.genderTextController,
+                              radiusBorder: 15,
+                              padding: 15,
+                              fillColor: ColorsManager.primary.withOpacity(0.15),
+                              setValueFunc: (value) {}),
+                        )
                       ],
                     ))
                   ],
@@ -170,6 +186,7 @@ class NewProfileView extends BaseView<NewProfileController> {
                     ])),
                 SizedBoxConst.size(context: context),
                 FormFieldWidget(
+                  controllerEditting: controller.addressTextController,
                     radiusBorder: 15,
                     padding: 15,
                     fillColor: ColorsManager.primary.withOpacity(0.15),
@@ -209,19 +226,10 @@ class NewProfileView extends BaseView<NewProfileController> {
                                         fontSize:
                                             UtilsReponsive.height(16, context)),
                               ),
-                              TextSpan(
-                                text: '*',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .copyWith(
-                                        color: Colors.red,
-                                        fontSize:
-                                            UtilsReponsive.height(14, context)),
-                              ),
                             ])),
                         SizedBoxConst.size(context: context),
                         FormFieldWidget(
+                          controllerEditting: controller.bhtyTextController,
                             radiusBorder: 15,
                             padding: 15,
                             fillColor: ColorsManager.primary.withOpacity(0.15),
@@ -248,23 +256,20 @@ class NewProfileView extends BaseView<NewProfileController> {
                                         fontSize:
                                             UtilsReponsive.height(16, context)),
                               ),
-                              TextSpan(
-                                text: '*',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .copyWith(
-                                        color: Colors.red,
-                                        fontSize:
-                                            UtilsReponsive.height(14, context)),
-                              ),
                             ])),
                         SizedBoxConst.size(context: context),
-                        FormFieldWidget(
-                            radiusBorder: 15,
-                            padding: 15,
-                            fillColor: ColorsManager.primary.withOpacity(0.15),
-                            setValueFunc: (value) {})
+                        GestureDetector(
+                              onTap: () {
+                                controller.onTapBHYTExpDate(context);
+                              },
+                          child: FormFieldWidget(
+                            isEnabled: false,
+                            controllerEditting: controller.bhytExpTextController,
+                              radiusBorder: 15,
+                              padding: 15,
+                              fillColor: ColorsManager.primary.withOpacity(0.15),
+                              setValueFunc: (value) {}),
+                        )
                       ],
                     ))
                   ],
@@ -281,15 +286,10 @@ class NewProfileView extends BaseView<NewProfileController> {
                             fontWeight: FontWeight.w400,
                             fontSize: UtilsReponsive.height(16, context)),
                       ),
-                      TextSpan(
-                        text: '*',
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: Colors.red,
-                            fontSize: UtilsReponsive.height(14, context)),
-                      ),
                     ])),
                 SizedBoxConst.size(context: context),
                 FormFieldWidget(
+                  controllerEditting: controller.bhtyAddressTextController,
                     radiusBorder: 15,
                     padding: 15,
                     fillColor: ColorsManager.primary.withOpacity(0.15),
@@ -319,19 +319,11 @@ class NewProfileView extends BaseView<NewProfileController> {
                                         fontSize:
                                             UtilsReponsive.height(16, context)),
                               ),
-                              TextSpan(
-                                text: '*',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .copyWith(
-                                        color: Colors.red,
-                                        fontSize:
-                                            UtilsReponsive.height(14, context)),
-                              ),
+                             
                             ])),
                         SizedBoxConst.size(context: context),
                         FormFieldWidget(
+                          controllerEditting: controller.cccdTextController,
                             radiusBorder: 15,
                             padding: 15,
                             fillColor: ColorsManager.primary.withOpacity(0.15),
@@ -358,23 +350,21 @@ class NewProfileView extends BaseView<NewProfileController> {
                                         fontSize:
                                             UtilsReponsive.height(16, context)),
                               ),
-                              TextSpan(
-                                text: '*',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .copyWith(
-                                        color: Colors.red,
-                                        fontSize:
-                                            UtilsReponsive.height(14, context)),
-                              ),
+                             
                             ])),
                         SizedBoxConst.size(context: context),
-                        FormFieldWidget(
-                            radiusBorder: 15,
-                            padding: 15,
-                            fillColor: ColorsManager.primary.withOpacity(0.15),
-                            setValueFunc: (value) {})
+                        GestureDetector(
+                          onTap: () {
+                            controller.onTapCCCDDate(context);
+                          },
+                          child: FormFieldWidget(
+                            isEnabled: false,
+                            controllerEditting: controller.cccdDateTextController,
+                              radiusBorder: 15,
+                              padding: 15,
+                              fillColor: ColorsManager.primary.withOpacity(0.15),
+                              setValueFunc: (value) {}),
+                        )
                       ],
                     ))
                   ],
@@ -393,15 +383,10 @@ class NewProfileView extends BaseView<NewProfileController> {
                             fontWeight: FontWeight.w400,
                             fontSize: UtilsReponsive.height(16, context)),
                       ),
-                      TextSpan(
-                        text: '*',
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: Colors.red,
-                            fontSize: UtilsReponsive.height(14, context)),
-                      ),
                     ])),
                 SizedBoxConst.size(context: context),
                 FormFieldWidget(
+                  controllerEditting: controller.cccdAddressTextController,
                     radiusBorder: 15,
                     padding: 15,
                     fillColor: ColorsManager.primary.withOpacity(0.15),

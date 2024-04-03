@@ -1,5 +1,4 @@
 import 'package:drbooking/app/base/base_view.dart';
-import 'package:drbooking/app/modules/doctor/views/doctor_view.dart';
 import 'package:drbooking/app/resources/assets_manager.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/form_field_widget.dart';
@@ -8,18 +7,18 @@ import 'package:drbooking/app/resources/text_style.dart';
 import 'package:drbooking/app/resources/util_common.dart';
 import 'package:drbooking/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
-import '../controllers/booking_process_controller.dart';
+import '../controllers/booking_general_controller.dart';
 
-class BookingProcessView extends BaseView<BookingProcessController> {
-  const BookingProcessView({Key? key}) : super(key: key);
+class BookingGeneralView extends BaseView<BookingGeneralController> {
+  const BookingGeneralView({Key? key}) : super(key: key);
   @override
   Widget buildView(BuildContext context) {
-    return Scaffold(
-        body: SafeArea(
+  return Scaffold(
+     body: SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -46,8 +45,8 @@ class BookingProcessView extends BaseView<BookingProcessController> {
                     child: Icon(Icons.arrow_back_ios_new),
                   ),
                 ),
-                TextConstant.titleH2(context,
-                    text: 'Chi tiết lịch khám', fontWeight: FontWeight.w700),
+               TextConstant.titleH2(context,
+                    text: 'Khám tổng quát', fontWeight: FontWeight.w700),
                 const SizedBox.shrink(),
               ],
             ),
@@ -72,7 +71,7 @@ class BookingProcessView extends BaseView<BookingProcessController> {
                   color: ColorsManager.primary,
                 ),
                 SizedBoxConst.size(context: context),
-                Obx(()=>_cardProfile(context)),
+               _cardProfile(context),
                 SizedBoxConst.size(context: context),
                 TextConstant.subTile1(context,
                     text: 'Thông tin lịch khám',
@@ -127,174 +126,53 @@ class BookingProcessView extends BaseView<BookingProcessController> {
                         )),
                   ),
                 ),
-                Visibility(
-                  visible: true,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBoxConst.size(context: context),
-                      RichText(
-                          text: TextSpan(
-                              style: Theme.of(context).textTheme.titleSmall,
-                              children: <TextSpan>[
-                            TextSpan(
-                              text: 'Chuyên Khoa',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(
-                                      color: const Color(0xff979797),
-                                      fontSize:
-                                          UtilsReponsive.height(14, context)),
-                            ),
-                            TextSpan(
-                              text: '*',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(
-                                      color: Colors.red,
-                                      fontSize:
-                                          UtilsReponsive.height(14, context)),
-                            ),
-                          ])),
-                      SizedBoxConst.size(context: context),
-                      GestureDetector(
-                        onTap: () async => await controller.showBottomSpecial(),
-                        child: Container(
-                          width: double.infinity,
-                          padding:
-                              EdgeInsets.all(UtilsReponsive.height(8, context)),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.grey,
-                              ),
-                              borderRadius: BorderRadius.circular(
-                                  UtilsReponsive.height(10, context))),
-                          child: Obx(() => Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: TextConstant.subTile2(context,
-                                        text: controller.selectedSpecialty.value.name),
-                                  ),
-                                  const Icon(Icons.arrow_drop_down)
-                                ],
-                              )),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
                 SizedBoxConst.size(context: context),
-                Obx(() => Visibility(
-                      visible: controller.listSpecialty.value
-                          .contains(controller.selectedSpecialty.value),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RichText(
-                              text: TextSpan(
-                                  style: Theme.of(context).textTheme.titleSmall,
-                                  children: <TextSpan>[
-                                TextSpan(
-                                  text: 'Bác sĩ',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge!
-                                      .copyWith(
-                                          color: const Color(0xff979797),
-                                          fontSize: UtilsReponsive.height(
-                                              14, context)),
-                                ),
-                              ])),
-                          SizedBoxConst.size(context: context),
-                          GestureDetector(
-                            onTap: () async {
-                              Get.to(()=>const DoctorView(), transition: Transition.downToUp);
-                            },
-                            child: Container(
-                                width: double.infinity,
-                                padding: EdgeInsets.all(
-                                    UtilsReponsive.height(8, context)),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey,
-                                    ),
-                                    borderRadius: BorderRadius.circular(
-                                        UtilsReponsive.height(10, context))),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    TextConstant.subTile2(context,
-                                        text: controller.selectedDoctor.value.fullname),
-                                    const Icon(Icons.arrow_drop_down)
-                                  ],
-                                )),
+                RichText(
+                    text: TextSpan(
+                        style: Theme.of(context).textTheme.titleSmall,
+                        children: <TextSpan>[
+                      TextSpan(
+                        text: 'Thời gian',
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: const Color(0xff979797),
+                            fontSize: UtilsReponsive.height(14, context)),
+                      ),
+                      TextSpan(
+                        text: '*',
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: Colors.red,
+                            fontSize: UtilsReponsive.height(14, context)),
+                      ),
+                    ])),
+                SizedBoxConst.size(context: context),
+                GestureDetector(
+                  onTap: () {
+                    controller.onTapTimeWidget();
+                  },
+                  child: Container(
+                      width: double.infinity,
+                      padding:
+                          EdgeInsets.all(UtilsReponsive.height(8, context)),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.grey,
                           ),
+                          borderRadius: BorderRadius.circular(
+                              UtilsReponsive.height(10, context))),
+                      child:
+                          // Obx(() =>
+                          Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                        Obx(()=>  TextConstant.subTile2(context,
+                              text: controller.concatSlotTime.value)),
+                          const Icon(Icons.arrow_drop_down)
                         ],
+                      )
+                      // ),
                       ),
-                    )),
-                SizedBoxConst.size(context: context),
-                Obx(()=>
-                   Visibility(
-                    visible: controller.selectedSpecialty.value.id.isNotEmpty,
-                  child: 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      RichText(
-                      text: TextSpan(
-                          style: Theme.of(context).textTheme.titleSmall,
-                          children: <TextSpan>[
-                        TextSpan(
-                          text: 'Thời gian',
-                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              color: const Color(0xff979797),
-                              fontSize: UtilsReponsive.height(14, context)),
-                        ),
-                        TextSpan(
-                          text: '*',
-                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              color: Colors.red,
-                              fontSize: UtilsReponsive.height(14, context)),
-                        ),
-                      ])),
-                  SizedBoxConst.size(context: context),
-                  GestureDetector(
-                    onTap: () {
-                     controller.onTapTimeWidget();
-                    },
-                    child: Container(
-                        width: double.infinity,
-                        padding:
-                            EdgeInsets.all(UtilsReponsive.height(8, context)),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.grey,
-                            ),
-                            borderRadius: BorderRadius.circular(
-                                UtilsReponsive.height(10, context))),
-                        child:
-                            // Obx(() =>
-                            Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                           Obx(()=>  TextConstant.subTile2(context,
-                                text: controller.concatSlotTime.value)),
-                            const Icon(Icons.arrow_drop_down)
-                          ],
-                        )
-                        // ),
-                        ),
-                  ),
-                  SizedBoxConst.size(context: context),
-                    ],
-                  )),
                 ),
+                SizedBoxConst.size(context: context),
                 RichText(
                     text: TextSpan(
                         style: Theme.of(context).textTheme.titleSmall,
@@ -393,10 +271,10 @@ class BookingProcessView extends BaseView<BookingProcessController> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextConstant.subTile1(context,
-                  text: '${controller.requestData.value.profile?.fullname}', fontWeight: FontWeight.bold),
+                  text: '${controller.requestParamBooking.profile?.fullname}', fontWeight: FontWeight.bold),
               SizedBoxConst.size(context: context),
               TextConstant.subTile2(context,
-                  text: UtilCommon.convertDateTime(controller.requestData.value.profile!.dateOfBirth!),
+                  text: UtilCommon.convertDateTime(controller.requestParamBooking.profile!.dateOfBirth!),
                   color: Colors.grey,
                   fontWeight: FontWeight.bold)
             ],

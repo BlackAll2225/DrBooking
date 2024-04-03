@@ -12,4 +12,7 @@ class UtilCommon {
   static String convertDateTime(DateTime date) {
    return DateFormat('dd/MM/yyyy').format(date);
   }
+   static String convertEEEDateTime(DateTime date) {
+   return DateFormat('EEEE, dd MMMM yyyy', 'vi_VN').format(date);
+  }
 }

@@ -39,7 +39,11 @@ class TabCalendarController extends BaseController {
   fetchListBooking() async {
     try {
       isLoading.value = true;
-      listBookingPreview.value = await bookingApi.getListBookingNewest();
+      if(!isHistory.value){
+        listBookingPreview.value = await bookingApi.getListBookingNewest();
+      }else{
+        listBookingPreview.value = [];
+      }
       isLoading.value = false;
     } catch (e) {}
   }

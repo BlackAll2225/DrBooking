@@ -50,6 +50,7 @@ class ApiService {
   Future<List<T>> fetchDataListWithPost<T>(
       String apiUrl, T Function(Map<String, dynamic>) fromJson,
       {required Object body}) async {
+        log(jsonEncode(body));
     final response = await http.post(Uri.parse(apiUrl),
         headers: BaseCommon.instance.headerRequest(), body: jsonEncode(body));
     log('StatusCode ${response.statusCode} - $apiUrl');
@@ -67,7 +68,7 @@ class ApiService {
       String apiUrl, T Function(Map<String, dynamic>) fromJson,
       {required Object body}) async {
     final response = await http.post(Uri.parse(apiUrl),
-        headers: BaseCommon.instance.headerRequest(), body: body);
+        headers: BaseCommon.instance.headerRequest(), body:  jsonEncode(body));
         log('StatusCode ${response.statusCode} - $apiUrl');
     log('Body ${response.body}');
     if (response.statusCode == 200) {

@@ -1,11 +1,13 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
+import 'package:drbooking/app/resources/loading_widget.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
 import 'package:drbooking/app/resources/text_style.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../controllers/booking_process_time_controller.dart';
 
@@ -14,6 +16,7 @@ class BookingProcessTimeView extends BaseView<BookingProcessTimeController> {
   @override
   Widget buildView(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: _buttonSubmit(context),
       body: SafeArea(
         child: Column(
           children: [
@@ -56,11 +59,11 @@ class BookingProcessTimeView extends BaseView<BookingProcessTimeController> {
                       UtilsReponsive.height(20, context))),
               height: UtilsReponsive.height(300, context),
               width: double.infinity,
-              child: CalendarDatePicker2(
+              child:Obx(()=> CalendarDatePicker2(
                 config: CalendarDatePicker2Config(
-                  currentDate: DateTime.now(),
+                  currentDate:controller.selectedDate.value,
                   // firstDate: DateTime.now(),
-                  lastDate: DateTime.now().add(Duration(days: 30)),
+                  lastDate: controller.selectedDate.value.add(Duration(days: 30)),
                   calendarType: CalendarDatePicker2Type.single,
                   centerAlignModePicker: true,
                   selectedDayTextStyle: TextStyle(
@@ -68,12 +71,10 @@ class BookingProcessTimeView extends BaseView<BookingProcessTimeController> {
                   selectedDayHighlightColor: ColorsManager.primary,
                 ),
                 onValueChanged: (value) async {
-                  // await controller.choicePickTime(value.first!);
-                  Get.back();
-                  // controller.getTimeRange(value);
+                  await controller.getControllerCheckTime(value[0]!);
                 },
-                value: [DateTime.now()],
-              ),
+                value: [controller.selectedDate.value],
+              )),
             ),
             Padding(
               padding: EdgeInsets.all(UtilsReponsive.height(10, context)),
@@ -119,38 +120,82 @@ class BookingProcessTimeView extends BaseView<BookingProcessTimeController> {
                 decoration: BoxDecoration(
                     color: Colors.grey.shade50,
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
+                        topLeft:  Radius.circular(20),
                         topRight: Radius.circular(20))),
-                child: GridView.count(
-                  scrollDirection: Axis.vertical,
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  childAspectRatio: (1 / .4),
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 4.0,
-                  mainAxisSpacing: 8.0,
-                  children: List.generate(10, (index) {
-                    return GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: FittedBox(
-                          fit: BoxFit.cover,
-                          child: Text(
-                            "12:00",
-                            style: TextStyle(color: Colors.black),
+                child: Obx(() =>controller.isLoading.value?LoadingWidget(): GridView.count(
+                      scrollDirection: Axis.vertical,
+                      physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      childAspectRatio: (1 / .4),
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 4.0,
+                      mainAxisSpacing: 8.0,
+                      children:
+                          List.generate(controller.listSlot.length, (index) {
+                        return GestureDetector(
+                          onTap: () {
+                            controller.onSelectedSlot(controller.listDutySchedule[index]);
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: controller.selectedSlot.value.dutyScheduleId == controller.listDutySchedule[index].dutyScheduleId?
+                              ColorsManager.primary
+                              :controller
+                                      .listDutySchedule.value[index].isAvaiable
+                                  ? Colors.grey
+                                  : Colors.red,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: FittedBox(
+                              fit: BoxFit.cover,
+                              child: TextConstant.subTile3(context,
+                                  text: controller.listSlot[index],
+                                  color: Colors.white),
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  }),
-                ))
+                        );
+                      }),
+                    )))
           ],
         ),
+      ),
+    );
+  }
+  Container _buttonSubmit(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: UtilsReponsive.height(10, context)),
+      width: double.infinity,
+      height: UtilsReponsive.height(50, context),
+      padding:
+          EdgeInsets.symmetric(horizontal: UtilsReponsive.height(10, context)),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: ColorsManager.primary,
+          shape: RoundedRectangleBorder(
+              side: BorderSide(
+                  color: ColorsManager.primary,
+                  width: UtilsReponsive.height(2, context)),
+              borderRadius: BorderRadius.circular(5)),
+          padding: EdgeInsets.symmetric(
+              vertical: UtilsReponsive.height(2, context),
+              horizontal: UtilsReponsive.height(20, context)),
+        ),
+        child: Container(
+          alignment: Alignment.center,
+          child: Text(
+            'Xác nhận',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.montserrat(
+                color: Colors.white,
+                fontSize: UtilsReponsive.formatFontSize(12, context),
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        onPressed: () async {
+          controller.onTapSubmitButton();
+          Get.back();
+        },
       ),
     );
   }

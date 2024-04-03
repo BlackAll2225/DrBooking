@@ -99,7 +99,7 @@ class MedicalRecordView extends BaseView<MedicalRecordController> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextConstant.subTile1(context,
-                      text: profile.fullname, fontWeight: FontWeight.bold),
+                      text: profile.fullname??"", fontWeight: FontWeight.bold),
                   SizedBoxConst.size(context: context),
                   TextConstant.subTile2(context,
                       text: profile.dateOfBirth.toString(),

@@ -10,5 +10,26 @@ class ProfileRemote implements ProfileApi{
     List<Profile> listProfiles = await apiService.fetchDataListWithPost(BaseLink.getClientsByIdAccount, (p0) => Profile.fromJson(p0), body: idAccount);
     return listProfiles;
   }
+  
+  @override
+  Future<bool> createNewProfile({required idPatient}) {
+    BaseLink.newPatient;
+    // TODO: implement createNewProfile
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<Profile> getProfileDetailById({required String idPatient}) async{
+    // TODO: implement getProfileDetailById
+    Profile profile = await apiService.fetchDataObjectWithPost(BaseLink.getProfilesById, (p0) => Profile.fromJson(p0), body: idPatient);
+        return profile;
+  }
+  
+  @override
+  Future<bool> updateProfile({required idPatient}) {
+    BaseLink.updatePatient;
+    // TODO: implement updateProfile
+    throw UnimplementedError();
+  }
 
 }

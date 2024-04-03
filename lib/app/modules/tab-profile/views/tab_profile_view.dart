@@ -65,7 +65,10 @@ class TabProfileView extends BaseView<TabProfileController> {
                                         GestureDetector(
                                             onTap: () {
                                               Get.toNamed(
-                                                  Routes.PROFILE_DETAIL);
+                                                  Routes.PROFILE_DETAIL, parameters:{
+                                                    "idPatient": controller.listProfile
+                                                    .value[index].id!
+                                                  } );
                                             },
                                             child: _cardProfile(context,
                                                 profile: controller.listProfile
@@ -114,7 +117,7 @@ class TabProfileView extends BaseView<TabProfileController> {
           ),
         ),
         onPressed: () async {
-          Get.toNamed(Routes.NEW_PROFILE);
+          controller.onTapCreateButton();
         },
       ),
     );
@@ -164,10 +167,10 @@ class TabProfileView extends BaseView<TabProfileController> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextConstant.subTile1(context,
-                  text: profile.fullname, fontWeight: FontWeight.bold),
+                  text: profile.fullname??'', fontWeight: FontWeight.bold),
               SizedBoxConst.size(context: context),
               TextConstant.subTile2(context,
-                  text: DateFormat('dd/MM/yyyy').format(profile.dateOfBirth),
+                  text: DateFormat('dd/MM/yyyy').format(profile.dateOfBirth??DateTime.now()),
                   color: Colors.grey,
                   fontWeight: FontWeight.bold)
             ],

@@ -8,5 +8,23 @@ class ProfileLocal implements ProfileApi{
    
    return [];
   }
+  
+  @override
+  Future<bool> createNewProfile({required idPatient}) {
+    // TODO: implement createNewProfile
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<Profile> getProfileDetailById({required String idPatient}) {
+    // TODO: implement getProfileDetailById
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<bool> updateProfile({required idPatient}) {
+    // TODO: implement updateProfile
+    throw UnimplementedError();
+  }
 
 }

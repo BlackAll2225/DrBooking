@@ -6,9 +6,8 @@ import 'package:drbooking/app/data/remote/doctor_remote.dart';
 import 'package:drbooking/app/data/respository/booking_api.dart';
 import 'package:drbooking/app/data/respository/doctor_api.dart';
 import 'package:drbooking/app/model/booking/duty_schedule.dart';
+import 'package:drbooking/app/model/booking/medical_service.dart';
 import 'package:drbooking/app/model/clinic.dart';
-import 'package:drbooking/app/model/doctor/doctor.dart';
-import 'package:drbooking/app/model/doctor/specicalty.dart';
 import 'package:drbooking/app/model/request_booking.dart';
 import 'package:drbooking/app/model/service/button_service.dart';
 import 'package:drbooking/app/modules/booking_process_time/controllers/booking_process_time_controller.dart';
@@ -19,44 +18,42 @@ import 'package:drbooking/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class BookingProcessController extends BaseController {
-  //TODO: Implement BookingProcessController
-  BookingProcessController({required this.requestParamBooking});
-  final RequestParamBooking requestParamBooking;
+const lab_title = 'Xét nghiệm';
+const vacin_title = 'Tiêm chủng';
+const psychological_title = 'Tâm lý';
 
-  DoctorApi doctorApi = DoctorRemote();
+const lab_service = 'Loại xét nghiệm';
+const vacin_service = 'Loại vacin';
+const psychological_service = 'Chuyên đề';
 
-  RxList<Clinic> listClinic = <Clinic>[].obs;
+class BookingMedicalSerivceController extends BaseController {
+  //TODO: Implement BookingMedicalSerivceController
+  BookingMedicalSerivceController({required this.requestParamBooking});
+  RequestParamBooking requestParamBooking;
+  final title = ''.obs;
+  final titleService = ''.obs;
   Rx<Clinic> selectedClinic =
       Clinic(createdAt: DateTime.now(), name: 'Vui lòng chọn chi nhánh').obs;
+  RxList<Clinic> listClinic = <Clinic>[].obs;
+  RxList<MedicalService> listService = <MedicalService>[].obs;
 
-  RxList<Specialty> listSpecialty = <Specialty>[].obs;
-  Rx<Specialty> selectedSpecialty =
-      Specialty(createdAt: DateTime.now(), name: 'Vui lòng chọn chi nhánh').obs;
 
-  RxList<Doctor> listDoctors = <Doctor>[].obs;
-  Rx<Doctor> selectedDoctor = Doctor.emptyFactory().obs;
-  
-  Rx<RequestParamBooking> requestData = RequestParamBooking().obs;
+  DoctorApi doctorApi = DoctorRemote();
+  BookingApi bookingApi = BookingRemote();
+
+  Rx<MedicalService> selectedMedicalService =  MedicalService(medicalSpecialtyName: '', medicalServiceName: 'Vui lòng chọn dịch vụ').obs;
 
   Rx<DateTime> selectedDate = DateTime.now().obs;
   Rx<DutySchedule> selectedSlot = DutySchedule.emtyObject().obs;
   final concatSlotTime = 'Xin mời chọn thời gian'.obs;
 
-
-  BookingApi bookingApi = BookingRemote();
-
-
   @override
-  Future<void> onInit() async {
-    requestData.value = requestParamBooking;
+  void onInit() {
     selectedClinic.value = requestParamBooking.clinic ??
         Clinic(createdAt: DateTime.now(), name: 'Vui lòng chọn chi nhánh');
-    selectedSpecialty.value = requestParamBooking.specialty ??
-        Specialty(createdAt: DateTime.now(), name: 'Vui lòng chọn chuyên khoa');
-    await fetchDataClinic();
-    await fetchDataDoctor(idClinic: requestParamBooking.clinic!.id);
-    await fetchDataSpecialtys(idClinic: requestParamBooking.clinic!.id);
+    getTitle(requestParamBooking.dataButton!.type);
+    getServiceTitle(requestParamBooking.dataButton!.type);
+
     super.onInit();
   }
 
@@ -70,50 +67,90 @@ class BookingProcessController extends BaseController {
     super.onClose();
   }
 
+  getTitle(TypeService type) {
+    switch (type) {
+      case TypeService.labExam:
+        title(lab_title);
+        break;
+      case TypeService.vaccination:
+        title(vacin_title);
+        break;
+      case TypeService.psychological:
+        title(psychological_title);
+        break;
+      default:
+    }
+  }
+
+  getServiceTitle(TypeService type) {
+    switch (type) {
+      case TypeService.labExam:
+        titleService(lab_service);
+        break;
+      case TypeService.vaccination:
+        titleService(vacin_service);
+        break;
+      case TypeService.psychological:
+        titleService(psychological_service);
+        break;
+      default:
+    }
+  }
+
+  getDataService(TypeService type) async {
+    switch (type) {
+      case TypeService.labExam:
+        await doctorApi
+            .getListMedicalServiceLab()
+            .then((value) {
+              listService.value = value;
+            })
+            .catchError((error) {
+          log("err:$error");
+          isLockButton(false);
+          UtilCommon.snackBar(text: '${error.message}');
+        });
+        break;
+      case TypeService.vaccination:
+        await doctorApi
+            .getListMedicalServiceVacin()
+            .then((value) {
+                  listService.value = value;
+            })
+            .catchError((error) {
+          log("err:$error");
+          isLockButton(false);
+          UtilCommon.snackBar(text: '${error.message}');
+        });
+        break;
+      case TypeService.psychological:
+        await doctorApi
+            .getListMedicalServicePys()
+            .then((value) {
+                  listService.value = value;
+            })
+            .catchError((error) {
+          log("err:$error");
+          isLockButton(false);
+          UtilCommon.snackBar(text: '${error.message}');
+        });
+        break;
+      default:
+    }
+  }
+
   fetchDataClinic() async {
     await doctorApi.getListClinic(param: "take=10&&skip=0").then((value) {
       listClinic.value = value;
     });
   }
 
-  fetchDataSpecialtys({required String idClinic}) async {
-    //reset selected
-    selectedSpecialty.value =
-        Specialty(createdAt: DateTime.now(), name: 'Vui lòng chọn chuyên khoa');
-    await doctorApi
-        .getListSpecialtyByIdClinic(idClinic: idClinic)
-        .then((value) {
-      listSpecialty.value = value;
-    });
-  }
-  onTapCardDoctor(Doctor doctor){
-    selectedDoctor.value = doctor;
-    requestParamBooking.doctor = doctor;
-  }
-
-  fetchDataDoctor({required String idClinic}) async {
-    await doctorApi.getListDoctorRandom(param: idClinic).then((value) {
-      listDoctors.value = value;
-    });
-  }
-
-  setTimeSlotChoice(DateTime dateSelected, DutySchedule slot) async {
-    log(slot.toJson().toString());
-
-    selectedDate.value = dateSelected;
-    selectedSlot.value = slot;
-    concatSlotTime.value =
-        '${UtilCommon.convertEEEDateTime(dateSelected)} | ${listTime[slot.slotNumber-1]}';
-        log(concatSlotTime.value);
-  }
-
- onTapClinic(Clinic clinic) async {
+  onTapClinic(Clinic clinic) async {
     selectedClinic.value = clinic;
-    requestParamBooking.clinic = clinic;
-    await fetchDataSpecialtys(idClinic: clinic.id);
-    await fetchDataDoctor(idClinic: clinic.id);
   }
+
   showBottomBranch() async {
+    await fetchDataClinic();
     Get.bottomSheet(Container(
       decoration: BoxDecoration(
           color: Colors.white,
@@ -157,17 +194,11 @@ class BookingProcessController extends BaseController {
       ),
     ));
   }
-
-  onTapSpecial(Specialty specialty) async {
-    selectedSpecialty.value = specialty;
-    requestParamBooking.specialty = specialty;
-  }
-
-  onTapCalendar()async{
-
-  }
-
+onTapMedicalService(MedicalService service){
+  selectedMedicalService.value = service;
+}
   showBottomSpecial() async {
+    await getDataService(requestParamBooking.dataButton!.type);
     Get.bottomSheet(Container(
       decoration: BoxDecoration(
           color: Colors.white,
@@ -180,13 +211,13 @@ class BookingProcessController extends BaseController {
           BoxConstraints(maxHeight: UtilsReponsive.height(400, Get.context!)),
       child: Column(
         children: [
-          TextConstant.subTile1(Get.context!, text: 'Chuyên khoa'),
+          TextConstant.subTile1(Get.context!, text: 'Chi nhánh'),
           Expanded(
               child: ListView.builder(
-            itemCount: listSpecialty.length,
+            itemCount: listService.length,
             itemBuilder: (context, index) => GestureDetector(
               onTap: () {
-                onTapSpecial(listSpecialty[index]);
+                onTapMedicalService(listService[index]);
                 Get.back();
               },
               child: Card(
@@ -198,11 +229,11 @@ class BookingProcessController extends BaseController {
                     children: [
                       Expanded(
                         child: TextConstant.subTile2(context,
-                            text: listSpecialty[index].name),
+                            text: listService[index].medicalServiceName),
                       ),
-                      listSpecialty[index] == selectedSpecialty.value
-                          ? Icon(Icons.check)
-                          : SizedBox.shrink()
+                      listService[index].medicalServiceName == selectedMedicalService.value.medicalServiceName
+                          ? const Icon(Icons.check)
+                          : const SizedBox.shrink()
                     ],
                   ),
                 ),
@@ -212,12 +243,13 @@ class BookingProcessController extends BaseController {
         ],
       ),
     ));
+    ///Show list
   }
 
-    checkTimeService(DateTime dateSelected) async {
+  checkTimeService(DateTime dateSelected) async {
     selectedDate.value = dateSelected;
     // await bookingApi
-    //     .checkDutyScheduleSpecialty()
+    //     .checkDutyScheduleMedicalService()
     //     .then((value) {})
     //     .catchError((error) {
     //   log("err:$error");
@@ -225,9 +257,18 @@ class BookingProcessController extends BaseController {
     //   UtilCommon.snackBar(text: '${error.message}');
     // });
   }
-  onTapTimeWidget() {
+    onTapTimeWidget() {
     log("message" + requestParamBooking.dataButton!.type.toString());
     Get.toNamed(Routes.BOOKING_PROCESS_TIME,
         arguments: requestParamBooking.dataButton!.type);
+  }
+  setTimeSlotChoice(DateTime dateSelected, DutySchedule slot) async {
+    log(slot.toJson().toString());
+
+    selectedDate.value = dateSelected;
+    selectedSlot.value = slot;
+    concatSlotTime.value =
+        '${UtilCommon.convertEEEDateTime(dateSelected)} | ${listTime[slot.slotNumber-1]}';
+        log(concatSlotTime.value);
   }
 }

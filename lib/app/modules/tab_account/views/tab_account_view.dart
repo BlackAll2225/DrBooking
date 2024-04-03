@@ -94,7 +94,7 @@ class TabAccountView extends BaseView<TabAccountController> {
   GestureDetector _logoutButton(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.offAllNamed(Routes.LOGIN);
+        Get.offAllNamed(Routes.SIGN_IN);
       },
       child: Container(
         padding: EdgeInsets.symmetric(

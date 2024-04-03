@@ -92,7 +92,12 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                       color: ColorsManager.primary,
                     ),
                   )
-                : ListView.separated(
+                :controller.listBookingPreview.value.isEmpty?Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top:18.0),
+                    child: TextConstant.subTile3(context, text: "Danh sách trống"),
+                  ),
+                ): ListView.separated(
                     physics: const NeverScrollableScrollPhysics(),
                     primary: false,
                     shrinkWrap: true,

@@ -4,6 +4,10 @@ import '../modules/booking/bindings/booking_binding.dart';
 import '../modules/booking/views/booking_view.dart';
 import '../modules/booking_detail/bindings/booking_detail_binding.dart';
 import '../modules/booking_detail/views/booking_detail_view.dart';
+import '../modules/booking_general/bindings/booking_general_binding.dart';
+import '../modules/booking_general/views/booking_general_view.dart';
+import '../modules/booking_medical_serivce/bindings/booking_medical_serivce_binding.dart';
+import '../modules/booking_medical_serivce/views/booking_medical_serivce_view.dart';
 import '../modules/booking_process/bindings/booking_process_binding.dart';
 import '../modules/booking_process/views/booking_process_view.dart';
 import '../modules/booking_process_branch/bindings/booking_process_branch_binding.dart';
@@ -14,6 +18,8 @@ import '../modules/booking_process_service/bindings/booking_process_service_bind
 import '../modules/booking_process_service/views/booking_process_service_view.dart';
 import '../modules/booking_process_time/bindings/booking_process_time_binding.dart';
 import '../modules/booking_process_time/views/booking_process_time_view.dart';
+import '../modules/booking_specialty/bindings/booking_specialty_binding.dart';
+import '../modules/booking_specialty/views/booking_specialty_view.dart';
 import '../modules/change-password/bindings/change_password_binding.dart';
 import '../modules/change-password/views/change_password_view.dart';
 import '../modules/doctor/bindings/doctor_binding.dart';
@@ -178,6 +184,21 @@ class AppPages {
       name: _Paths.MEDICAL_RECORD,
       page: () => const MedicalRecordView(),
       binding: MedicalRecordBinding(),
+    ),
+    GetPage(
+      name: _Paths.BOOKING_GENERAL,
+      page: () => const BookingGeneralView(),
+      binding: BookingGeneralBinding(),
+    ),
+    GetPage(
+      name: _Paths.BOOKING_SPECIALTY,
+      page: () => const BookingSpecialtyView(),
+      binding: BookingSpecialtyBinding(),
+    ),
+    GetPage(
+      name: _Paths.BOOKING_MEDICAL_SERIVCE,
+      page: () => const BookingMedicalSerivceView(),
+      binding: BookingMedicalSerivceBinding(),
     ),
   ];
 }

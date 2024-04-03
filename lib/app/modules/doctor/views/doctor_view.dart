@@ -93,7 +93,7 @@ class DoctorView extends BaseView<BookingProcessController> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
-          boxShadow: const [
+          boxShadow:  [
                     BoxShadow(
                       color: Colors.grey,
                       spreadRadius: 2,

@@ -1,12 +1,13 @@
 
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:drbooking/app/model/auth/account_session.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 const REMOTE_MODE = "REMOTE";
 const LOCAL_MODE = "LOCAL";
+
 class BaseCommon {
   static BaseCommon? _instance;
   String? accessToken;

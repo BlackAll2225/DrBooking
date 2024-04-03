@@ -13,10 +13,11 @@ class BookingProcessServiceController extends BaseController {
   final RequestParamBooking requestParamBooking;
 
   List<ButtonService> listService = [
-    ButtonService(content: "Khám tổng quát", imageUrl: ImageAssets.iconGeneralCheck, isService: false, type: TypeService.generalExam),
-    ButtonService(content: "Khám Chuyên Khoa", imageUrl: ImageAssets.iconSpecialCheck, isService: true,type: TypeService.specialtyExam),
-    ButtonService(content: "Xét nghiệm", imageUrl: ImageAssets.iconLabCheck, isService: false,type: TypeService.labExam),
-    ButtonService(content: "Tiêm chủng", imageUrl: ImageAssets.iconLabCheck, isService: true, type: TypeService.requestExam),
+    ButtonService(content: "Khám tổng quát",path: Routes.BOOKING_GENERAL, imageUrl: ImageAssets.iconGeneralCheck, isService: false, type: TypeService.generalExam),
+    ButtonService(content: "Khám Chuyên Khoa",path: Routes.BOOKING_PROCESS, imageUrl: ImageAssets.iconSpecialCheck, isService: true,type: TypeService.specialtyExam),
+    ButtonService(content: "Xét nghiệm",path: Routes.BOOKING_MEDICAL_SERIVCE, imageUrl: ImageAssets.iconLabCheck, isService: false,type: TypeService.labExam),
+    ButtonService(content: "Tiêm chủng",path: Routes.BOOKING_MEDICAL_SERIVCE, imageUrl: ImageAssets.iconLabCheck, isService: true, type: TypeService.vaccination),
+    ButtonService(content: "Tâm lý",path: Routes.BOOKING_MEDICAL_SERIVCE, imageUrl: ImageAssets.iconLabCheck, isService: true, type: TypeService.psychological),
 
 
   ];
@@ -37,7 +38,7 @@ class BookingProcessServiceController extends BaseController {
 
   onTapService(ButtonService buttonService){
     requestParamBooking.dataButton = buttonService;
-    Get.toNamed(Routes.BOOKING_PROCESS, arguments: requestParamBooking);
+    Get.toNamed(buttonService.path, arguments: requestParamBooking);
   }
 
 }
