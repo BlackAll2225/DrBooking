@@ -73,7 +73,7 @@ class SignInController extends BaseController {
       if (!isLockButton.value && enableButton.value) {
       isLockButton(true);
       await authApi.login(
-        phone: "1-956-938-3810", password: "string"
+        phone: "366-963-8299", password: "string"
           // phone: phoneTextController.text,
           // password: passwordTextController.text
           ).then((jwt)async{

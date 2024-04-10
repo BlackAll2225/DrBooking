@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/common/widget/app_bar_custom.dart';
+import 'package:drbooking/app/model/medical-record/medical_record.dart';
 import 'package:drbooking/app/model/profile.dart';
 import 'package:drbooking/app/resources/assets_manager.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
@@ -7,6 +10,8 @@ import 'package:drbooking/app/resources/form_field_widget.dart';
 import 'package:drbooking/app/resources/loading_widget.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
 import 'package:drbooking/app/resources/text_style.dart';
+import 'package:drbooking/app/resources/util_common.dart';
+import 'package:drbooking/app/utils/format_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -29,26 +34,38 @@ class MedicalRecordView extends BaseView<MedicalRecordController> {
               },
               title: "Hồ sơ bệnh án"),
           SizedBoxConst.size(context: context),
-          Obx(()=>
-            controller.isLoading.value?LoadingWidget(): Expanded(
-                child: Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.all(10),
-                  height: UtilsReponsive.height(100, context),
-                  width: double.infinity,
-                  child: Obx(() => _cardProfile(context,
-                      profile: controller.listProfile.value[0])),
-                ),
-                Expanded(
-                    child: ListView.separated(
-                  separatorBuilder: (context, index) =>
-                      SizedBoxConst.size(context: context),
-                  itemCount: 4,
-                  itemBuilder: (context, index) => _medicalRecord(context),
-                ))
-              ],
-            )),
+          Obx(
+            () => controller.isLoading.value
+                ? LoadingWidget()
+                : Expanded(
+                    child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        height: UtilsReponsive.height(80, context),
+                        width: double.infinity,
+                        child: Obx(() => _dropDownDataProfile(context)),
+                      ),
+                      Obx(() => controller.isFetchData.value
+                          ? CupertinoActivityIndicator()
+                          : controller.listMedicalRecord.value.isEmpty
+                              ? Padding(
+                                  padding: EdgeInsets.only(top: 20),
+                                  child: Center(
+                                    child: TextConstant.subTile2(context,
+                                        text: 'Không có dữ liệu'),
+                                  ),
+                                )
+                              : Expanded(
+                                  child: ListView.separated(
+                                  separatorBuilder: (context, index) =>
+                                      SizedBoxConst.size(context: context),
+                                  itemCount: controller.listMedicalRecord.value.length,
+                                  itemBuilder: (context, index) =>
+                                      _medicalRecord(context, controller.listMedicalRecord[index]),
+                                )))
+                    ],
+                  )),
           )
         ],
       ),
@@ -71,7 +88,7 @@ class MedicalRecordView extends BaseView<MedicalRecordController> {
       ),
       padding: EdgeInsets.all(UtilsReponsive.height(10, context)),
       width: double.infinity,
-      height: UtilsReponsive.width(100, context),
+      height: UtilsReponsive.width(80, context),
       child: Row(
         children: [
           Container(
@@ -99,20 +116,19 @@ class MedicalRecordView extends BaseView<MedicalRecordController> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextConstant.subTile1(context,
-                      text: profile.fullname??"", fontWeight: FontWeight.bold),
+                      text: profile.fullname ?? "",
+                      fontWeight: FontWeight.bold),
                   SizedBoxConst.size(context: context),
                   TextConstant.subTile2(context,
-                      text: profile.dateOfBirth.toString(),
+                      text: UtilCommon.convertDateTime(profile.dateOfBirth!),
                       color: Colors.grey,
                       fontWeight: FontWeight.bold)
                 ],
               ),
-              TextButton(
-                  onPressed: () {},
-                  child: TextConstant.subTile2(context,
-                      fontWeight: FontWeight.bold,
-                      text: 'Đổi',
-                      color: ColorsManager.primary))
+              Icon(
+                Icons.arrow_drop_down,
+                size: UtilsReponsive.height(30, context),
+              )
             ],
           ))
         ],
@@ -120,7 +136,7 @@ class MedicalRecordView extends BaseView<MedicalRecordController> {
     );
   }
 
-  _medicalRecord(BuildContext context) {
+  _medicalRecord(BuildContext context, MedicalRecord medicalRecord) {
     return Container(
       clipBehavior: Clip.hardEdge,
       margin: EdgeInsets.symmetric(
@@ -145,7 +161,8 @@ class MedicalRecordView extends BaseView<MedicalRecordController> {
             width: double.infinity,
             height: UtilsReponsive.height(40, context),
             color: ColorsManager.primary,
-            padding: EdgeInsets.symmetric(horizontal: UtilsReponsive.height(5, context)),
+            padding: EdgeInsets.symmetric(
+                horizontal: UtilsReponsive.height(5, context)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -158,7 +175,7 @@ class MedicalRecordView extends BaseView<MedicalRecordController> {
                     ),
                     SizedBoxConst.sizeWith(context: context),
                     TextConstant.subTile2(context,
-                        text: '12/23/23', color: Colors.white),
+                        text: FormatDataCustom.convertDatetoFullDate(date: medicalRecord.startTime ?? ''), color: Colors.white),
                   ],
                 ),
                 Icon(
@@ -173,10 +190,10 @@ class MedicalRecordView extends BaseView<MedicalRecordController> {
             child: Column(
               children: [
                 _textData(context,
-                    title: 'Chi nhánh', content: 'Nguyễn Văn Lượng'),
+                    title: 'Chi nhánh', content: medicalRecord.medicalSpecialtyName??''),
                 SizedBoxConst.size(context: context),
                 _textData(context,
-                    title: 'Bác sĩ khám', content: 'Nguyễn Văn A'),
+                    title: 'Bác sĩ khám', content: medicalRecord.doctorName??''),
                 SizedBoxConst.size(context: context),
                 _textData(context, title: 'Triệu chứng', content: ''),
                 SizedBoxConst.size(context: context),
@@ -186,7 +203,7 @@ class MedicalRecordView extends BaseView<MedicalRecordController> {
                   isEnabled: false,
                   radiusBorder: 15,
                   initValue:
-                      'Sit amet ea deserunt pariatur., amet ea deserunt pariatur.',
+                      medicalRecord.symptom,
                   padding: 10,
                   paddingVerti: 10,
                   fillColor: Colors.grey.withOpacity(0.5),
@@ -200,7 +217,7 @@ class MedicalRecordView extends BaseView<MedicalRecordController> {
                   isEnabled: false,
                   radiusBorder: 15,
                   initValue:
-                      'Sit amet ea deserunt pariatur., amet ea deserunt pariatur.',
+                   medicalRecord.note,
                   padding: 10,
                   paddingVerti: 10,
                   fillColor: Colors.grey.withOpacity(0.5),
@@ -223,5 +240,29 @@ class MedicalRecordView extends BaseView<MedicalRecordController> {
             text: content, fontWeight: FontWeight.bold),
       ],
     );
+  }
+
+  _dropDownDataProfile(BuildContext context) {
+    log(controller.selectedProfile.value.fullname.toString());
+    return PopupMenuButton<Profile>(
+        onSelected: (Profile newValue) {
+          controller.onTapProfile(newValue);
+        },
+        itemBuilder: (BuildContext context) {
+          return controller.listProfile.value
+              .map<PopupMenuItem<Profile>>((Profile value) {
+            return PopupMenuItem<Profile>(
+              value: value,
+              child: Container(
+                height: 40, // Chiều cao của mỗi mục dropdown
+                child: Center(
+                  child: Text(value.fullname ?? ''),
+                ),
+              ),
+            );
+          }).toList();
+        },
+        child:
+            _cardProfile(context, profile: controller.selectedProfile.value));
   }
 }

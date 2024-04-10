@@ -4,6 +4,7 @@ import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:drbooking/app/base/base_controller.dart';
 import 'package:drbooking/app/data/remote/profile_remote.dart';
 import 'package:drbooking/app/data/respository/profile_api.dart';
+import 'package:drbooking/app/model/profile.dart';
 import 'package:drbooking/app/modules/new_profile/controllers/new_profile_controller.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
@@ -14,7 +15,7 @@ import 'package:get/get.dart';
 
 class ProfileDetailController extends BaseController {
   ProfileDetailController({required this.idPatient});
-  final idPatient;
+  final String idPatient;
   TextEditingController nameTextController = TextEditingController(text: '');
   TextEditingController birthTextController = TextEditingController(text: '');
   TextEditingController genderTextController = TextEditingController(text: '');
@@ -98,7 +99,7 @@ class ProfileDetailController extends BaseController {
             itemCount: listGender.length,
             itemBuilder: (context, index) => GestureDetector(
               onTap: () {
-                genderTextController.text = listGender[index];
+                genderTextController.text = listGender[index].name;
                 Get.back();
               },
               child: Card(
@@ -108,8 +109,8 @@ class ProfileDetailController extends BaseController {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TextConstant.subTile2(context, text: listGender[index]),
-                      listGender[index] == genderTextController.text
+                      TextConstant.subTile2(context, text: listGender[index].name),
+                      listGender[index].name == genderTextController.text
                           ? Icon(Icons.check)
                           : SizedBox.shrink()
                     ],
@@ -232,5 +233,11 @@ class ProfileDetailController extends BaseController {
 
   onTapEdit() {
     isLockUpdate(false);
+  }
+  onTapCancel() {
+    isLockUpdate(true);
+  }
+   onTapUpdate() async{
+    isLockUpdate(true);
   }
 }

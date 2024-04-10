@@ -56,7 +56,7 @@ class ApiService {
     log('StatusCode ${response.statusCode} - $apiUrl');
     log('Body ${response.body}');
 
-    if (response.statusCode == 200) {
+    if (json.decode(response.body)['status'] == 'Status200OK') {
       final List<dynamic> data = json.decode(response.body)["data"];
       return data.map<T>((item) => fromJson(item)).toList();
     } else

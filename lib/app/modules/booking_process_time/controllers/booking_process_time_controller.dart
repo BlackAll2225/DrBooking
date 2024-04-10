@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:drbooking/app/base/base_controller.dart';
 import 'package:drbooking/app/data/local/booking_local.dart';
+import 'package:drbooking/app/data/remote/booking_remote.dart';
 import 'package:drbooking/app/model/booking/duty_schedule.dart';
 import 'package:drbooking/app/model/request_booking.dart';
 import 'package:drbooking/app/model/service/button_service.dart';
@@ -12,12 +13,7 @@ import 'package:drbooking/app/modules/booking_specialty/controllers/booking_spec
 import 'package:drbooking/app/resources/util_common.dart';
 import 'package:get/get.dart';
 
-const listTime = [
-  '8:00 - 10:00',
-  '10:00 - 12:00',
-  '13:00 - 15:00',
-  '15:00 - 17:00'
-];
+
 
 class BookingProcessTimeController extends BaseController {
   //TODO: Implement BookingProcessTimeController
@@ -124,7 +120,7 @@ class BookingProcessTimeController extends BaseController {
   checkTimeGeneral(
       DateTime dateSelected, RequestParamBooking requestParamBooking) async {
     selectedDate.value = dateSelected;
-    await BookingLocal()
+    await BookingRemote()
         .checkDutyScheduleGeneral(
             clinicId: requestParamBooking.clinic!.id, date: dateSelected)
         .then((value) {
@@ -141,12 +137,13 @@ class BookingProcessTimeController extends BaseController {
       DateTime dateSelected, RequestParamBooking requestParamBooking) async {
     selectedDate.value = dateSelected;
 
-    await BookingLocal()
+    await BookingRemote()
         .checkDutyScheduleSpecialty(
             clinicId: requestParamBooking.clinic!.id,
             date: dateSelected,
-            doctorId: requestParamBooking.doctor!.id,
-            medicalServiceId: '')
+            doctorId: requestParamBooking.doctor?.id,
+            specialtyId: requestParamBooking.specialty!.id,
+            medicalServiceId: null)
         .then((value) {
       listDutySchedule.value = value;
       log("message:${listDutySchedule.toList()}");
@@ -160,11 +157,10 @@ class BookingProcessTimeController extends BaseController {
   checkTimeMedicalService(
       DateTime dateSelected, RequestParamBooking requestParamBooking) async {
     selectedDate.value = dateSelected;
-    await BookingLocal()
+    await BookingRemote()
         .checkDutyScheduleMedicalService(
             clinicId: requestParamBooking.clinic!.id,
             date: dateSelected,
-            doctorId: requestParamBooking.doctor!.id,
             medicalServiceId: '')
         .then((value) {
       listDutySchedule.value = value;

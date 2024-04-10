@@ -12,6 +12,7 @@ import 'package:drbooking/app/utils/format_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -41,17 +42,20 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                         fit: BoxFit.contain,
                       ),
                     ),
-                     Expanded(
+                    Expanded(
                       flex: 3,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TextConstant.subTile3(context,text:
-                            'Xin chào, ',
+                          TextConstant.subTile3(
+                            context,
+                            text: 'Xin chào, ',
                           ),
-                        TextConstant.subTile3(context,text:
-                            '${BaseCommon.instance.accountSession?.fullName}',
+                          TextConstant.subTile3(
+                            context,
+                            text:
+                                '${BaseCommon.instance.accountSession?.fullName}',
                           ),
                         ],
                       ),
@@ -61,45 +65,37 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                 ),
               ),
               SizedBoxConst.size(context: context),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextConstant.subTile1(
-                    context,
-                    text: 'Lịch khám sắp tới',
-                  ),
-                  Obx(() => controller.isFetch2.value
-                      ? const CupertinoActivityIndicator()
-                      : const SizedBox())
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.only(top: UtilsReponsive.height(5, context)),
-                width: UtilsReponsive.height(120, context),
-                height: UtilsReponsive.height(2, context),
-                color: ColorsManager.primary,
+              Obx(
+                () => controller.isFetch2.value
+                    ? const CupertinoActivityIndicator()
+                    : controller.listBookingPreview.value.isEmpty
+                        ? SizedBox(
+                            height: UtilsReponsive.height(100, context),
+                            width: double.infinity,
+                            child: PageView.builder(
+                              controller: controller.pageController,
+                              itemCount: controller.imgaeList.length,
+                              onPageChanged: (int page) {
+                                controller.currentPage.value = page;
+                              },
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Image.network(
+                                    controller.imgaeList[index],
+                                    fit: BoxFit.cover,
+                                    width: UtilsReponsive.height(120, context),
+                                    height: UtilsReponsive.height(80, context),
+                                  ),
+                                );
+                              },
+                            ),
+                          )
+                        : _appointmentComingWidget(context),
               ),
               SizedBoxConst.size(context: context),
-              SizedBox(
-                  width: double.infinity,
-                  height: UtilsReponsive.height(150, context),
-                  child: Obx(
-                    () => ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: controller.listBookingPreview.value.length,
-                        separatorBuilder: (context, index) => SizedBox(
-                              height: 8,
-                            ),
-                        itemBuilder: (context, index) => GestureDetector(
-                          onTap: () {
-                            Get.toNamed(Routes.BOOKING_DETAIL);
-                          },
-                          child: _cardNewestBooking(
-                              context,
-                              booking: controller.listBookingPreview[index]),
-                        )),
-                  )),
               TextConstant.subTile1(
                 context,
                 text: 'Hôm nay bạn thế nào?',
@@ -131,39 +127,87 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                 color: ColorsManager.primary,
               ),
               Obx(() => ListView.separated(
-                    itemCount: controller.listDoctorPreview.value.length,
+                    itemCount: controller.listDoctorPreview.value.length > 5?5:controller.listDoctorPreview.value.length,
                     shrinkWrap: true,
                     primary: false,
                     separatorBuilder: (context, index) =>
                         SizedBoxConst.size(context: context),
                     itemBuilder: (context, index) => GestureDetector(
                       onTap: () {
-                        controller.opTapCardDoctor(idDoctor:controller.listDoctorPreview[index].id);
+                        controller.opTapCardDoctor(
+                            idDoctor: controller.listDoctorPreview[index].id);
                       },
                       child: _cardDoctor(context,
                           doctor: controller.listDoctorPreview[index]),
                     ),
                   )),
-                  SizedBoxConst.size(context: context)
+              SizedBoxConst.size(context: context)
             ],
           ),
         ));
   }
 
+  Column _appointmentComingWidget(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextConstant.subTile1(
+              context,
+              text: 'Lịch khám sắp tới',
+            ),
+            Obx(() => controller.isFetch2.value
+                ? const CupertinoActivityIndicator()
+                : const SizedBox())
+          ],
+        ),
+        Container(
+          margin: EdgeInsets.only(top: UtilsReponsive.height(5, context)),
+          width: UtilsReponsive.height(120, context),
+          height: UtilsReponsive.height(2, context),
+          color: ColorsManager.primary,
+        ),
+        SizedBoxConst.size(context: context),
+        SizedBox(
+            width: double.infinity,
+            height: UtilsReponsive.height(150, context),
+            child: Obx(
+              () => ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemCount: controller.listBookingPreview.value.length,
+                  separatorBuilder: (context, index) => SizedBox(
+                        height: 8,
+                      ),
+                  itemBuilder: (context, index) => GestureDetector(
+                        onTap: () {
+                          Get.toNamed(Routes.BOOKING_DETAIL);
+                        },
+                        child: _cardNewestBooking(context,
+                            booking: controller.listBookingPreview[index]),
+                      )),
+            )),
+      ],
+    );
+  }
+
   Container _cardNewestBooking(BuildContext context,
-      {required BookingPreview booking}) {
+      {required AppointmentPreview booking}) {
     return Container(
-       decoration: BoxDecoration(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
-          boxShadow: const [
-                    BoxShadow(
-                      color: Colors.grey,
-                      spreadRadius: 2,
-                      blurRadius: 2,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.grey,
+            spreadRadius: 2,
+            blurRadius: 2,
+            offset: Offset(0, 3),
+          ),
+        ],
       ),
       margin: EdgeInsets.all(UtilsReponsive.height(10, context)),
       padding: EdgeInsets.all(UtilsReponsive.height(10, context)),
@@ -181,7 +225,7 @@ class TabHomeView extends BaseView<TabHomeViewController> {
               SizedBoxConst.sizeWith(context: context, size: 5),
               TextConstant.subTile3(context,
                   text: FormatDataCustom.convertDatetoFullDate(
-                      date: booking.date)),
+                      date: booking.clinicName ?? '')),
             ],
           ),
           SizedBoxConst.size(context: context),
@@ -192,7 +236,7 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                 color: ColorsManager.primary,
               ),
               SizedBoxConst.sizeWith(context: context, size: 5),
-              TextConstant.subTile3(context, text: '${booking.time}')
+              TextConstant.subTile3(context, text: '${booking.clinicName}')
             ],
           ),
           SizedBoxConst.size(context: context),
@@ -203,7 +247,7 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                 color: ColorsManager.primary,
               ),
               SizedBoxConst.sizeWith(context: context, size: 5),
-              TextConstant.subTile3(context, text: '${booking.name}'),
+              TextConstant.subTile3(context, text: '${booking.clinicName}'),
             ],
           ),
         ],
@@ -211,148 +255,170 @@ class TabHomeView extends BaseView<TabHomeViewController> {
     );
   }
 
-  Container _cardDoctor(BuildContext context, {required Doctor doctor}) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      // color: Colors.red,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.white,
-          boxShadow: const [
-                    BoxShadow(
-                      color: Colors.grey,
-                      spreadRadius: 2,
-                      blurRadius: 2,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-      ),
-      height: UtilsReponsive.height(120, context),
-      width: double.infinity,
-      child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+  Widget _cardDoctor(BuildContext context, {required Doctor doctor}) {
+    return AnimationConfiguration.staggeredList(
+      position: 0,
+      duration: const Duration(milliseconds: 500),
+      child: SlideAnimation(
+          verticalOffset: 50.0,
+          child: FadeInAnimation(
+              child: Container(
+            padding: EdgeInsets.all(10),
+            // color: Colors.red,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.white,
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.grey,
+                  spreadRadius: 2,
+                  blurRadius: 2,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            height: UtilsReponsive.height(120, context),
+            width: double.infinity,
+            child: Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                            color: ColorsManager.primary, shape: BoxShape.circle),
-                        child: CachedNetworkImage(
-                                            fit: BoxFit.fill,
-                                            imageUrl: doctor.avatarUrl,
-                                            placeholder: (context, url) =>
-                                                const CircularProgressIndicator(color: Colors.white,),
-                                            errorWidget: (context, url, error) =>
-                                                Image.asset(ImageAssets.logo),
-                                          ),),
-                    SizedBoxConst.sizeWith(context: context, size: 5),
                     Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          TextConstant.subTile1(context, text: doctor.fullname),
-                          TextConstant.subTile2(context,
-                              text: doctor.medicalSpecialtyName,
-                              size: 12,
-                              color: Colors.grey.withOpacity(0.8)),
-                              TextConstant.subTile2(context,
-                              text: doctor.email,
-                              size: 12,
-                              color: Colors.grey.withOpacity(0.8)),
+                          Container(
+                            height: 40,
+                            width: 40,
+                            decoration: BoxDecoration(
+                                color: ColorsManager.primary,
+                                shape: BoxShape.circle),
+                            child: CachedNetworkImage(
+                              fit: BoxFit.fill,
+                              imageUrl: doctor.avatarUrl,
+                              placeholder: (context, url) =>
+                                  const CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  Image.asset(ImageAssets.logo),
+                            ),
+                          ),
+                          SizedBoxConst.sizeWith(context: context, size: 5),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                TextConstant.subTile1(context,
+                                    text: doctor.fullname),
+                                TextConstant.subTile2(context,
+                                    text: doctor.medicalSpecialtyName,
+                                    size: 12,
+                                    color: Colors.grey.withOpacity(0.8)),
+                                TextConstant.subTile2(context,
+                                    text: doctor.email,
+                                    size: 12,
+                                    color: Colors.grey.withOpacity(0.8)),
+                              ],
+                            ),
+                          )
                         ],
                       ),
-                    )
+                    ),
+                    SizedBoxConst.sizeWith(context: context),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ColorsManager.primary,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5)),
+                        padding: EdgeInsets.symmetric(
+                            vertical: UtilsReponsive.height(2, context),
+                            horizontal: UtilsReponsive.height(20, context)),
+                      ),
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Chi tiết',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.montserrat(
+                              color: Colors.white,
+                              fontSize:
+                                  UtilsReponsive.formatFontSize(12, context),
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      onPressed: () async {
+                        controller.opTapCardDoctor(idDoctor: doctor.id);
+                      },
+                    ),
                   ],
                 ),
-              ),
-              SizedBoxConst.sizeWith(context: context),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: ColorsManager.primary,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5)),
-                  padding: EdgeInsets.symmetric(
-                      vertical: UtilsReponsive.height(2, context),
-                      horizontal: UtilsReponsive.height(20, context)),
-                ),
-                child: Container(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Chi tiết',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.montserrat(
-                        color: Colors.white,
-                        fontSize: UtilsReponsive.formatFontSize(12, context),
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                onPressed: () async {
-                  controller.opTapCardDoctor(idDoctor: doctor.id);
-                },
-              ),
-            ],
-          ),
-          SizedBoxConst.size(context: context, size: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              RichText(
-                  text: TextSpan(
-                      style: Theme.of(context).textTheme.titleSmall,
-                      children: <TextSpan>[
-                    TextSpan(
-                      text: 'Kinh nghiệm',
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: const Color(0xff979797), fontSize: 12),
-                    ),
-                    TextSpan(
-                      text: '   ${doctor.rating} năm',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyLarge!
-                          .copyWith(fontSize: 10),
-                    ),
-                  ])),
-              Row(
-                children: [
-                  Text('Đánh giá  ',
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: const Color(0xff979797), fontSize: 12)),
-                  RatingBar.builder(
-                      unratedColor: const Color(0xff979797),
-                      itemSize: 12,
-                      initialRating: doctor.rating,
-                      direction: Axis.horizontal,
-                      itemCount: 5,
-                      itemBuilder: (context, _) => const Icon(
-                            Icons.star,
-                            color: Colors.amber,
+                SizedBoxConst.size(context: context, size: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    RichText(
+                        text: TextSpan(
+                            style: Theme.of(context).textTheme.titleSmall,
+                            children: <TextSpan>[
+                          TextSpan(
+                            text: 'Kinh nghiệm',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(
+                                    color: const Color(0xff979797),
+                                    fontSize: 12),
                           ),
-                      onRatingUpdate: (rating) {}),
-                  const SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    '(${doctor.rating})',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleSmall!
-                        .copyWith(fontSize: 10, color: const Color(0xff979797)),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
+                          TextSpan(
+                            text: '   ${doctor.rating} năm',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(fontSize: 10),
+                          ),
+                        ])),
+                    Row(
+                      children: [
+                        Text('Đánh giá  ',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(
+                                    color: const Color(0xff979797),
+                                    fontSize: 12)),
+                        RatingBar.builder(
+                            unratedColor: const Color(0xff979797),
+                            itemSize: 12,
+                            initialRating: doctor.rating,
+                            direction: Axis.horizontal,
+                            itemCount: 5,
+                            itemBuilder: (context, _) => const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                            onRatingUpdate: (rating) {}),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          '(${doctor.rating})',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall!
+                              .copyWith(
+                                  fontSize: 10, color: const Color(0xff979797)),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ))),
     );
   }
 
@@ -378,7 +444,8 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                   height: UtilsReponsive.height(40, context),
                   width: UtilsReponsive.height(40, context),
                   decoration: BoxDecoration(
-                      color: controller.listButton[index].colorBackground, shape: BoxShape.circle),
+                      color: controller.listButton[index].colorBackground,
+                      shape: BoxShape.circle),
                   child: controller.listButton[index].icon),
               TextConstant.subTile3(context,
                   text: controller.listButton[index].title)

@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/model/booking/booking_preview.dart';
+import 'package:drbooking/app/model/profile.dart';
+import 'package:drbooking/app/model/service/button_service.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
 import 'package:drbooking/app/resources/text_style.dart';
@@ -41,7 +45,7 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                           child: Container(
                             decoration: BoxDecoration(
                                 color: controller.isHistory.value
-                                    ? Colors.grey
+                                    ? Colors.grey.withOpacity(0.2)
                                     : ColorsManager.primary,
                                 borderRadius: BorderRadius.only(
                                     bottomLeft: Radius.circular(
@@ -86,27 +90,46 @@ class TabCalendarView extends BaseView<TabCalendarController> {
               ),
             ),
             SizedBoxConst.size(context: context),
+            SizedBox(
+              height: UtilsReponsive.height(50, context),
+              width: double.infinity,
+              child: Row(
+                children: [
+                  Expanded(
+                      child:
+                          TextConstant.subTile3(context, text: 'Bệnh nhân:')),
+                  Expanded(
+                    flex: 2,
+                    child: Obx(() => _dropDownDataProfile(context)),
+                  )
+                ],
+              ),
+            ),
+            SizedBoxConst.size(context: context),
             Obx(() => controller.isLoading.value
                 ? Center(
                     child: CupertinoActivityIndicator(
                       color: ColorsManager.primary,
                     ),
                   )
-                :controller.listBookingPreview.value.isEmpty?Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top:18.0),
-                    child: TextConstant.subTile3(context, text: "Danh sách trống"),
-                  ),
-                ): ListView.separated(
-                    physics: const NeverScrollableScrollPhysics(),
-                    primary: false,
-                    shrinkWrap: true,
-                    itemCount: controller.listBookingPreview.value.length,
-                    separatorBuilder: (context, index) =>
-                        SizedBoxConst.size(context: context),
-                    itemBuilder: (context, index) => _itemCard(context,
-                        booking: controller.listBookingPreview[index]),
-                  )),
+                : controller.listBookingPreview.value.isEmpty
+                    ? Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 18.0),
+                          child: TextConstant.subTile3(context,
+                              text: "Danh sách trống"),
+                        ),
+                      )
+                    : ListView.separated(
+                        physics: const NeverScrollableScrollPhysics(),
+                        primary: false,
+                        shrinkWrap: true,
+                        itemCount: controller.listBookingPreview.value.length,
+                        separatorBuilder: (context, index) =>
+                            SizedBoxConst.size(context: context),
+                        itemBuilder: (context, index) => _itemCard(context,
+                            booking: controller.listBookingPreview[index]),
+                      )),
             SizedBoxConst.size(
                 context: context, size: UtilsReponsive.height(15, context)),
           ],
@@ -115,14 +138,12 @@ class TabCalendarView extends BaseView<TabCalendarController> {
     );
   }
 
-  _itemCard(BuildContext context, {required BookingPreview booking}) {
+  _itemCard(BuildContext context, {required AppointmentPreview booking}) {
     return GestureDetector(
       onTap: () {
         Get.toNamed(Routes.BOOKING_DETAIL);
       },
       child: SizedBox(
-          // margin: EdgeInsets.all(UtilsReponsive.height(5, context)),
-          // padding: EdgeInsets.all(UtilsReponsive.height(5, context)),
           height: UtilsReponsive.height(170, context),
           width: double.infinity,
           child: Stack(
@@ -161,7 +182,7 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                               SizedBoxConst.sizeWith(context: context, size: 5),
                               TextConstant.subTile3(context,
                                   text: FormatDataCustom.convertDatetoFullDate(
-                                      date: booking.date)),
+                                      date: booking.start ?? '')),
                             ],
                           ),
                         ),
@@ -173,7 +194,9 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                                 color: ColorsManager.primary,
                               ),
                               SizedBoxConst.sizeWith(context: context, size: 5),
-                              TextConstant.subTile3(context, text: booking.time)
+                              TextConstant.subTile3(context,
+                                  text:
+                                      '${FormatDataCustom.mappingIso8ToSlot(booking.start ?? '')}-${FormatDataCustom.mappingIso8ToSlot(booking.end ?? '')}'),
                             ],
                           ),
                         )
@@ -187,7 +210,8 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                           color: ColorsManager.primary,
                         ),
                         SizedBoxConst.sizeWith(context: context, size: 5),
-                        TextConstant.subTile3(context, text: booking.name),
+                        TextConstant.subTile3(context,
+                            text: booking.doctorName ?? ''),
                       ],
                     ),
                     SizedBoxConst.size(context: context),
@@ -198,7 +222,8 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                           color: ColorsManager.primary,
                         ),
                         SizedBoxConst.sizeWith(context: context, size: 5),
-                        TextConstant.subTile3(context, text: booking.branch),
+                        TextConstant.subTile3(context,
+                            text: booking.clinicName ?? ''),
                       ],
                     ),
                     SizedBoxConst.size(context: context),
@@ -229,16 +254,51 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                       horizontal: UtilsReponsive.height(10, context),
                       vertical: UtilsReponsive.height(5, context)),
                   decoration: BoxDecoration(
-                      color: booking.isNew ? Colors.green : Colors.brown,
+                      color: true ? Colors.green : Colors.brown,
                       borderRadius: BorderRadius.circular(
                           UtilsReponsive.height(8, context))),
                   child: TextConstant.subTile3(context,
-                      text: booking.isNew ? "Khám mới" : "Tái khám",
+                      text: appointmentTypeList[booking.appoinmentType??0].label.toString(),
                       color: Colors.white),
                 ),
               )
             ],
           )),
+    );
+  }
+
+  _dropDownDataProfile(BuildContext context) {
+    log(controller.selectedProfile.value.fullname.toString());
+    return PopupMenuButton<Profile>(
+      onSelected: (Profile newValue) {
+        controller.onTapProfile(newValue);
+      },
+      itemBuilder: (BuildContext context) {
+        return controller.listProfile.value
+            .map<PopupMenuItem<Profile>>((Profile value) {
+          return PopupMenuItem<Profile>(
+            value: value,
+            child: Container(
+              height: 40, // Chiều cao của mỗi mục dropdown
+              child: Center(
+                child: Text(value.fullname ?? ''),
+              ),
+            ),
+          );
+        }).toList();
+      },
+      child: Container(
+        height: 40, // Chiều cao của dropdown button
+        width: 200, // Chiều rộng của dropdown button
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8), // Bo tròn các góc
+          border: Border.all(color: Colors.grey), // Đường viền
+        ),
+        child: Center(
+          child: TextConstant.subTile3(context,
+              text: controller.selectedProfile.value.fullname.toString()),
+        ),
+      ),
     );
   }
 }

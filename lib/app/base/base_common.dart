@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:drbooking/app/model/address/district.dart';
 import 'package:drbooking/app/model/auth/account_session.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -51,12 +52,14 @@ class BaseCommon {
     refreshToken = prefs.getString('refreshToken') ?? '';
   }
 
-  decodeJWT()async{
+  decodeJWT() async {
     final jwt = JWT.decode(accessToken!);
     AccountSession dataSession = AccountSession.fromJson(jwt.payload);
     accountSession = dataSession;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('accountSession', jsonEncode(dataSession));  
   }
+
+  
 
 }

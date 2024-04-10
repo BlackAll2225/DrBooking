@@ -1,5 +1,6 @@
 import 'package:drbooking/app/data/respository/profile_api.dart';
 import 'package:drbooking/app/model/profile.dart';
+import 'package:drbooking/app/model/profile/request_body_create_patient.dart';
 
 class ProfileLocal implements ProfileApi{
   @override
@@ -9,11 +10,7 @@ class ProfileLocal implements ProfileApi{
    return [];
   }
   
-  @override
-  Future<bool> createNewProfile({required idPatient}) {
-    // TODO: implement createNewProfile
-    throw UnimplementedError();
-  }
+
   
   @override
   Future<Profile> getProfileDetailById({required String idPatient}) {
@@ -24,6 +21,12 @@ class ProfileLocal implements ProfileApi{
   @override
   Future<bool> updateProfile({required idPatient}) {
     // TODO: implement updateProfile
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> createNewProfile({required BodyRequestCreatePatient bodyRequest}) {
+    // TODO: implement createNewProfile
     throw UnimplementedError();
   }
 

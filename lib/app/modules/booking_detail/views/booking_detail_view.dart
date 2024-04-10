@@ -3,11 +3,14 @@ import 'package:drbooking/app/common/widget/app_bar_custom.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
 import 'package:drbooking/app/resources/text_style.dart';
+import 'package:drbooking/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 
 import '../controllers/booking_detail_controller.dart';
@@ -22,10 +25,30 @@ class BookingDetailView extends BaseView<BookingDetailController> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           AppBarCustom(
-              callback: () {
-                Get.back();
-              },
-              title: 'Thông tin chi tiết'),
+            callback: () {
+              Get.back();
+            },
+            title: 'Thông tin chi tiết',
+            traling: IconButton(
+                onPressed: () {
+                  Get.dialog(Center(
+                    child: Container(
+                      color: Colors.white,
+                      child: QrImageView(
+                        data: 'ĐÂSDASDASDS',
+                        version: QrVersions.auto,
+                        size: UtilsReponsive.height(300, context),
+                        gapless: false,
+                      ),
+                    ),
+                  ));
+                },
+                icon: Icon(
+                  LineIcons.qrcode,
+                  color: Colors.black,
+                  size: UtilsReponsive.height(30, context),
+                )),
+          ),
           Expanded(
               flex: 6,
               child: SingleChildScrollView(
@@ -120,7 +143,8 @@ class BookingDetailView extends BaseView<BookingDetailController> {
                               title: 'Dịch vụ', content: 'Khám theo yêu cầu'),
                           SizedBoxConst.size(context: context),
                           _textData(context,
-                              title: 'Chuyên khoa', content: 'Khoa Tai Mũi Họng'),
+                              title: 'Chuyên khoa',
+                              content: 'Khoa Tai Mũi Họng'),
                           SizedBoxConst.size(context: context),
                           _textData(context,
                               title: 'Loại hình', content: 'BHYT'),
@@ -160,8 +184,7 @@ class BookingDetailView extends BaseView<BookingDetailController> {
                           _textData(context,
                               title: 'Bệnh nhân', content: 'Everardo McClure'),
                           SizedBoxConst.size(context: context),
-                          _textData(context,
-                              title: 'Giới tính', content: 'Nữ'),
+                          _textData(context, title: 'Giới tính', content: 'Nữ'),
                           SizedBoxConst.size(context: context),
                           _textData(context,
                               title: 'Năm sinh', content: '1970'),
@@ -193,6 +216,50 @@ class BookingDetailView extends BaseView<BookingDetailController> {
                                     color: Colors.black87),
                                 SizedBoxConst.size(context: context, size: 5),
                               ],
+                            ),
+                          ),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: UtilsReponsive.height(10, context)),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: ColorsManager.primary,
+                                shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                        color: ColorsManager.primary,
+                                        width:
+                                            UtilsReponsive.height(2, context)),
+                                    borderRadius: BorderRadius.circular(5)),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: UtilsReponsive.height(2, context),
+                                    horizontal:
+                                        UtilsReponsive.height(20, context)),
+                              ),
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Tôi đã tới',
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.montserrat(
+                                      color: Colors.white,
+                                      fontSize: UtilsReponsive.formatFontSize(
+                                          12, context),
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              onPressed: () async {
+                                await QuickAlert.show(
+                                  context: context,
+                                  type: QuickAlertType.success,
+                                  title: 'Xin chân thành cảm ơn',
+                                  text: 'Chúc bạn có một trải nghiệm tốt đẹp',
+                                  confirmBtnText: 'Trở về',
+                                  onConfirmBtnTap: () {
+                                    Get.offNamed(Routes.HOME);
+                                  },
+                                );
+                              },
                             ),
                           ),
                           Container(

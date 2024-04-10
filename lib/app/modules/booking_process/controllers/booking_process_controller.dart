@@ -1,23 +1,25 @@
 import 'dart:developer';
 
 import 'package:drbooking/app/base/base_controller.dart';
+import 'package:drbooking/app/base/config.dart';
 import 'package:drbooking/app/data/remote/booking_remote.dart';
 import 'package:drbooking/app/data/remote/doctor_remote.dart';
 import 'package:drbooking/app/data/respository/booking_api.dart';
 import 'package:drbooking/app/data/respository/doctor_api.dart';
 import 'package:drbooking/app/model/booking/duty_schedule.dart';
+import 'package:drbooking/app/model/booking/request_body_create_booking.dart';
 import 'package:drbooking/app/model/clinic.dart';
 import 'package:drbooking/app/model/doctor/doctor.dart';
 import 'package:drbooking/app/model/doctor/specicalty.dart';
 import 'package:drbooking/app/model/request_booking.dart';
-import 'package:drbooking/app/model/service/button_service.dart';
-import 'package:drbooking/app/modules/booking_process_time/controllers/booking_process_time_controller.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
 import 'package:drbooking/app/resources/text_style.dart';
 import 'package:drbooking/app/resources/util_common.dart';
 import 'package:drbooking/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BookingProcessController extends BaseController {
   //TODO: Implement BookingProcessController
@@ -36,16 +38,14 @@ class BookingProcessController extends BaseController {
 
   RxList<Doctor> listDoctors = <Doctor>[].obs;
   Rx<Doctor> selectedDoctor = Doctor.emptyFactory().obs;
-  
+
   Rx<RequestParamBooking> requestData = RequestParamBooking().obs;
 
   Rx<DateTime> selectedDate = DateTime.now().obs;
   Rx<DutySchedule> selectedSlot = DutySchedule.emtyObject().obs;
   final concatSlotTime = 'Xin mời chọn thời gian'.obs;
 
-
   BookingApi bookingApi = BookingRemote();
-
 
   @override
   Future<void> onInit() async {
@@ -86,7 +86,8 @@ class BookingProcessController extends BaseController {
       listSpecialty.value = value;
     });
   }
-  onTapCardDoctor(Doctor doctor){
+
+  onTapCardDoctor(Doctor doctor) {
     selectedDoctor.value = doctor;
     requestParamBooking.doctor = doctor;
   }
@@ -103,16 +104,17 @@ class BookingProcessController extends BaseController {
     selectedDate.value = dateSelected;
     selectedSlot.value = slot;
     concatSlotTime.value =
-        '${UtilCommon.convertEEEDateTime(dateSelected)} | ${listTime[slot.slotNumber-1]}';
-        log(concatSlotTime.value);
+        '${UtilCommon.convertEEEDateTime(dateSelected)} | ${listTime[slot.slotNumber - 1]}';
+    log(concatSlotTime.value);
   }
 
- onTapClinic(Clinic clinic) async {
+  onTapClinic(Clinic clinic) async {
     selectedClinic.value = clinic;
     requestParamBooking.clinic = clinic;
     await fetchDataSpecialtys(idClinic: clinic.id);
     await fetchDataDoctor(idClinic: clinic.id);
   }
+
   showBottomBranch() async {
     Get.bottomSheet(Container(
       decoration: BoxDecoration(
@@ -163,9 +165,7 @@ class BookingProcessController extends BaseController {
     requestParamBooking.specialty = specialty;
   }
 
-  onTapCalendar()async{
-
-  }
+  onTapCalendar() async {}
 
   showBottomSpecial() async {
     Get.bottomSheet(Container(
@@ -214,7 +214,7 @@ class BookingProcessController extends BaseController {
     ));
   }
 
-    checkTimeService(DateTime dateSelected) async {
+  checkTimeService(DateTime dateSelected) async {
     selectedDate.value = dateSelected;
     // await bookingApi
     //     .checkDutyScheduleSpecialty()
@@ -225,9 +225,22 @@ class BookingProcessController extends BaseController {
     //   UtilCommon.snackBar(text: '${error.message}');
     // });
   }
+
   onTapTimeWidget() {
     log("message" + requestParamBooking.dataButton!.type.toString());
     Get.toNamed(Routes.BOOKING_PROCESS_TIME,
         arguments: requestParamBooking.dataButton!.type);
   }
+
+  createBooking() {
+    BodyRequestCreateBooking body = BodyRequestCreateBooking();
+    body.clinicId = requestParamBooking.clinic?.id;
+    body.medicalServiceId = requestParamBooking.specialty?.id;
+    body.medicalServiceId = null;
+    body.patientProfileId = requestParamBooking.profile?.id;
+    body.symptoms = '';
+    body.dutyScheduleId = selectedSlot.value.dutyScheduleId;
+  }
+
+
 }

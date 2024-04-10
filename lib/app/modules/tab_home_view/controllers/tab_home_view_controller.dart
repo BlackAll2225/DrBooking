@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:drbooking/app/base/base_common.dart';
@@ -21,21 +22,73 @@ class TabHomeViewController extends BaseController {
 
   final count = 0.obs;
   RxList<Doctor> listDoctorPreview = <Doctor>[].obs;
-  RxList<BookingPreview> listBookingPreview = <BookingPreview>[].obs;
+  RxList<AppointmentPreview> listBookingPreview = <AppointmentPreview>[].obs;
   final List<ButtonFeature> listButton = [
-    ButtonFeature(title: "Đặt lịch", colorBackground: Colors.redAccent, colorText: Colors.black, icon: Icon(Icons.add,color: Colors.white,), path: '')
-    ,ButtonFeature(title: "Chi nhánh", colorBackground: ColorsManager.primary, colorText: Colors.black, icon: Icon(Icons.map,color: Colors.white,), path: Routes.MAP_EXPLORE)
-    ,ButtonFeature(title: "Lịch sử", colorBackground: Colors.brown, colorText: Colors.black, icon: Icon(Icons.history, color:Colors.white,), path: '')
-    ,ButtonFeature(title: "Bệnh án", colorBackground: Colors.green, colorText: Colors.black, icon: Icon(LineIcons.bookReader, color:Colors.white), path: Routes.MEDICAL_RECORD)
+    ButtonFeature(
+        title: "Đặt lịch",
+        colorBackground: Colors.redAccent,
+        colorText: Colors.black,
+        icon: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        path: ''),
+    ButtonFeature(
+        title: "Chi nhánh",
+        colorBackground: ColorsManager.primary,
+        colorText: Colors.black,
+        icon: Icon(
+          Icons.map,
+          color: Colors.white,
+        ),
+        path: Routes.MAP_EXPLORE),
+    ButtonFeature(
+        title: "Lịch sử",
+        colorBackground: Colors.brown,
+        colorText: Colors.black,
+        icon: Icon(
+          Icons.history,
+          color: Colors.white,
+        ),
+        path: ''),
+    ButtonFeature(
+        title: "Bệnh án",
+        colorBackground: Colors.green,
+        colorText: Colors.black,
+        icon: Icon(LineIcons.bookReader, color: Colors.white),
+        path: Routes.MEDICAL_RECORD)
   ];
 
-  late DoctorApi doctorApi = BaseCommon.instance.mode == LOCAL_MODE ? DoctorLocal(): DoctorRemote();
-  late BookingApi bookingApi =  BookingLocal();
+  late DoctorApi doctorApi =
+      BaseCommon.instance.mode == LOCAL_MODE ? DoctorLocal() : DoctorRemote();
+  late BookingApi bookingApi = BookingLocal();
+  PageController pageController = PageController();
+
+  List<String> imgaeList = [
+    'https://inivos.com/app/uploads/2021/01/Hygiene-Sol-DEC-2010-36-scaled.jpg',
+    'https://ehealth.eletsonline.com/wp-content/uploads/2009/07/best-hospital-in-south-india.jpg',
+    'https://static01.nyt.com/images/2017/02/16/well/doctors-hospital-design/doctors-hospital-design-superJumbo.jpg'
+  ];
+  final currentPage = 0.obs;
+
   final isFetch2 = false.obs;
   @override
   Future<void> onInit() async {
     super.onInit();
     await initalData();
+    Timer.periodic(Duration(seconds: 3), (Timer timer) {
+      if (currentPage < imgaeList.length - 1) {
+        currentPage.value++;
+      } else {
+        currentPage.value = 0;
+        timer.cancel();
+      }
+      pageController.animateToPage(
+        pageController.page!.toInt() + 1,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeIn,
+      );
+    });
   }
 
   @override
@@ -50,8 +103,8 @@ class TabHomeViewController extends BaseController {
 
   initalData() async {
     try {
-       getListDoctorRandom();
-       getListNewestBooking();
+      getListDoctorRandom();
+      getListNewestBooking();
     } catch (e) {
       log(e.toString());
       isLoading.value = false;
@@ -62,19 +115,18 @@ class TabHomeViewController extends BaseController {
 
   getListDoctorRandom() async {
     isLoading.value = true;
-    listDoctorPreview.value = await doctorApi.getListDoctorRandom(param: "clinic-khaihoang");
+    listDoctorPreview.value =
+        await doctorApi.getListDoctorRandom(param: "clinic-khaihoang");
     isLoading.value = false;
   }
 
   getListNewestBooking() async {
     isFetch2.value = true;
-    listBookingPreview.value =  await bookingApi.getListBookingNewest();
+    listBookingPreview.value = [];
     isFetch2.value = false;
-    
   }
-  opTapCardDoctor({required String idDoctor}){
-    Get.toNamed(Routes.DOCTOR_DETAIL, parameters: {
-      "idDoctor": idDoctor
-    });
+
+  opTapCardDoctor({required String idDoctor}) {
+    Get.toNamed(Routes.DOCTOR_DETAIL, parameters: {"idDoctor": idDoctor});
   }
 }

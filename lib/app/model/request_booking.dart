@@ -1,3 +1,4 @@
+import 'package:drbooking/app/model/booking/medical_service.dart';
 import 'package:drbooking/app/model/clinic.dart';
 import 'package:drbooking/app/model/doctor/doctor.dart';
 import 'package:drbooking/app/model/doctor/specicalty.dart';
@@ -15,6 +16,7 @@ class RequestParamBooking {
     String? description;
     ButtonService? dataButton;
     Specialty? specialty;
+    MedicalService? medicalService;
     RequestParamBooking({
       this.clinic,
       this.profile,

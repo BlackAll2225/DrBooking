@@ -26,8 +26,21 @@ class TabProfileView extends BaseView<TabProfileController> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Center(
-              child: TextConstant.titleH3(context, text: 'Quản lý hồ sơ'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(child: SizedBox()),
+               Expanded(
+                flex: 3,
+                child: Center(child: TextConstant.titleH3(context, text: 'Quản lý hồ sơ')),),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                        controller.onTapCreateButton();
+                    },
+                    child: Icon(Icons.add,color: ColorsManager.primary,)),
+                )
+              ],
             ),
             Expanded(
               child: Obx(
@@ -49,10 +62,13 @@ class TabProfileView extends BaseView<TabProfileController> {
                           )
                         : SingleChildScrollView(
                             padding: EdgeInsets.only(
-                                top: UtilsReponsive.height(30, context)),
+                                top: UtilsReponsive.height(10, context)),
                             child: Column(
                               children: [
+                                // _buttonCreate(context),
+                                // SizedBoxConst.size(context: context, size: 20),
                                 ListView.separated(
+                                  primary: false,
                                     shrinkWrap: true,
                                     padding: EdgeInsets.only(
                                         top:
@@ -73,8 +89,8 @@ class TabProfileView extends BaseView<TabProfileController> {
                                             child: _cardProfile(context,
                                                 profile: controller.listProfile
                                                     .value[index]))),
-                                SizedBoxConst.size(context: context, size: 20),
-                                _buttonCreate(context),
+                              
+                                SizedBoxConst.size(context: context, size: 100),
                               ],
                             ),
                           ),
@@ -179,4 +195,6 @@ class TabProfileView extends BaseView<TabProfileController> {
       ),
     );
   }
+
+  
 }

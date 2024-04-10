@@ -144,3 +144,14 @@ class Profile {
         "createdAt": createdAt?.toIso8601String(),
     };
 }
+
+class Gender {
+  int id;
+  String name;
+  Gender({required this.id,required this.name});
+}
+ List<Gender> listGender = [
+  Gender(id: 0, name: 'Nam'),
+  Gender(id: 1, name: 'Nữ'),
+  Gender(id: 2, name: 'Khác'),
+];

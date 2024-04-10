@@ -1,33 +1,35 @@
 import 'package:drbooking/app/data/respository/booking_api.dart';
 import 'package:drbooking/app/model/booking/booking_preview.dart';
 import 'package:drbooking/app/model/booking/duty_schedule.dart';
+import 'package:drbooking/app/model/medical-record/medical_record.dart';
 
 class BookingLocal implements BookingApi{
   @override
-  Future<BookingPreview> getAppointmentDetail() async {
+  Future<AppointmentPreview> getAppointmentDetail() async {
     throw Exception();
     //   await Future.delayed(Duration(seconds: 1));
     // return null;
   }
 
   @override
-  Future<List<BookingPreview>> getListBookingNewest() async{
-      await Future.delayed(Duration(seconds: 1));
-      List<BookingPreview> listBookingPreview = [
-        BookingPreview( time: '8:00 - 10:00', date: '2024-04-15', name: 'Everardo McClure', branch: 'Chi nhánh Khai Nguyen', isNew: true),
-        // BookingPreview( time: '8:00 - 10:00', date: '2024-03-15', name: 'Nguyễn Văn B', branch: 'Chi nhánh Khai Nguyen', isNew: true),
-      ];
-      return listBookingPreview;
+  Future<List<AppointmentPreview>> getListBookingNewest() async{
+    throw Exception();
+      // await Future.delayed(Duration(seconds: 1));
+      // List<AppointmentPreview> listBookingPreview = [
+      //   AppointmentPreview( time: '8:00 - 10:00', date: '2024-04-15', name: 'Everardo McClure', branch: 'Chi nhánh Khai Nguyen', isNew: true),
+      //   // BookingPreview( time: '8:00 - 10:00', date: '2024-03-15', name: 'Nguyễn Văn B', branch: 'Chi nhánh Khai Nguyen', isNew: true),
+      // ];
+      // return listBookingPreview;
   }
   
   @override
-  Future<List<BookingPreview>>  getListAppointment({required bool isHistory}) async {
+  Future<List<AppointmentPreview>>  getListAppointment({required bool isHistory}) async {
     // TODO: implement getListAppointment
     throw UnimplementedError();
   }
   
   @override
-  Future<List<BookingPreview>> getListTransaction() {
+  Future<List<AppointmentPreview>> getListTransaction() {
     // TODO: implement getListTransaction
     throw UnimplementedError();
   }
@@ -72,7 +74,7 @@ class BookingLocal implements BookingApi{
   
   
   @override
-  Future<List<DutySchedule>> checkDutyScheduleSpecialty({required DateTime date, required String clinicId, required String doctorId, required String medicalServiceId}) async{
+    Future<List<DutySchedule>> checkDutyScheduleSpecialty({required DateTime date, required String clinicId, required String doctorId, required String? medicalServiceId, required String? specialtyId}) async{
     List<DutySchedule> listDutySchedule = [];
     listDutySchedule.add(DutySchedule.fromJson({
       "dutyScheduleId": "04392890-b820-47c7-a6c9-142aa09d7eb0",
@@ -110,7 +112,7 @@ class BookingLocal implements BookingApi{
   }
   
   @override
-  Future<List<DutySchedule>> checkDutyScheduleMedicalService({required DateTime date, required String clinicId, required String doctorId, required String medicalServiceId}) async{
+  Future<List<DutySchedule>> checkDutyScheduleMedicalService({required DateTime date, required String clinicId, required String medicalServiceId}) async{
    List<DutySchedule> listDutySchedule = [];
     listDutySchedule.add(DutySchedule.fromJson({
       "dutyScheduleId": "04392890-b820-47c7-a6c9-142aa09d7eb0",
@@ -145,5 +147,23 @@ class BookingLocal implements BookingApi{
       "countAppointment": 0
     }));
     return listDutySchedule;
+  }
+  
+  @override
+  Future<List<AppointmentPreview>> getListAppointmentComming(String clientId, String patientId) {
+    // TODO: implement getListAppointmentComming
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<List<AppointmentPreview>> getListAppointmentFinish(String clientId, String patientId) {
+    // TODO: implement getListAppointmentFinish
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<MedicalRecord>> getListMedicalRecordByIdPatient({required String patientId}) {
+    // TODO: implement getListMedicalRecordByIdPatient
+    throw UnimplementedError();
   }
   }
