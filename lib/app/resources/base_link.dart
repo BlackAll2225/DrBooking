@@ -25,7 +25,7 @@ class BaseLink {
 //Appointment
   static String getAppointmentComming= '$domain/api/v1/appointment/get-many-list-up-coming-appointment-by-client-id';
   static String getAppointmentFinish= '$domain/api/v1/appointment/get-many-list-finish-appointment-by-client-id';
-  static String getAppointmentById = '$domain/api/v1/appointment/get-single-by-id';
+  static String getAppointmentById = '$domain/api/v1/appointment/get-appointment-detail-for-mobile-by-appointment-id-async';
   static String createAppointment = '$domain/api/v1/appointment/booking';
   static String checkinAppointment = '$domain/api/v1/appointment/check-in';
 //

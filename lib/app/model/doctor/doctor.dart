@@ -38,10 +38,10 @@ class Doctor {
         id: json["id"],
         email: json["email"],
         fullname: json["fullname"],
-        degree: json["degree"],
+        degree: json["degree"]??'',
         isPartTime: json["isPartTime"],
         medicalSpecialtyName: json["medicalSpecialtyName"],
-        avatarUrl: json["avatarUrl"],
+        avatarUrl: json["avatarUrl"]??'',
         rating: json["rating"]?.toDouble(),
         yearOfExperience: json["yearOfExperience"].toInt()
     );
