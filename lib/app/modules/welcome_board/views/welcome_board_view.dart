@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:drbooking/app/base/base_view.dart';
+import 'package:drbooking/app/base/uni_link_service.dart';
 import 'package:drbooking/app/resources/assets_manager.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
@@ -7,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 
 import '../controllers/welcome_board_controller.dart';
 
@@ -28,12 +31,21 @@ class WelcomeBoardView extends BaseView<WelcomeBoardController> {
             controller: controller.pageController,
             scrollDirection: Axis.horizontal,
             children: [
-              pageItem(ColorsManager.primary.withOpacity(0.5), ColorsManager.primary,
-                  ImageAssets.welcome1, "Text Welcome 1"),
-              pageItem(ColorsManager.primary.withOpacity(0.5), ColorsManager.primary,
-                   ImageAssets.welcome2, "Text Welcome 2"),
-              pageItem(ColorsManager.primary.withOpacity(0.5), ColorsManager.primary,
-                  ImageAssets.welcome3, "Text Welcome 3"),
+              pageItem(
+                  ColorsManager.primary.withOpacity(0.5),
+                  ColorsManager.primary,
+                  ImageAssets.welcome1,
+                  "Text Welcome 1"),
+              pageItem(
+                  ColorsManager.primary.withOpacity(0.5),
+                  ColorsManager.primary,
+                  ImageAssets.welcome2,
+                  "Text Welcome 2"),
+              pageItem(
+                  ColorsManager.primary.withOpacity(0.5),
+                  ColorsManager.primary,
+                  ImageAssets.welcome3,
+                  "Text Welcome 3"),
             ],
           ),
           Positioned(
@@ -41,7 +53,7 @@ class WelcomeBoardView extends BaseView<WelcomeBoardController> {
               right: 0,
               left: 0,
               child: Container(
-                height: UtilsReponsive.height(80,context ),
+                height: UtilsReponsive.height(80, context),
                 color: Colors.transparent,
                 child: Obx(
                   () => controller.textNext.isFalse
@@ -62,8 +74,7 @@ class WelcomeBoardView extends BaseView<WelcomeBoardController> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TextButton(
-                                  onPressed: () {
-                                    Get.offAllNamed(Routes.HOME);
+                                  onPressed: () async {
                                   },
                                   child: Text(
                                     'Bỏ qua',
@@ -74,16 +85,17 @@ class WelcomeBoardView extends BaseView<WelcomeBoardController> {
                                     controller: controller
                                         .pageController, // PageController
                                     count: 3,
-                                    effect:const ExpandingDotsEffect(
+                                    effect: const ExpandingDotsEffect(
                                       dotColor: Colors.black,
-                                      activeDotColor:Colors.white,
+                                      activeDotColor: Colors.white,
                                       spacing: 20,
                                     ),
                                     // your preferred effect
                                     onDotClicked: (index) {
                                       controller.pageController.animateToPage(
                                           index,
-                                          duration:const Duration(milliseconds: 500),
+                                          duration:
+                                              const Duration(milliseconds: 500),
                                           curve: Curves.easeInOut);
                                     }),
                               ),
@@ -92,7 +104,7 @@ class WelcomeBoardView extends BaseView<WelcomeBoardController> {
                                   onPressed: () {
                                     controller.jumpToPage();
                                   },
-                                  icon:const Icon(Icons.arrow_forward))
+                                  icon: const Icon(Icons.arrow_forward))
                             ],
                           ),
                         ),
@@ -116,18 +128,17 @@ class WelcomeBoardView extends BaseView<WelcomeBoardController> {
             Expanded(
                 // flex: 2,
                 child: Container(
-                  color: color2,
-                ))
+              color: color2,
+            ))
           ]),
           Positioned(
-              top: UtilsReponsive.height(134,Get.context!),
+              top: UtilsReponsive.height(134, Get.context!),
               right: 0,
               left: 0,
               child: Column(
                 children: [
                   SizedBox(
-                      width: double.infinity,
-                      child: Lottie.asset(pathImage)),
+                      width: double.infinity, child: Lottie.asset(pathImage)),
                   Text(textTitle)
                 ],
               ))

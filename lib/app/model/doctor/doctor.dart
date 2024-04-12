@@ -20,7 +20,7 @@ class Doctor {
     int yearOfExperience;
 
     factory Doctor.emptyFactory() {
-    return Doctor(id: "id", email: "email", fullname: "Mặc định", degree: "degree", isPartTime:false, medicalSpecialtyName: "medicalSpecialtyName", avatarUrl: "avatarUrl", rating: 4, yearOfExperience: 4);
+    return Doctor(id: "", email: "email", fullname: "Mặc định", degree: "degree", isPartTime:false, medicalSpecialtyName: "medicalSpecialtyName", avatarUrl: "avatarUrl", rating: 4, yearOfExperience: 4);
     }
     Doctor({
         required this.id,

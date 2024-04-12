@@ -1,10 +1,13 @@
+import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/common/widget/app_bar_custom.dart';
+import 'package:drbooking/app/model/profile.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/form_field_widget.dart';
 import 'package:drbooking/app/resources/loading_widget.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
 import 'package:drbooking/app/resources/text_style.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -67,7 +70,7 @@ class ProfileDetailView extends BaseView<ProfileDetailController> {
                                 GestureDetector(
                                   onTap: () async {
                                     if (!controller.isLockUpdate.value) {
-                                      await controller.onTapBirth(context);
+                                      await onTapBirth(context);
                                     }
                                   },
                                   child: FormFieldWidget(
@@ -89,23 +92,25 @@ class ProfileDetailView extends BaseView<ProfileDetailController> {
                                 SizedBoxConst.size(context: context, size: 20),
                                 _titleText(context,
                                     title: 'Giới tính', subTitle: '*'),
-                                SizedBoxConst.size(context: context),
-                                GestureDetector(
-                                  onTap: () {
-                                    if (!controller.isLockUpdate.value) {
-                                      controller.onTapGender();
-                                    }
-                                  },
-                                  child: FormFieldWidget(
-                                      isEnabled: false,
-                                      controllerEditting:
-                                          controller.genderTextController,
-                                      radiusBorder: 15,
-                                      padding: 15,
-                                      fillColor: ColorsManager.primary
-                                          .withOpacity(0.15),
-                                      setValueFunc: (value) {}),
-                                )
+                                SizedBoxConst.sizeWith(
+                                    context: context, size: 10),
+                                Obx(() => IgnorePointer(
+                                  ignoring: true,
+                                  child: DropdownButton<Gender>(
+                                        value: controller.selectedGender.value,
+                                        onChanged: (Gender? newValue) {
+                                          controller.selectedGender.value =
+                                              newValue!;
+                                        },
+                                        
+                                        items: listGender.map((Gender item) {
+                                          return DropdownMenuItem<Gender>(
+                                            value: item,
+                                            child: Text(item.name),
+                                          );
+                                        }).toList(),
+                                      ),
+                                ))
                               ],
                             ))
                           ],
@@ -164,7 +169,7 @@ class ProfileDetailView extends BaseView<ProfileDetailController> {
                                 SizedBoxConst.size(context: context),
                                 GestureDetector(
                                   onTap: () {
-                                    controller.onTapBHYTExpDate(context);
+                                    onTapBHYTDate(context);
                                   },
                                   child: FormFieldWidget(
                                       isEnabled: false,
@@ -231,7 +236,7 @@ class ProfileDetailView extends BaseView<ProfileDetailController> {
                                 GestureDetector(
                                   onTap: () {
                                     if (!controller.isLockUpdate.value) {
-                                      controller.onTapCCCDDate(context);
+                                      onTapCccdDate(context);
                                     }
                                   },
                                   child: FormFieldWidget(
@@ -394,5 +399,252 @@ class ProfileDetailView extends BaseView<ProfileDetailController> {
                 fontSize: UtilsReponsive.height(14, context)),
           ),
         ]));
+  }
+
+  onTapBirth(BuildContext context) async {
+    await Get.defaultDialog(
+        title: 'Ngày cấp',
+        content: SizedBox(
+          height: UtilsReponsive.height(300, context),
+          width: UtilsReponsive.height(300, context),
+          child: CalendarDatePicker2(
+            config: CalendarDatePicker2Config(
+              currentDate: controller.dateCurrent.value,
+              lastDate: DateTime.now().add(Duration(days: 30)),
+              calendarType: CalendarDatePicker2Type.single,
+              centerAlignModePicker: true,
+              selectedDayTextStyle:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+              selectedDayHighlightColor: ColorsManager.primary,
+            ),
+            onValueChanged: (value) async {
+              controller.setValueBirth(value[0]!);
+              Get.back();
+            },
+            value: [controller.dateCurrent.value],
+          ),
+        ));
+  }
+
+  onTapCccdDate(BuildContext context) async {
+    await Get.defaultDialog(
+        title: 'Ngày cấp',
+        content: SizedBox(
+          height: UtilsReponsive.height(300, context),
+          width: UtilsReponsive.height(300, context),
+          child: CalendarDatePicker2(
+            config: CalendarDatePicker2Config(
+              currentDate: controller.dateCCCDDate.value,
+              lastDate: DateTime.now(),
+              calendarType: CalendarDatePicker2Type.single,
+              centerAlignModePicker: true,
+              selectedDayTextStyle:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+              selectedDayHighlightColor: ColorsManager.primary,
+            ),
+            onValueChanged: (value) async {
+              controller.setValueCccdDate(value[0]!);
+              Get.back();
+            },
+            value: [controller.dateCCCDDate.value],
+          ),
+        ));
+  }
+
+  onTapBHYTDate(BuildContext context) async {
+    await Get.defaultDialog(
+        title: 'Ngày hết hạn',
+        content: SizedBox(
+          height: UtilsReponsive.height(300, context),
+          width: UtilsReponsive.height(300, context),
+          child: CalendarDatePicker2(
+            config: CalendarDatePicker2Config(
+              currentDate: controller.dateBHYTExp.value,
+              calendarType: CalendarDatePicker2Type.single,
+              centerAlignModePicker: true,
+              selectedDayTextStyle:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+              selectedDayHighlightColor: ColorsManager.primary,
+            ),
+            onValueChanged: (value) async {
+              controller.setValueBhytDate(value[0]!);
+              Get.back();
+            },
+            value: [controller.dateBHYTExp.value],
+          ),
+        ));
+  }
+
+  onTapProvince(BuildContext context) async {
+    controller.fetchDataProvince();
+    await Get.bottomSheet(Container(
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(UtilsReponsive.height(10, Get.context!)),
+            topRight: Radius.circular(UtilsReponsive.height(10, Get.context!)),
+          )),
+      padding: EdgeInsets.all(UtilsReponsive.height(20, Get.context!)),
+      constraints:
+          BoxConstraints(maxHeight: UtilsReponsive.height(400, Get.context!)),
+      child: Column(
+        children: [
+          TextConstant.subTile1(Get.context!, text: 'Thành phố/ Tỉnh Thành'),
+          Obx(
+            () => controller.isFetchData.value
+                ? CupertinoActivityIndicator()
+                : Expanded(
+                    child: ListView.builder(
+                    itemCount: controller.listProvince.value.length,
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () {
+                        controller.selectedProvince.value =
+                            controller.listProvince[index];
+                        Get.back();
+                      },
+                      child: Card(
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.symmetric(
+                              vertical: UtilsReponsive.height(15, context)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: TextConstant.subTile2(context,
+                                    text: controller
+                                            .listProvince[index].provinceName ??
+                                        ''),
+                              ),
+                              controller.listProvince[index].provinceId ==
+                                      controller
+                                          .selectedProvince.value.provinceId
+                                  ? Icon(Icons.check)
+                                  : SizedBox.shrink()
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  )),
+          )
+        ],
+      ),
+    ));
+  }
+
+  onTapDistrict(BuildContext context) async {
+    if (controller.selectedProvince.value.provinceId != null) {
+      controller.fetchDataDistrict();
+      await Get.bottomSheet(Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(UtilsReponsive.height(10, Get.context!)),
+              topRight:
+                  Radius.circular(UtilsReponsive.height(10, Get.context!)),
+            )),
+        padding: EdgeInsets.all(UtilsReponsive.height(20, Get.context!)),
+        constraints:
+            BoxConstraints(maxHeight: UtilsReponsive.height(400, Get.context!)),
+        child: Column(
+          children: [
+            TextConstant.subTile1(Get.context!, text: 'Quận/ Huyện'),
+            Obx(
+              () => controller.isFetchData.value
+                  ? CupertinoActivityIndicator()
+                  : Expanded(
+                      child: ListView.builder(
+                      itemCount: controller.listDistrict.value.length,
+                      itemBuilder: (context, index) => GestureDetector(
+                        onTap: () {
+                          controller.selectedDistrict.value =
+                              controller.listDistrict[index];
+                          Get.back();
+                        },
+                        child: Card(
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.symmetric(
+                                vertical: UtilsReponsive.height(15, context)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: TextConstant.subTile2(context,
+                                      text: controller.listDistrict[index]
+                                              .districtName ??
+                                          ''),
+                                ),
+                                controller.listDistrict[index].districtId ==
+                                        controller
+                                            .selectedDistrict.value.districtId
+                                    ? Icon(Icons.check)
+                                    : SizedBox.shrink()
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    )),
+            )
+          ],
+        ),
+      ));
+    }
+  }
+
+  onTapWard(BuildContext context) async {
+    if (controller.selectedDistrict.value.districtId != null) {
+      controller.fetchDataWard();
+      await Get.bottomSheet(Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(UtilsReponsive.height(10, Get.context!)),
+              topRight:
+                  Radius.circular(UtilsReponsive.height(10, Get.context!)),
+            )),
+        padding: EdgeInsets.all(UtilsReponsive.height(20, Get.context!)),
+        constraints:
+            BoxConstraints(maxHeight: UtilsReponsive.height(400, Get.context!)),
+        child: Column(
+          children: [
+            TextConstant.subTile1(Get.context!, text: 'Phường/ Xã'),
+            Obx(() => controller.isFetchData.value
+                ? CupertinoActivityIndicator()
+                : Expanded(
+                    child: ListView.builder(
+                    itemCount: controller.listWard.value.length,
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () {
+                        controller.selectedWard.value =
+                            controller.listWard[index];
+                        Get.back();
+                      },
+                      child: Card(
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.symmetric(
+                              vertical: UtilsReponsive.height(15, context)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: TextConstant.subTile2(context,
+                                    text: controller.listWard[index].wardName ??
+                                        ''),
+                              ),
+                              controller.listWard[index].wardCode ==
+                                      controller.selectedWard.value.wardCode
+                                  ? Icon(Icons.check)
+                                  : SizedBox.shrink()
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  )))
+          ],
+        ),
+      ));
+    }
   }
 }

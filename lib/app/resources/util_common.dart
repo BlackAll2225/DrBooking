@@ -9,6 +9,13 @@ const listTime = [
   '15:00 - 17:00'
 ];
 
+const listStatus = [
+"Đã đăng kí",
+"Đang diễn ra",
+"Kết thúc",
+"Đã huỷ"
+];
+
 class UtilCommon {
   static void snackBar({required String text, bool isFail = false}) {
     Get.snackbar('Thông báo', text,

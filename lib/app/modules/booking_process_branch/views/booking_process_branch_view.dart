@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/common/widget/app_bar_custom.dart';
 import 'package:drbooking/app/model/branch.dart';
@@ -28,17 +29,41 @@ class BookingProcessBranchView
             },
             title: "Chọn chi nhánh"),
         Expanded(
-            child: Obx(()=>controller.isLoading.value? Center(child: CircularProgressIndicator(color: ColorsManager.primary,),)
-               :ListView.separated(
+            child: Obx(
+          () => controller.isLoading.value
+              ? Center(
+                  child: CircularProgressIndicator(
+                    color: ColorsManager.primary,
+                  ),
+                )
+              : Padding(
                   padding: EdgeInsets.all(UtilsReponsive.height(20, context)),
-                  itemBuilder: (context, index) =>GestureDetector(onTap:(){
-                    controller.onTapBranchCard(clinic:  controller.listClinic[index]);
-                    // Get.toNamed(Routes.BOOKING_PROCESS_SERVICE, arguments: controller.requestParamBooking);
-                  },child: _cardBranch(context,clinic: controller.listClinic[index])),
-                  separatorBuilder: (context, index) =>
-                      SizedBoxConst.size(context: context),
-                  itemCount: controller.listClinic.value.length),
-            ))
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextConstant.subTile2(context,
+                          text: '* Ấn để chọn chi nhánh',
+                          color: ColorsManager.primary),
+                          SizedBoxConst.size(context: context),
+                      Expanded(
+                        child: ListView.separated(
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) => GestureDetector(
+                                onTap: () {
+                                  controller.onTapBranchCard(
+                                      clinic: controller.listClinic[index]);
+                                  // Get.toNamed(Routes.BOOKING_PROCESS_SERVICE, arguments: controller.requestParamBooking);
+                                },
+                                child: _cardBranch(context,
+                                    clinic: controller.listClinic[index])),
+                            separatorBuilder: (context, index) =>
+                                SizedBoxConst.size(context: context),
+                            itemCount: controller.listClinic.value.length),
+                      ),
+                    ],
+                  ),
+                ),
+        ))
       ],
     )));
   }
@@ -47,46 +72,39 @@ class BookingProcessBranchView
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(UtilsReponsive.height(5, context)),
+        borderRadius: BorderRadius.circular(UtilsReponsive.height(10, context)),
       ),
       padding: EdgeInsets.all(UtilsReponsive.height(10, context)),
       width: double.infinity,
-      height: UtilsReponsive.width(150, context),
-      child: Row(
+      // height: UtilsReponsive.width(150, context),
+      child: Column(
         children: [
+          TextConstant.titleH3(context, text: clinic.name),
+          SizedBoxConst.size(context: context),
           Container(
-            height: UtilsReponsive.width(100, context),
+            height: UtilsReponsive.width(120, context),
+            width: double.infinity,
             decoration: BoxDecoration(
               // color: Colors.grey,
               border: Border.all(color: Colors.grey),
               borderRadius:
                   BorderRadius.circular(UtilsReponsive.height(5, context)),
             ),
-            child: Image.asset(ImageAssets.logo),
+            child: CachedNetworkImage(
+              fit: BoxFit.fill,
+              imageUrl: clinic.imageUrl,
+              placeholder: (context, url) => const CircularProgressIndicator(
+                color: Colors.white,
+              ),
+              errorWidget: (context, url, error) =>
+                  Image.asset(ImageAssets.logo),
+            ),
           ),
-          Expanded(
-              child: Padding(
+          Padding(
             padding: EdgeInsets.only(left: UtilsReponsive.height(10, context)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                RichText(
-                    text: TextSpan(
-                        style: Theme.of(context).textTheme.titleSmall,
-                        children: <TextSpan>[
-                      TextSpan(
-                        text: clinic.name,
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: Colors.black,
-                            fontSize: UtilsReponsive.height(14, context)),
-                      ),
-                      TextSpan(
-                        text: ' (cách 14 km)',
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: ColorsManager.primary,
-                            fontSize: UtilsReponsive.height(14, context)),
-                      ),
-                    ])),
                 SizedBoxConst.size(context: context),
                 RichText(
                     text: TextSpan(
@@ -99,12 +117,17 @@ class BookingProcessBranchView
                             fontSize: UtilsReponsive.height(14, context)),
                       ),
                       TextSpan(
-                        text:
-                            clinic.fullAddress,
+                        text: clinic.fullAddress,
                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             color: Colors.black,
                             fontSize: UtilsReponsive.height(14, context)),
                       ),
+                      // TextSpan(
+                      //   text: ' (cách 14 km)',
+                      //   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      //       color: ColorsManager.primary,
+                      //       fontSize: UtilsReponsive.height(14, context)),
+                      // ),
                     ])),
                 SizedBoxConst.size(context: context),
                 RichText(
@@ -127,7 +150,7 @@ class BookingProcessBranchView
                 SizedBoxConst.size(context: context),
               ],
             ),
-          ))
+          )
         ],
       ),
     );

@@ -1,12 +1,16 @@
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/common/widget/app_bar_custom.dart';
+import 'package:drbooking/app/model/profile.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
 import 'package:drbooking/app/resources/text_style.dart';
+import 'package:drbooking/app/resources/util_common.dart';
 import 'package:drbooking/app/routes/app_pages.dart';
+import 'package:drbooking/app/utils/format_data.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 
 import '../controllers/booking_process_confirm_controller.dart';
@@ -16,6 +20,7 @@ class BookingProcessConfirmView
   const BookingProcessConfirmView({Key? key}) : super(key: key);
   @override
   Widget buildView(BuildContext context) {
+    Get.find<BookingProcessConfirmController>().count;
     return Scaffold(
         bottomNavigationBar: Container(
           height: UtilsReponsive.height(70, context),
@@ -35,7 +40,7 @@ class BookingProcessConfirmView
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextConstant.subTile2(context,
+                     TextConstant.subTile2(context,
                           text: 'Chi phí đặt lịch: ', color: Colors.white),
                       TextConstant.titleH2(
                         context,
@@ -101,7 +106,7 @@ class BookingProcessConfirmView
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               TextConstant.subTile1(context,
-                                  text: 'Thứ 3 ngày 12/12/2023',
+                                  text: FormatDataCustom.convertDatetoFullDate(date: controller.requestParam.dateBooking!),
                                   fontWeight: FontWeight.bold),
                               TextConstant.subTile2(context,
                                   text: 'Khám mới',
@@ -114,14 +119,14 @@ class BookingProcessConfirmView
                               ),
                               SizedBoxConst.size(context: context),
                               _textData(context,
-                                  title: 'Thời gian', content: '9:00 - 11:00'),
+                                  title: 'Thời gian', content: listTime[controller.requestParam.dutySchedule!.slotNumber-1]),
                               SizedBoxConst.size(context: context),
                               _textData(context,
                                   title: 'Đối tượng', content: 'Không ưu tiên'),
                               SizedBoxConst.size(context: context),
                               _textData(context,
                                   title: 'Chi nhánh',
-                                  content: 'Chi nhánh Nguyễn Van A'),
+                                  content: controller.requestParam.clinic!.name),
                               SizedBoxConst.size(context: context),
                               Divider(
                                 color: Colors.grey,
@@ -138,17 +143,17 @@ class BookingProcessConfirmView
                                   content: 'Khám theo yêu cầu'),
                               SizedBoxConst.size(context: context),
                               _textData(context,
-                                  title: 'Chuyên khoa', content: 'Tim mạch'),
+                                  title: 'Chuyên khoa', content: controller.requestParam.specialty?.name??''),
                               SizedBoxConst.size(context: context),
                               _textData(context,
-                                  title: 'Bác sĩ', content: 'Nguyễn Văn A'),
+                                  title: 'Bác sĩ', content: controller.requestParam.doctor!.id.isEmpty?'Mặc định':controller.requestParam.doctor!.fullname),
                               SizedBoxConst.size(context: context),
                               _textData(context,
                                   title: 'Triệu chứng', content: ''),
                               SizedBoxConst.size(context: context),
                               TextConstant.subTile3(context,
                                   text:
-                                      'is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the',
+                                      '${controller.requestParam.symptom}',
                                   color: Colors.black54),
                               SizedBoxConst.size(context: context),
                               Divider(
@@ -161,24 +166,14 @@ class BookingProcessConfirmView
                                   fontWeight: FontWeight.bold,
                                   color: ColorsManager.primary),
                               SizedBoxConst.size(context: context),
-                              SizedBox(
-                                height: UtilsReponsive.height(50, context),
-                                child: SfBarcodeGenerator(
-                                  value: 'hjdsakjhsda',
-                                ),
-                              ),
-                              SizedBoxConst.size(context: context),
-                              TextConstant.subTile2(context,
-                                  text: 'Mã bệnh nhân', color: Colors.black87),
+                              _textData(context,
+                                  title: 'Bệnh nhân', content: controller.requestParam.profile!.fullname!),
                               SizedBoxConst.size(context: context),
                               _textData(context,
-                                  title: 'Bệnh nhân', content: 'Nguyễn Văn A'),
+                                  title: 'Giới tính', content: listGender[controller.requestParam.profile!.biologicalGender!].name),
                               SizedBoxConst.size(context: context),
                               _textData(context,
-                                  title: 'Giới tính', content: 'Nam'),
-                              SizedBoxConst.size(context: context),
-                              _textData(context,
-                                  title: 'Năm sinh', content: '1999'),
+                                  title: 'Năm sinh', content: controller.requestParam.profile!.dateOfBirth!.year.toString()),
                               SizedBoxConst.size(context: context),
                               Divider(
                                 color: Colors.grey,

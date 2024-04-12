@@ -78,7 +78,7 @@ class TabCalendarController extends BaseController {
         listBookingPreview.value = [];
         isLoading(false);
         log("err:$error");
-        UtilCommon.snackBar(text: '${error.message}', isFail: true);
+        // UtilCommon.snackBar(text: '${error.message}', isFail: true);
       });
     } else {
       await bookingApi
@@ -91,7 +91,7 @@ class TabCalendarController extends BaseController {
         listBookingPreview.value = [];
         isLoading(false);
         log("err:$error");
-        UtilCommon.snackBar(text: '${error.message}', isFail: true);
+        // UtilCommon.snackBar(text: '${error.message}', isFail: true);
       });
     }
   }

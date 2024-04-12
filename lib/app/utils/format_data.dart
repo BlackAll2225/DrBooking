@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:intl/intl.dart';
 
 class FormatDataCustom {
@@ -9,6 +11,7 @@ class FormatDataCustom {
     static String mappingIso8ToSlot(String dateTimeString) {
     List<String> parts = dateTimeString.split("T");
     String timeString = parts.length > 1 ? parts[1] : "";
+    log(timeString);
     List<String> timeParts = timeString.split(":");
     String hour = timeParts.isNotEmpty ? timeParts[0] : "";
     String minute = timeParts.length > 1 ? timeParts[1] : "";

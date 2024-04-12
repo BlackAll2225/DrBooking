@@ -43,6 +43,7 @@ class ProfileRemote implements ProfileApi {
   @override
   Future<Profile> getProfileDetailById({required String idPatient}) async {
     // TODO: implement getProfileDetailById
+    log(idPatient);
     Profile profile = await apiService.fetchDataObjectWithPost(
         BaseLink.getPatientById, (p0) => Profile.fromJson(p0),
         body: idPatient);

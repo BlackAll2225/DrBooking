@@ -1,3 +1,4 @@
+
 // To parse this JSON data, do
 //
 //     final profile = profileFromJson(jsonString);
@@ -9,6 +10,7 @@ Profile profileFromJson(String str) => Profile.fromJson(json.decode(str));
 String profileToJson(Profile data) => json.encode(data.toJson());
 
 class Profile {
+    String? id;
     String? email;
     String? phoneNumber;
     String? fullname;
@@ -17,20 +19,17 @@ class Profile {
     int? weight;
     String? avatarUrl;
     int? biologicalGender;
-    String? clientId;
-    String? addressId;
     String? patientCode;
-    dynamic healthInsuranceCode;
+    String? healthInsuranceCode;
     DateTime? expiredDate;
     String? hiIssuedPlace;
     String? idCode;
     DateTime? idIssuedDate;
     String? idIssuedPlace;
-    String? id;
-    bool? isActive;
-    DateTime? createdAt;
+    String? nameAddress;
 
     Profile({
+        this.id,
         this.email,
         this.phoneNumber,
         this.fullname,
@@ -39,8 +38,6 @@ class Profile {
         this.weight,
         this.avatarUrl,
         this.biologicalGender,
-        this.clientId,
-        this.addressId,
         this.patientCode,
         this.healthInsuranceCode,
         this.expiredDate,
@@ -48,12 +45,11 @@ class Profile {
         this.idCode,
         this.idIssuedDate,
         this.idIssuedPlace,
-        this.id,
-        this.isActive,
-        this.createdAt,
+        this.nameAddress,
     });
 
     Profile copyWith({
+        String? id,
         String? email,
         String? phoneNumber,
         String? fullname,
@@ -62,20 +58,17 @@ class Profile {
         int? weight,
         String? avatarUrl,
         int? biologicalGender,
-        String? clientId,
-        String? addressId,
         String? patientCode,
-        dynamic healthInsuranceCode,
+        String? healthInsuranceCode,
         DateTime? expiredDate,
         String? hiIssuedPlace,
         String? idCode,
         DateTime? idIssuedDate,
         String? idIssuedPlace,
-        String? id,
-        bool? isActive,
-        DateTime? createdAt,
+        String? nameAddress,
     }) => 
         Profile(
+            id: id ?? this.id,
             email: email ?? this.email,
             phoneNumber: phoneNumber ?? this.phoneNumber,
             fullname: fullname ?? this.fullname,
@@ -84,8 +77,6 @@ class Profile {
             weight: weight ?? this.weight,
             avatarUrl: avatarUrl ?? this.avatarUrl,
             biologicalGender: biologicalGender ?? this.biologicalGender,
-            clientId: clientId ?? this.clientId,
-            addressId: addressId ?? this.addressId,
             patientCode: patientCode ?? this.patientCode,
             healthInsuranceCode: healthInsuranceCode ?? this.healthInsuranceCode,
             expiredDate: expiredDate ?? this.expiredDate,
@@ -93,12 +84,11 @@ class Profile {
             idCode: idCode ?? this.idCode,
             idIssuedDate: idIssuedDate ?? this.idIssuedDate,
             idIssuedPlace: idIssuedPlace ?? this.idIssuedPlace,
-            id: id ?? this.id,
-            isActive: isActive ?? this.isActive,
-            createdAt: createdAt ?? this.createdAt,
+            nameAddress: nameAddress ?? this.nameAddress,
         );
 
     factory Profile.fromJson(Map<String, dynamic> json) => Profile(
+        id: json["id"],
         email: json["email"],
         phoneNumber: json["phoneNumber"],
         fullname: json["fullname"],
@@ -107,8 +97,6 @@ class Profile {
         weight: json["weight"],
         avatarUrl: json["avatarUrl"],
         biologicalGender: json["biologicalGender"],
-        clientId: json["clientId"],
-        addressId: json["addressId"],
         patientCode: json["patientCode"],
         healthInsuranceCode: json["healthInsuranceCode"],
         expiredDate: json["expiredDate"] == null ? null : DateTime.parse(json["expiredDate"]),
@@ -116,12 +104,11 @@ class Profile {
         idCode: json["idCode"],
         idIssuedDate: json["idIssuedDate"] == null ? null : DateTime.parse(json["idIssuedDate"]),
         idIssuedPlace: json["idIssuedPlace"],
-        id: json["id"],
-        isActive: json["isActive"],
-        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        nameAddress: json["nameAddress"],
     );
 
     Map<String, dynamic> toJson() => {
+        "id": id,
         "email": email,
         "phoneNumber": phoneNumber,
         "fullname": fullname,
@@ -130,8 +117,6 @@ class Profile {
         "weight": weight,
         "avatarUrl": avatarUrl,
         "biologicalGender": biologicalGender,
-        "clientId": clientId,
-        "addressId": addressId,
         "patientCode": patientCode,
         "healthInsuranceCode": healthInsuranceCode,
         "expiredDate": expiredDate?.toIso8601String(),
@@ -139,11 +124,10 @@ class Profile {
         "idCode": idCode,
         "idIssuedDate": idIssuedDate?.toIso8601String(),
         "idIssuedPlace": idIssuedPlace,
-        "id": id,
-        "isActive": isActive,
-        "createdAt": createdAt?.toIso8601String(),
+        "nameAddress": nameAddress,
     };
 }
+
 
 class Gender {
   int id;

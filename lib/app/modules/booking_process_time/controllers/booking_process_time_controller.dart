@@ -13,8 +13,6 @@ import 'package:drbooking/app/modules/booking_specialty/controllers/booking_spec
 import 'package:drbooking/app/resources/util_common.dart';
 import 'package:get/get.dart';
 
-
-
 class BookingProcessTimeController extends BaseController {
   //TODO: Implement BookingProcessTimeController
 
@@ -69,14 +67,14 @@ class BookingProcessTimeController extends BaseController {
             Get.find<BookingMedicalSerivceController>().requestParamBooking);
         break;
       case TypeService.psychological:
-            Get.find<BookingMedicalSerivceController>().selectedSlot.value;
+        Get.find<BookingMedicalSerivceController>().selectedSlot.value;
         selectedDate.value =
             Get.find<BookingMedicalSerivceController>().selectedDate.value;
         await checkTimeMedicalService(selectedDate.value,
             Get.find<BookingMedicalSerivceController>().requestParamBooking);
         break;
       case TypeService.vaccination:
-             Get.find<BookingMedicalSerivceController>().selectedSlot.value;
+        Get.find<BookingMedicalSerivceController>().selectedSlot.value;
         selectedDate.value =
             Get.find<BookingMedicalSerivceController>().selectedDate.value;
         await checkTimeMedicalService(selectedDate.value,
@@ -87,7 +85,6 @@ class BookingProcessTimeController extends BaseController {
   }
 
   getControllerCheckTime(DateTime dateTime) async {
-    selectedSlot.value = DutySchedule.emtyObject();
     try {
       switch (type) {
         case TypeService.generalExam:
@@ -99,8 +96,8 @@ class BookingProcessTimeController extends BaseController {
               Get.find<BookingProcessController>().requestParamBooking);
           break;
         case TypeService.labExam:
-        await checkTimeMedicalService(selectedDate.value,
-            Get.find<BookingMedicalSerivceController>().requestParamBooking);
+          await checkTimeMedicalService(selectedDate.value,
+              Get.find<BookingMedicalSerivceController>().requestParamBooking);
           break;
         case TypeService.psychological:
           await Get.find<BookingMedicalSerivceController>()
@@ -120,48 +117,67 @@ class BookingProcessTimeController extends BaseController {
   checkTimeGeneral(
       DateTime dateSelected, RequestParamBooking requestParamBooking) async {
     selectedDate.value = dateSelected;
+    selectedSlot.value = DutySchedule.emtyObject();
     await BookingRemote()
-        .checkDutyScheduleGeneral(
-            clinicId: requestParamBooking.clinic!.id, date: dateSelected)
+        .checkDutyScheduleMagical(date: dateSelected)
         .then((value) {
       listDutySchedule.value = value;
-      log("message:" + listDutySchedule.value.toList().toString());
+      log("message:${listDutySchedule.toList()}");
     }).catchError((error) {
       log("err:$error");
       isLockButton(false);
       UtilCommon.snackBar(text: '${error.message}');
     });
+    // await BookingRemote()
+    //     .checkDutyScheduleGeneral(
+    //         clinicId: requestParamBooking.clinic!.id, date: dateSelected)
+    //     .then((value) {
+    //   listDutySchedule.value = value;
+    //   log("message:" + listDutySchedule.value.toList().toString());
+    // }).catchError((error) {
+    //   log("err:$error");
+    //   isLockButton(false);
+    //   UtilCommon.snackBar(text: '${error.message}');
+    // });
   }
 
   checkTimeSpeciality(
       DateTime dateSelected, RequestParamBooking requestParamBooking) async {
     selectedDate.value = dateSelected;
-
     await BookingRemote()
-        .checkDutyScheduleSpecialty(
-            clinicId: requestParamBooking.clinic!.id,
-            date: dateSelected,
-            doctorId: requestParamBooking.doctor?.id,
-            specialtyId: requestParamBooking.specialty!.id,
-            medicalServiceId: null)
+        .checkDutyScheduleMagical(date: dateSelected)
         .then((value) {
       listDutySchedule.value = value;
-      log("message:${listDutySchedule.toList()}");
+      listDutySchedule.value.sort((a, b) => a.slotNumber.compareTo(b.slotNumber));
+      log("message:${listDutySchedule.value.toList()}");
     }).catchError((error) {
       log("err:$error");
       isLockButton(false);
       UtilCommon.snackBar(text: '${error.message}');
     });
+    // await BookingRemote()
+    //     .checkDutyScheduleSpecialty(
+    //         clinicId: requestParamBooking.clinic!.id,
+    //         date: dateSelected,
+    //         doctorId: requestParamBooking.doctor?.id,
+    //         specialtyId: requestParamBooking.specialty!.id,
+    //         medicalServiceId: null)
+    //     .then((value) {
+    //   listDutySchedule.value = value;
+    //   log("message:${listDutySchedule.toList()}");
+    // }).catchError((error) {
+    //   log("err:$error");
+    //   isLockButton(false);
+    //   UtilCommon.snackBar(text: '${error.message}');
+    // });
   }
 
   checkTimeMedicalService(
       DateTime dateSelected, RequestParamBooking requestParamBooking) async {
     selectedDate.value = dateSelected;
-    await BookingRemote()
-        .checkDutyScheduleMedicalService(
-            clinicId: requestParamBooking.clinic!.id,
-            date: dateSelected,
-            medicalServiceId: '')
+
+     await BookingRemote()
+        .checkDutyScheduleMagical(date: dateSelected)
         .then((value) {
       listDutySchedule.value = value;
       log("message:${listDutySchedule.toList()}");
@@ -170,6 +186,19 @@ class BookingProcessTimeController extends BaseController {
       isLockButton(false);
       UtilCommon.snackBar(text: '${error.message}');
     });
+    // await BookingRemote()
+    //     .checkDutyScheduleMedicalService(
+    //         clinicId: requestParamBooking.clinic!.id,
+    //         date: dateSelected,
+    //         medicalServiceId: '')
+    //     .then((value) {
+    //   listDutySchedule.value = value;
+    //   log("message:${listDutySchedule.toList()}");
+    // }).catchError((error) {
+    //   log("err:$error");
+    //   isLockButton(false);
+    //   UtilCommon.snackBar(text: '${error.message}');
+    // });
   }
 
   onSelectedSlot(DutySchedule slot) {
@@ -192,15 +221,15 @@ class BookingProcessTimeController extends BaseController {
         break;
       case TypeService.labExam:
         await Get.find<BookingMedicalSerivceController>()
-        .setTimeSlotChoice(selectedDate.value, selectedSlot.value);
+            .setTimeSlotChoice(selectedDate.value, selectedSlot.value);
         break;
       case TypeService.psychological:
-         await Get.find<BookingMedicalSerivceController>()
-        .setTimeSlotChoice(selectedDate.value, selectedSlot.value);
+        await Get.find<BookingMedicalSerivceController>()
+            .setTimeSlotChoice(selectedDate.value, selectedSlot.value);
         break;
       case TypeService.vaccination:
         await Get.find<BookingMedicalSerivceController>()
-        .setTimeSlotChoice(selectedDate.value, selectedSlot.value);
+            .setTimeSlotChoice(selectedDate.value, selectedSlot.value);
         break;
       default:
     }

@@ -16,20 +16,21 @@ class BaseLink {
 
   static String getClientsByIdAccount = '$domain/api/v1/patient-profile/get-many-by-client-id';
 
-  static String dutySchedule = '$domain/api/v1/duty-schedule/get-many-by-doctor/';
 
   static String createPatient = '$domain/api/v1/patient-profile/create-patient-profile-async';
   static String updatePatient = '$domain/api/v1/patient-profile/update';
   static String getPatients = '$domain/api/v1/patient-profile/get-many-by-client-id';
-  static String getPatientById = '$domain/api/v1/patient-profile/get-single-by-id';
+  static String getPatientById = '$domain/api/v1/patient-profile/get-patientprofile-by-id';
 
 //Appointment
   static String getAppointmentComming= '$domain/api/v1/appointment/get-many-list-up-coming-appointment-by-client-id';
   static String getAppointmentFinish= '$domain/api/v1/appointment/get-many-list-finish-appointment-by-client-id';
   static String getAppointmentById = '$domain/api/v1/appointment/get-single-by-id';
   static String createAppointment = '$domain/api/v1/appointment/booking';
+  static String checkinAppointment = '$domain/api/v1/appointment/check-in';
 //
   //DutySchedule
+  static String checkDutyScheduleTest = '$domain/api/v1/duty-schedule/get-many-by-doctor/';
   static String checkDutyScheduleGeneral = '$domain/api/v1/slot/search-duty-schedule-get-slot';
   static String checkDutyScheduleMedicalService = '$domain/api/v1/slot/search-slot-by-medical-service-date-clinic-id';
   static String checkDutyScheduleSpecialty =  '$domain/api/v1/slot/search-slot-for-demand-based';

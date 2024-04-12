@@ -12,6 +12,8 @@ import 'package:drbooking/app/model/clinic.dart';
 import 'package:drbooking/app/model/doctor/doctor.dart';
 import 'package:drbooking/app/model/doctor/specicalty.dart';
 import 'package:drbooking/app/model/request_booking.dart';
+import 'package:drbooking/app/modules/booking_process_confirm/controllers/booking_process_confirm_controller.dart';
+import 'package:drbooking/app/modules/booking_process_service/controllers/booking_process_service_controller.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
 import 'package:drbooking/app/resources/text_style.dart';
 import 'package:drbooking/app/resources/util_common.dart';
@@ -25,7 +27,7 @@ class BookingProcessController extends BaseController {
   //TODO: Implement BookingProcessController
   BookingProcessController({required this.requestParamBooking});
   final RequestParamBooking requestParamBooking;
-
+  TextEditingController symptomTextController = TextEditingController(text: '');
   DoctorApi doctorApi = DoctorRemote();
 
   RxList<Clinic> listClinic = <Clinic>[].obs;
@@ -69,7 +71,14 @@ class BookingProcessController extends BaseController {
   void onClose() {
     super.onClose();
   }
-
+  onTapConfirm(){
+    requestParamBooking.dateBooking = DateFormat('yyyy-MM-dd').format(selectedDate.value);
+    requestParamBooking.dutySchedule = selectedSlot.value;
+    requestParamBooking.specialty = selectedSpecialty.value;
+    requestParamBooking.doctor = selectedDoctor.value;
+    requestParamBooking.symptom = symptomTextController.text;
+    Get.toNamed(Routes.BOOKING_PROCESS_CONFIRM, arguments: requestParamBooking);
+  }
   fetchDataClinic() async {
     await doctorApi.getListClinic(param: "take=10&&skip=0").then((value) {
       listClinic.value = value;

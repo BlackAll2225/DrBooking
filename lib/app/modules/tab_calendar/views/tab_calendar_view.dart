@@ -141,7 +141,7 @@ class TabCalendarView extends BaseView<TabCalendarController> {
   _itemCard(BuildContext context, {required AppointmentPreview booking}) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.BOOKING_DETAIL);
+        Get.toNamed(Routes.BOOKING_DETAIL, arguments: booking.id);
       },
       child: SizedBox(
           height: UtilsReponsive.height(170, context),

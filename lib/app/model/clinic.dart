@@ -20,6 +20,7 @@ class Clinic {
     double latitude;
     String id;
     bool isActive;
+    String imageUrl;
     DateTime createdAt;
     String fullAddress;
     String phoneNumber;
@@ -34,6 +35,7 @@ class Clinic {
          this.longtitude = 0,
          this.latitude = 0,
          this.id = '',
+         this.imageUrl ='',
          this.isActive = false,
 required this.createdAt ,
          this.fullAddress = '',
@@ -51,6 +53,7 @@ required this.createdAt ,
         longtitude: double.tryParse(json["longtitude"])??0,
         latitude: double.tryParse(json["latitude"])??0,
         id: json["id"],
+        imageUrl:json['imageUrl'],
         isActive: json["isActive"],
         createdAt: DateTime.parse(json["createdAt"]),
         fullAddress: json["addressLine"] + " " +  json["street"] + ", "+  json["ward"] + ", " + json["district"]+ ", " + json["province"],

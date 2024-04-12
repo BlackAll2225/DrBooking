@@ -1,5 +1,6 @@
 import 'package:drbooking/app/base/base_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 class WelcomeBoardController extends BaseController {
@@ -12,6 +13,7 @@ class WelcomeBoardController extends BaseController {
   @override
   void onInit() {
     super.onInit();
+    // await checkLocationPermission();
   }
 
   @override
@@ -39,4 +41,5 @@ class WelcomeBoardController extends BaseController {
     }
     indexPage.value = value;
   }
+
 }

@@ -308,6 +308,7 @@ class BookingProcessView extends BaseView<BookingProcessController> {
                     ])),
                 SizedBoxConst.size(context: context),
                 FormFieldWidget(
+                  controllerEditting: controller.symptomTextController,
                   setValueFunc: (value) {},
                   maxLine: 4,
                   borderColor: Colors.grey,
@@ -344,8 +345,9 @@ class BookingProcessView extends BaseView<BookingProcessController> {
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    onPressed: () async {
-                      Get.toNamed(Routes.BOOKING_PROCESS_CONFIRM);
+                    onPressed: (){
+                      //  Get.toNamed(Routes.BOOKING_PROCESS_CONFIRM, arguments: controller.requestParamBooking);
+                      controller.onTapConfirm();
                     },
                   ),
                 ),
