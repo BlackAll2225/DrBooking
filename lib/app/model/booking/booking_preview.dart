@@ -9,60 +9,84 @@ AppointmentPreview appointmentPreviewFromJson(String str) => AppointmentPreview.
 String appointmentPreviewToJson(AppointmentPreview data) => json.encode(data.toJson());
 
 class AppointmentPreview {
-    String? id;
+    String? patientName;
+    String? idPatientProfile;
+    String? idAppointment;
     String? doctorName;
     String? start;
-    String? clinicName;
     String? end;
+    int? slotNumber;
+    String? clinicName;
     int? appointmentStatus;
     int? appoinmentType;
+    int? paymentStatus;
 
     AppointmentPreview({
-        this.id,
+        this.patientName,
+        this.idPatientProfile,
+        this.idAppointment,
         this.doctorName,
         this.start,
-        this.clinicName,
         this.end,
+        this.slotNumber,
+        this.clinicName,
         this.appointmentStatus,
         this.appoinmentType,
+        this.paymentStatus,
     });
 
     AppointmentPreview copyWith({
-        String? id,
+        String? patientName,
+        String? idPatientProfile,
+        String? idAppointment,
         String? doctorName,
         String? start,
-        String? clinicName,
         String? end,
+        int? slotNumber,
+        String? clinicName,
         int? appointmentStatus,
         int? appoinmentType,
+        int? paymentStatus,
     }) => 
         AppointmentPreview(
-            id: id ?? this.id,
+            patientName: patientName ?? this.patientName,
+            idPatientProfile: idPatientProfile ?? this.idPatientProfile,
+            idAppointment: idAppointment ?? this.idAppointment,
             doctorName: doctorName ?? this.doctorName,
             start: start ?? this.start,
-            clinicName: clinicName ?? this.clinicName,
             end: end ?? this.end,
+            slotNumber: slotNumber ?? this.slotNumber,
+            clinicName: clinicName ?? this.clinicName,
             appointmentStatus: appointmentStatus ?? this.appointmentStatus,
             appoinmentType: appoinmentType ?? this.appoinmentType,
+            paymentStatus: paymentStatus ?? this.paymentStatus,
         );
 
     factory AppointmentPreview.fromJson(Map<String, dynamic> json) => AppointmentPreview(
-        id: json["idAppointment"],
+        patientName: json["patientName"],
+        idPatientProfile: json["idPatientProfile"],
+        idAppointment: json["idAppointment"],
         doctorName: json["doctorName"],
         start: json["start"],
-        clinicName: json["clinicName"],
         end: json["end"],
+        slotNumber: json["slotNumber"],
+        clinicName: json["clinicName"],
         appointmentStatus: json["appointmentStatus"],
         appoinmentType: json["appoinmentType"],
+        paymentStatus: json["paymentStatus"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id,
+        "patientName": patientName,
+        "idPatientProfile": idPatientProfile,
+        "idAppointment": idAppointment,
         "doctorName": doctorName,
         "start": start,
-        "clinicName": clinicName,
         "end": end,
+        "slotNumber": slotNumber,
+        "clinicName": clinicName,
         "appointmentStatus": appointmentStatus,
         "appoinmentType": appoinmentType,
+        "paymentStatus": paymentStatus,
     };
 }

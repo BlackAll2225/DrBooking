@@ -236,7 +236,6 @@ class BookingProcessController extends BaseController {
   }
 
   onTapTimeWidget() {
-    log("message" + requestParamBooking.dataButton!.type.toString());
     Get.toNamed(Routes.BOOKING_PROCESS_TIME,
         arguments: requestParamBooking.dataButton!.type);
   }

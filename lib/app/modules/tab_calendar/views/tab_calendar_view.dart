@@ -2,16 +2,21 @@ import 'dart:developer';
 
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/model/booking/booking_preview.dart';
+import 'package:drbooking/app/model/patient/patient_preview.dart';
 import 'package:drbooking/app/model/profile.dart';
 import 'package:drbooking/app/model/service/button_service.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
+import 'package:drbooking/app/resources/form_field_widget.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
 import 'package:drbooking/app/resources/text_style.dart';
+import 'package:drbooking/app/resources/util_common.dart';
 import 'package:drbooking/app/routes/app_pages.dart';
 import 'package:drbooking/app/utils/format_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:month_year_picker/month_year_picker.dart';
 
 import '../controllers/tab_calendar_controller.dart';
 
@@ -19,12 +24,11 @@ class TabCalendarView extends BaseView<TabCalendarController> {
   const TabCalendarView({Key? key}) : super(key: key);
   @override
   Widget buildView(BuildContext context) {
-    return Container(
-      height: double.infinity,
-      color: Colors.white,
-      padding: EdgeInsets.all(UtilsReponsive.height(15, context)),
-      child: SingleChildScrollView(
-        padding: EdgeInsets.only(top: UtilsReponsive.height(30, context)),
+    return SafeArea(
+      child: Container(
+        height: double.infinity,
+        color: Colors.white,
+        padding: EdgeInsets.all(UtilsReponsive.height(15, context)),
         child: Column(
           children: [
             Center(
@@ -100,9 +104,69 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                           TextConstant.subTile3(context, text: 'Bệnh nhân:')),
                   Expanded(
                     flex: 2,
-                    child: Obx(() => _dropDownDataProfile(context)),
+                    child: Obx(() => GestureDetector(
+                          onTap: () async {
+                            await _bottomPatients(context);
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: UtilsReponsive.height(5, context),
+                                horizontal: UtilsReponsive.height(10, context)),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black),
+                                borderRadius: BorderRadius.circular(
+                                    UtilsReponsive.height(10, context))),
+                            child: TextConstant.subTile3(context,
+                                text:
+                                    controller.selectedPatient.value.fullname!),
+                          ),
+                        )),
                   )
                 ],
+              ),
+            ),
+            Obx(()=>
+             Visibility(
+                visible: controller.isHistory.value,
+                child: SizedBox(
+                  height: UtilsReponsive.height(50, context),
+                  width: double.infinity,
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: TextConstant.subTile3(context, text: 'Tháng:')),
+                      Expanded(
+                        flex: 2,
+                        child: GestureDetector(
+                          onTap: () async {
+                            final selected = await showMonthYearPicker(
+                                context: context,
+                                initialDate: controller.selectedTime.value ??
+                                    DateTime.now(),
+                                firstDate: DateTime(2019),
+                                lastDate: DateTime(DateTime.now().year + 1),
+                                locale: Locale('vi', 'VN'));
+                            if (selected != null) {
+                              await controller.fetchBookingWithTime(selected);
+                            }
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: UtilsReponsive.height(5, context),
+                                horizontal: UtilsReponsive.height(10, context)),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black),
+                                borderRadius: BorderRadius.circular(
+                                    UtilsReponsive.height(10, context))),
+                            child: Obx(() => TextConstant.subTile3(context,
+                                text: DateFormat('MMMM - yyyy', 'vi')
+                                    .format(controller.selectedTime.value))),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
             ),
             SizedBoxConst.size(context: context),
@@ -120,15 +184,27 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                               text: "Danh sách trống"),
                         ),
                       )
-                    : ListView.separated(
-                        physics: const NeverScrollableScrollPhysics(),
-                        primary: false,
-                        shrinkWrap: true,
-                        itemCount: controller.listBookingPreview.value.length,
-                        separatorBuilder: (context, index) =>
-                            SizedBoxConst.size(context: context),
-                        itemBuilder: (context, index) => _itemCard(context,
-                            booking: controller.listBookingPreview[index]),
+                    : Expanded(
+                        child: Obx(() => ListView.separated(
+                            controller: controller.scroller,
+                            shrinkWrap: true,
+                            itemCount:
+                                controller.listBookingPreview.value.length + 1,
+                            separatorBuilder: (context, index) =>
+                                SizedBoxConst.size(context: context),
+                            itemBuilder: (context, index) {
+                              if (index ==
+                                  controller.listBookingPreview.value.length) {
+                                return Obx(() => controller.isFetchMore.value
+                                    ? CupertinoActivityIndicator(
+                                        color: ColorsManager.primary,
+                                      )
+                                    : SizedBox());
+                              }
+                              return _itemCard(context,
+                                  booking:
+                                      controller.listBookingPreview[index]);
+                            })),
                       )),
             SizedBoxConst.size(
                 context: context, size: UtilsReponsive.height(15, context)),
@@ -141,7 +217,7 @@ class TabCalendarView extends BaseView<TabCalendarController> {
   _itemCard(BuildContext context, {required AppointmentPreview booking}) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.BOOKING_DETAIL, arguments: booking.id);
+        Get.toNamed(Routes.BOOKING_DETAIL, arguments: booking.idAppointment);
       },
       child: SizedBox(
           height: UtilsReponsive.height(170, context),
@@ -258,7 +334,9 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                       borderRadius: BorderRadius.circular(
                           UtilsReponsive.height(8, context))),
                   child: TextConstant.subTile3(context,
-                      text: appointmentTypeList[booking.appoinmentType??0].label.toString(),
+                      text: appointmentTypeList[booking.appoinmentType ?? 0]
+                          .label
+                          .toString(),
                       color: Colors.white),
                 ),
               )
@@ -267,38 +345,83 @@ class TabCalendarView extends BaseView<TabCalendarController> {
     );
   }
 
-  _dropDownDataProfile(BuildContext context) {
-    log(controller.selectedProfile.value.fullname.toString());
-    return PopupMenuButton<Profile>(
-      onSelected: (Profile newValue) {
-        controller.onTapProfile(newValue);
-      },
-      itemBuilder: (BuildContext context) {
-        return controller.listProfile.value
-            .map<PopupMenuItem<Profile>>((Profile value) {
-          return PopupMenuItem<Profile>(
-            value: value,
-            child: Container(
-              height: 40, // Chiều cao của mỗi mục dropdown
-              child: Center(
-                child: Text(value.fullname ?? ''),
-              ),
+  _bottomPatients(BuildContext context) async {
+    controller.searchTextController.text = '';
+    controller.skipSub = 0;
+    controller.listPatients.value = [];
+    await controller.fetchAlClients();
+    Get.bottomSheet(Container(
+      height: UtilsReponsive.height(400, context),
+      width: double.infinity,
+      padding: EdgeInsets.all(UtilsReponsive.height(20, context)),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(UtilsReponsive.height(10, context)),
+              topRight: Radius.circular(UtilsReponsive.height(10, context)))),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextConstant.subTile1(context,
+                  text: 'Bệnh nhân', fontWeight: FontWeight.bold),
+              TextButton(
+                  onPressed: () async {
+                    Get.back();
+                    await controller.resetPatient();
+                  },
+                  child: TextConstant.subTile3(context,
+                      text: 'Làm mới', color: ColorsManager.primary))
+            ],
+          ),
+          SizedBoxConst.size(context: context),
+          TextField(
+            onChanged: (value) async {
+              await controller.fetchPatientsWithSearch();
+            },
+            controller: controller.searchTextController,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.symmetric(
+                  vertical: UtilsReponsive.height(5, context),
+                  horizontal: UtilsReponsive.height(15, context)),
+              suffixIcon: IconButton(
+                  onPressed: () async {
+                    await controller.clearText();
+                  },
+                  icon: Icon(Icons.close)),
+              // contentPadding: EdgeInsets.all(5),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(
+                      UtilsReponsive.height(10, context))),
+              hintText: 'Nhập tên để tìm kiếm',
             ),
-          );
-        }).toList();
-      },
-      child: Container(
-        height: 40, // Chiều cao của dropdown button
-        width: 200, // Chiều rộng của dropdown button
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8), // Bo tròn các góc
-          border: Border.all(color: Colors.grey), // Đường viền
-        ),
-        child: Center(
-          child: TextConstant.subTile3(context,
-              text: controller.selectedProfile.value.fullname.toString()),
-        ),
+          ),
+          Expanded(
+            child: Obx(() => ListView.builder(
+                // controller: controller.scroller,
+                itemCount: controller.listPatients.value.length + 1,
+                itemBuilder: (context, index) {
+                  if (index == controller.listPatients.value.length) {
+                    return Obx(() => controller.isProcessSub.value
+                        ? CupertinoActivityIndicator(
+                            color: ColorsManager.primary,
+                          )
+                        : SizedBox());
+                  }
+                  return ListTile(
+                    onTap: () async {
+                      Get.back();
+                      await controller
+                          .onTapProfile(controller.listPatients.value[index]);
+                    },
+                    title: TextConstant.subTile3(context,
+                        text: controller.listPatients[index].fullname!),
+                  );
+                })),
+          )
+        ],
       ),
-    );
+    ));
   }
 }

@@ -42,7 +42,7 @@ import '../modules/sign_in/bindings/sign_in_binding.dart';
 import '../modules/sign_in/views/sign_in_view.dart';
 import '../modules/sign_up/bindings/sign_up_binding.dart';
 import '../modules/sign_up/views/sign_up_view.dart';
-import '../modules/tab-profile/views/tab_profile_view.dart';
+import '../modules/tab-patient/views/tab_patient_view.dart';
 import '../modules/tab_account/views/tab_account_view.dart';
 import '../modules/tab_calendar/views/tab_calendar_view.dart';
 import '../modules/tab_history/views/tab_history_view.dart';
@@ -111,8 +111,8 @@ class AppPages {
       binding: BookingDetailBinding(),
     ),
     GetPage(
-      name: _Paths.TAB_PROFILE,
-      page: () => const TabProfileView(),
+      name: _Paths.TAB_PATIENT,
+      page: () => const TabPatientView(),
       binding: HomeBinding(),
     ),
     GetPage(

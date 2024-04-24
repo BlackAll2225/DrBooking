@@ -4,12 +4,13 @@ import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_controller.dart';
 import 'package:drbooking/app/data/address_api.dart';
-import 'package:drbooking/app/data/remote/profile_remote.dart';
+import 'package:drbooking/app/data/remote/patient_remote.dart';
+import 'package:drbooking/app/data/respository/patient/request_payload/patient_payload.dart';
 import 'package:drbooking/app/model/address/district.dart';
 import 'package:drbooking/app/model/address/province.dart';
 import 'package:drbooking/app/model/address/ward.dart';
 import 'package:drbooking/app/model/profile.dart';
-import 'package:drbooking/app/model/profile/request_body_create_patient.dart';
+import 'package:drbooking/app/model/patient/request_body_create_patient.dart';
 import 'package:drbooking/app/modules/new_profile/views/confirm_profile.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
@@ -122,38 +123,39 @@ class NewProfileController extends BaseController {
     String cccd = cccdTextController.text;
     String cccdDate = cccdDateTextController.text;
     String cccdAddress = cccdAddressTextController.text;
-    BodyRequestCreatePatient bodyRequestCreatePatient =
-        BodyRequestCreatePatient();
+    // BodyRequestCreatePatient bodyRequestCreatePatient =
+    //     BodyRequestCreatePatient();
+    PatientPayload bodyRequestCreatePatient = PatientPayload();
 
     bodyRequestCreatePatient.phoneNumber = phoneTextController.text;
     bodyRequestCreatePatient.fullname = fullName;
-    bodyRequestCreatePatient.dateOfBirth = DateFormat('yyyy-MM-dd').format(dateCurrent.value);
-    bodyRequestCreatePatient.clientId = BaseCommon.instance.accountSession!.clientId;
+    bodyRequestCreatePatient.dateOfBirth =
+        DateFormat('yyyy-MM-dd').format(dateCurrent.value);
     bodyRequestCreatePatient.biologicalGender = selectedGender.value.id;
 //Insurence
-    if(cccdTextController.text.isNotEmpty){
+    if (cccdTextController.text.isNotEmpty) {
       bodyRequestCreatePatient.idCode = cccdTextController.text;
-      bodyRequestCreatePatient.idIssuedDate = DateFormat('yyyy-MM-dd').format(dateCCCDDate.value);
+      bodyRequestCreatePatient.idIssuedDate =
+          DateFormat('yyyy-MM-dd').format(dateCCCDDate.value);
       bodyRequestCreatePatient.idIssuedPlace = cccdAddressTextController.text;
     }
 
-    if(bhtyTextController.text.isNotEmpty){
+    if (bhtyTextController.text.isNotEmpty) {
       bodyRequestCreatePatient.healthInsuranceCode = bhtyTextController.text;
       bodyRequestCreatePatient.hiIssuedPlace = bhtyAddressTextController.text;
-      bodyRequestCreatePatient.expiredDate = DateFormat('yyyy-MM-dd').format(dateBHYTExp.value);
+      bodyRequestCreatePatient.expiredDate =
+          DateFormat('yyyy-MM-dd').format(dateBHYTExp.value);
     }
 //CodePerson
     bodyRequestCreatePatient.district = selectedDistrict.value.districtName;
     bodyRequestCreatePatient.province = selectedProvince.value.provinceName;
     bodyRequestCreatePatient.ward = selectedWard.value.wardName;
     bodyRequestCreatePatient.addressLine = address;
-    await ProfileRemote()
-        .createNewProfile(bodyRequest: bodyRequestCreatePatient)
+    await PatientRemote()
+        .createPatient(payload: bodyRequestCreatePatient)
         .then((value) {
-      if (value) {
-        Get.offAllNamed(Routes.HOME);
-        UtilCommon.snackBar(text: 'Tạo hồ sơ thành công');
-      }
+      Get.offAllNamed(Routes.HOME);
+      UtilCommon.snackBar(text: 'Tạo hồ sơ thành công');
     }).catchError((error) {
       log("err:$error");
       isLockButton(false);
@@ -240,7 +242,8 @@ class NewProfileController extends BaseController {
     validatePhone();
     if (addressError.isEmpty &&
         nameError.isEmpty &&
-        birthError.isEmpty && phoneError.isEmpty &&
+        birthError.isEmpty &&
+        phoneError.isEmpty &&
         cccdError.isEmpty) {
       return true;
     }

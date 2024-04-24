@@ -27,7 +27,7 @@ class SignUpView extends BaseView<SignUpController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(
-                      child: Container(
+                      child: SizedBox(
                         height: UtilsReponsive.height(200, context),
                         width: double.infinity,
                         child: Center(

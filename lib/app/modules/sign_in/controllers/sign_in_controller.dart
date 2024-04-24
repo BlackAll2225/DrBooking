@@ -4,7 +4,8 @@ import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_controller.dart';
 import 'package:drbooking/app/data/local/auth_local.dart';
 import 'package:drbooking/app/data/remote/auth_remote.dart';
-import 'package:drbooking/app/data/respository/auth_api.dart';
+import 'package:drbooking/app/data/respository/auth/auth_api.dart';
+import 'package:drbooking/app/data/respository/auth/request_payload/login_payload.dart';
 import 'package:drbooking/app/resources/util_common.dart';
 import 'package:drbooking/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
@@ -69,23 +70,16 @@ class SignInController extends BaseController {
   }
 
   login() async {
-
-      if (!isLockButton.value && enableButton.value) {
+    if (!isLockButton.value && enableButton.value) {
       isLockButton(true);
-      await authApi.login(
-        phone: "366-963-8299", password: "string"
-          // phone: phoneTextController.text,
-          // password: passwordTextController.text
-          ).then((jwt)async{
-            await BaseCommon.instance.saveToken(jwt);
-            await BaseCommon.instance.decodeJWT();
-            Get.offAllNamed(Routes.HOME);
-            isLockButton(false);
-          }).catchError((error){
-              log(error.toString());
-              isLockButton(false);
-              UtilCommon.snackBar(text: '${error.message}');
-          });
-    } 
+      LoginPayload loginPayload =
+          LoginPayload(phoneNumber: "366-963-8299", password: "string");
+      await authApi.login(payload: loginPayload).then((jwt) async {
+        await BaseCommon.instance.saveToken(jwt);
+        await BaseCommon.instance.decodeJWT();
+        Get.offAllNamed(Routes.HOME);
+        isLockButton(false);
+      }).catchError(handleError);
+    }
   }
 }

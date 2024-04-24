@@ -36,12 +36,20 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: Image.asset(
-                        ImageAssets.logo,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
+                    Container(
+                    height: 50,
+                    width: 50,
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                        color: ColorsManager.primary, shape: BoxShape.circle),
+                    child: CachedNetworkImage(
+                                        fit: BoxFit.fill,
+                                        imageUrl:                         BaseCommon.instance.accountSession!.avatarUrl!,
+                                        placeholder: (context, url) =>
+                                            const CircularProgressIndicator(color: Colors.white,),
+                                        errorWidget: (context, url, error) =>
+                                            Image.asset(ImageAssets.logo),
+                                      ),),
                     Expanded(
                       flex: 3,
                       child: Column(

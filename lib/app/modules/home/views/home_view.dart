@@ -18,6 +18,7 @@ class HomeView extends BaseView<HomeController> {
     return WillPopScope(
       onWillPop: ()async => false,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         floatingActionButtonLocation:
               FloatingActionButtonLocation.miniCenterDocked,
           floatingActionButton: Container(
@@ -26,7 +27,7 @@ class HomeView extends BaseView<HomeController> {
             child: FloatingActionButton(
                 backgroundColor: ColorsManager.primary,
                 onPressed: () async {
-                  Get.toNamed(Routes.BOOKING);
+                 controller.onTapBooking();
                 },
                 child: Icon(Icons.add)),
           ),

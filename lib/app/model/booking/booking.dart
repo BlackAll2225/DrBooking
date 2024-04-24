@@ -9,144 +9,150 @@ AppointmentDetail appointmentDetailFromJson(String str) => AppointmentDetail.fro
 String appointmentDetailToJson(AppointmentDetail data) => json.encode(data.toJson());
 
 class AppointmentDetail {
+    String? idAppointment;
+    String? patientProfileId;
+    DateTime? start;
+    DateTime? end;
+    int? slotNumber;
+    int? numericalOrder;
     String? note;
     String? roomName;
     String? symptom;
-    String? patientProfileId;
-    String? idAppointment;
-    String? dutyScheduleId;
-    String? start;
     String? clinicName;
-    String? end;
     String? patientName;
-    int? numericalOrder;
     String? doctorName;
-    int? appointmentStatus;
+    String? doctorId;
     DateTime? dateOfBirth;
     int? biologicalGender;
-    String? medicalServiceName;
-    String? patientCode;
-    String? medicalSpecialtyName;
-    int? paymentStatus;
+    dynamic medicalServiceName;
+    dynamic patientCode;
+    dynamic medicalSpecialtyName;
     String? paymentTransactionId;
     int? appoinmentType;
+    int? appointmentStatus;
+    int? paymentStatus;
 
     AppointmentDetail({
+        this.idAppointment,
+        this.patientProfileId,
+        this.start,
+        this.end,
+        this.slotNumber,
+        this.numericalOrder,
         this.note,
         this.roomName,
         this.symptom,
-        this.patientProfileId,
-        this.idAppointment,
-        this.dutyScheduleId,
-        this.start,
         this.clinicName,
-        this.end,
         this.patientName,
-        this.numericalOrder,
         this.doctorName,
-        this.appointmentStatus,
+        this.doctorId,
         this.dateOfBirth,
         this.biologicalGender,
         this.medicalServiceName,
         this.patientCode,
         this.medicalSpecialtyName,
-        this.paymentStatus,
         this.paymentTransactionId,
         this.appoinmentType,
+        this.appointmentStatus,
+        this.paymentStatus,
     });
 
     AppointmentDetail copyWith({
+        String? idAppointment,
+        String? patientProfileId,
+        DateTime? start,
+        DateTime? end,
+        int? slotNumber,
+        int? numericalOrder,
         String? note,
         String? roomName,
         String? symptom,
-        String? patientProfileId,
-        String? idAppointment,
-        String? dutyScheduleId,
-        String? start,
         String? clinicName,
-        String? end,
         String? patientName,
-        int? numericalOrder,
         String? doctorName,
-        int? appointmentStatus,
+        String? doctorId,
         DateTime? dateOfBirth,
         int? biologicalGender,
-        String? medicalServiceName,
-        String? patientCode,
-        String? medicalSpecialtyName,
-        int? paymentStatus,
+        dynamic medicalServiceName,
+        dynamic patientCode,
+        dynamic medicalSpecialtyName,
         String? paymentTransactionId,
         int? appoinmentType,
+        int? appointmentStatus,
+        int? paymentStatus,
     }) => 
         AppointmentDetail(
+            idAppointment: idAppointment ?? this.idAppointment,
+            patientProfileId: patientProfileId ?? this.patientProfileId,
+            start: start ?? this.start,
+            end: end ?? this.end,
+            slotNumber: slotNumber ?? this.slotNumber,
+            numericalOrder: numericalOrder ?? this.numericalOrder,
             note: note ?? this.note,
             roomName: roomName ?? this.roomName,
             symptom: symptom ?? this.symptom,
-            patientProfileId: patientProfileId ?? this.patientProfileId,
-            idAppointment: idAppointment ?? this.idAppointment,
-            dutyScheduleId: dutyScheduleId ?? this.dutyScheduleId,
-            start: start ?? this.start,
             clinicName: clinicName ?? this.clinicName,
-            end: end ?? this.end,
             patientName: patientName ?? this.patientName,
-            numericalOrder: numericalOrder ?? this.numericalOrder,
             doctorName: doctorName ?? this.doctorName,
-            appointmentStatus: appointmentStatus ?? this.appointmentStatus,
+            doctorId: doctorId ?? this.doctorId,
             dateOfBirth: dateOfBirth ?? this.dateOfBirth,
             biologicalGender: biologicalGender ?? this.biologicalGender,
             medicalServiceName: medicalServiceName ?? this.medicalServiceName,
             patientCode: patientCode ?? this.patientCode,
             medicalSpecialtyName: medicalSpecialtyName ?? this.medicalSpecialtyName,
-            paymentStatus: paymentStatus ?? this.paymentStatus,
             paymentTransactionId: paymentTransactionId ?? this.paymentTransactionId,
             appoinmentType: appoinmentType ?? this.appoinmentType,
+            appointmentStatus: appointmentStatus ?? this.appointmentStatus,
+            paymentStatus: paymentStatus ?? this.paymentStatus,
         );
 
     factory AppointmentDetail.fromJson(Map<String, dynamic> json) => AppointmentDetail(
+        idAppointment: json["idAppointment"],
+        patientProfileId: json["patientProfileId"],
+        start: json["start"] == null ? null : DateTime.parse(json["start"]),
+        end: json["end"] == null ? null : DateTime.parse(json["end"]),
+        slotNumber: json["slotNumber"],
+        numericalOrder: json["numericalOrder"],
         note: json["note"],
         roomName: json["roomName"],
         symptom: json["symptom"],
-        patientProfileId: json["patientProfileId"],
-        idAppointment: json["idAppointment"],
-        dutyScheduleId: json["dutyScheduleId"],
-        start: json["start"],
         clinicName: json["clinicName"],
-        end: json["end"],
         patientName: json["patientName"],
-        numericalOrder: json["numericalOrder"],
         doctorName: json["doctorName"],
-        appointmentStatus: json["appointmentStatus"],
+        doctorId: json["doctorId"],
         dateOfBirth: json["dateOfBirth"] == null ? null : DateTime.parse(json["dateOfBirth"]),
         biologicalGender: json["biologicalGender"],
         medicalServiceName: json["medicalServiceName"],
         patientCode: json["patientCode"],
         medicalSpecialtyName: json["medicalSpecialtyName"],
-        paymentStatus: json["paymentStatus"],
         paymentTransactionId: json["paymentTransactionId"],
         appoinmentType: json["appoinmentType"],
+        appointmentStatus: json["appointmentStatus"],
+        paymentStatus: json["paymentStatus"],
     );
 
     Map<String, dynamic> toJson() => {
+        "idAppointment": idAppointment,
+        "patientProfileId": patientProfileId,
+        "start": start?.toIso8601String(),
+        "end": end?.toIso8601String(),
+        "slotNumber": slotNumber,
+        "numericalOrder": numericalOrder,
         "note": note,
         "roomName": roomName,
         "symptom": symptom,
-        "patientProfileId": patientProfileId,
-        "idAppointment": idAppointment,
-        "dutyScheduleId": dutyScheduleId,
-        "start": start,
         "clinicName": clinicName,
-        "end": end,
         "patientName": patientName,
-        "numericalOrder": numericalOrder,
         "doctorName": doctorName,
-        "appointmentStatus": appointmentStatus,
+        "doctorId": doctorId,
         "dateOfBirth": dateOfBirth?.toIso8601String(),
         "biologicalGender": biologicalGender,
         "medicalServiceName": medicalServiceName,
         "patientCode": patientCode,
         "medicalSpecialtyName": medicalSpecialtyName,
-        "paymentStatus": paymentStatus,
         "paymentTransactionId": paymentTransactionId,
         "appoinmentType": appoinmentType,
+        "appointmentStatus": appointmentStatus,
+        "paymentStatus": paymentStatus,
     };
 }

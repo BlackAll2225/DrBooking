@@ -4,12 +4,14 @@ import 'dart:developer';
 import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_controller.dart';
 import 'package:drbooking/app/data/remote/auth_remote.dart';
-import 'package:drbooking/app/data/respository/auth_api.dart';
+import 'package:drbooking/app/data/respository/auth/auth_api.dart';
+import 'package:drbooking/app/model/auth/account_session.dart';
 import 'package:drbooking/app/model/auth/personal_account.dart';
 import 'package:drbooking/app/resources/util_common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PersonalInformationController extends BaseController {
   //TODO: Implement HomeController
@@ -22,11 +24,11 @@ class PersonalInformationController extends BaseController {
   // final errorName = ''.obs;
 
   AuthApi authApi = AuthRemote();
-  Rx<PersonalAccount> account = PersonalAccount.emptyObject().obs;
-
+  Rx<AccountSession> account = AccountSession().obs;
   @override
   Future<void> onInit() async {
-    await fetchDataPersonal();
+    account.value = BaseCommon.instance.accountSession!;
+    isLoading(false);
     super.onInit();
   }
 
@@ -63,18 +65,33 @@ class PersonalInformationController extends BaseController {
 
   fetchDataPersonal() async {
     isLoading(true);
-    await authApi
-        .getPersonal(idClient: BaseCommon.instance.accountSession!.clientId)
-        .then((value) {
-      account.value = value;
-    }).catchError((error) {
-      isLoading(false);
-      UtilCommon.snackBar(text: '${error.message}');
-    });
-    isLoading(false);
+    // await authApi
+    //     .getPersonal(idClient: BaseCommon.instance.accountSession!.clientId)
+    //     .then((value) {
+    //   account.value = value;
+    // }).catchError((error) {
+    //   isLoading(false);
+    //   UtilCommon.snackBar(text: '${error.message}');
+    // });
+    // isLoading(false);
   }
 
-  onTapEdit(){
+  onTapEdit() {
     isLockUpdate(false);
+  }
+
+  Future pickImageFromCategory() async {
+    final returnImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (returnImage != null) {
+      await AuthRemote()
+          .updateAvatarClientProfile(stringPathImage: returnImage.path)
+          .then((jwt) async {
+        await BaseCommon.instance.saveToken(jwt);
+        await BaseCommon.instance.decodeJWT();
+            account.value = BaseCommon.instance.accountSession!;
+            UtilCommon.snackBar(text: 'Cập nhật thành công');
+      });
+    }
   }
 }

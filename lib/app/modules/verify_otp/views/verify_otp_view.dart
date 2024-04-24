@@ -1,3 +1,4 @@
+import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
@@ -43,7 +44,7 @@ class VerifyOtpView extends BaseView<VerifyOtpController> {
                       child: Row(
                         children: [
                           Text(
-                            'Kiểm tra email của bạn   ',
+                            'Kiểm tra email của bạn',
                           ),
                         ],
                       ),
@@ -60,13 +61,13 @@ class VerifyOtpView extends BaseView<VerifyOtpController> {
                               children: <TextSpan>[
                                  TextSpan(
                                     text:
-                                        'Chúng tôi đã gửi cho bạn số OTP gồm 6 chữ số vào số điện thoại của bạn ',
+                                        'Chúng tôi đã gửi cho bạn số OTP gồm 6 chữ số vào email của bạn ',
                                     style: GoogleFonts.montserrat(
                                         fontSize:
                                             UtilsReponsive.height(14, context),
                                         fontWeight: FontWeight.w500)),
                                  TextSpan(
-                                    text: controller.emailController.text,
+                                    text: '${BaseCommon.instance.accountSession!.email}',
                                     style: GoogleFonts.montserrat(
                                         fontSize:
                                             UtilsReponsive.height(14, context),
@@ -78,6 +79,7 @@ class VerifyOtpView extends BaseView<VerifyOtpController> {
                     )
                   ]),
             ),
+            SizedBoxConst.size(context: context),
             OtpTextField(
               borderRadius: BorderRadius.circular(10),
               focusedBorderColor: Color(0xFF5CB85C),
@@ -88,7 +90,7 @@ class VerifyOtpView extends BaseView<VerifyOtpController> {
               showFieldAsBox: true,
               onCodeChanged: (String code) {},
               onSubmit: (String verificationCode) async {
-                controller.code = verificationCode;
+                await controller.confirmOTP(verificationCode);
               }, // end onSubmit
             ),
             SizedBox(
@@ -119,7 +121,6 @@ class VerifyOtpView extends BaseView<VerifyOtpController> {
                           "Tiếp tục",
                         ),
                   onPressed: () async {
-                    Get.toNamed(Routes.HOME);
                     // if (controller.enableButton.isTrue) {
                     // }
                   },

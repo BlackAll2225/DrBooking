@@ -15,7 +15,7 @@ abstract class Routes {
   static const TAB_ACCOUNT = _Paths.TAB_ACCOUNT;
   static const DOCTOR_DETAIL = _Paths.DOCTOR_DETAIL;
   static const BOOKING_DETAIL = _Paths.BOOKING_DETAIL;
-  static const TAB_PROFILE = _Paths.TAB_PROFILE;
+  static const TAB_PROFILE = _Paths.TAB_PATIENT;
   static const BOOKING = _Paths.BOOKING;
   static const BOOKING_PROCESS = _Paths.BOOKING_PROCESS;
   static const BOOKING_PROCESS_TIME_DART = _Paths.BOOKING_PROCESS_TIME_DART;
@@ -51,7 +51,7 @@ abstract class _Paths {
   static const TAB_ACCOUNT = '/tab-account';
   static const DOCTOR_DETAIL = '/doctor-detail';
   static const BOOKING_DETAIL = '/booking-detail';
-  static const TAB_PROFILE = '/tab-profile';
+  static const TAB_PATIENT = '/tab-patient';
   static const BOOKING = '/booking';
   static const BOOKING_PROCESS = '/booking-process';
   static const BOOKING_PROCESS_TIME_DART = '/booking-process-time-dart';

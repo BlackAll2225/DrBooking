@@ -5,7 +5,8 @@ import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_controller.dart';
 import 'package:drbooking/app/data/local/auth_local.dart';
 import 'package:drbooking/app/data/remote/auth_remote.dart';
-import 'package:drbooking/app/data/respository/auth_api.dart';
+import 'package:drbooking/app/data/respository/auth/auth_api.dart';
+import 'package:drbooking/app/data/respository/auth/request_payload/register_payload.dart';
 import 'package:drbooking/app/resources/util_common.dart';
 import 'package:drbooking/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
@@ -100,15 +101,16 @@ class SignUpController extends BaseController {
   signUp() async {
       if (!isLockButton.value && enableButton.value) {
         isLockButton.value = true;
-       await authApi.register(phone: phoneTextController.text, password: passwordTextController.text, fullName: nameTextController.text).then((value){
+        RegisterPayload registerPayload = RegisterPayload(
+          email: emailController.text,
+          phoneNumber: phoneTextController.text,
+          password: passwordTextController.text,
+          fullName: nameTextController.text
+        );
+       await authApi.register(payload: registerPayload).then((value){
           UtilCommon.snackBar(text: 'Đăng kí thành công');
           Get.offAllNamed(Routes.SIGN_IN);
-       }).catchError((error){
-          log(error.toString());
-          isLockButton(false);
-          UtilCommon.snackBar(text: '${error.message}');
-        });
-        
+       }).catchError(handleError);
       }
   }
 }

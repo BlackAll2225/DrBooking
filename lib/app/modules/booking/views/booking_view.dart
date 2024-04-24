@@ -1,5 +1,6 @@
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/common/widget/app_bar_custom.dart';
+import 'package:drbooking/app/model/patient/patient_preview.dart';
 import 'package:drbooking/app/model/profile.dart';
 import 'package:drbooking/app/resources/assets_manager.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
@@ -34,20 +35,20 @@ class BookingView extends BaseView<BookingController> {
                       padding: EdgeInsets.symmetric(
                         horizontal: UtilsReponsive.height(10, context),
                           vertical: UtilsReponsive.height(20, context)),
-                      itemCount: controller.listProfile.value.length,
+                      itemCount: controller.listPatients.value.length,
                       separatorBuilder: (context, index) =>
                           SizedBoxConst.size(context: context),
                       itemBuilder: (context, index) => GestureDetector(
-                          onTap: () =>
-                              controller.onTapProfileCard(profile: controller.listProfile[index]),
+                          onTap: () {},
+                              // controller.onTapProfileCard(profile: controller.listPatients[index]),
                           child: _cardProfile(context,
-                              profile: controller.listProfile[index])))))
+                              profile: controller.listPatients[index])))))
         ],
       ),
     ));
   }
 
-  Container _cardProfile(BuildContext context, {required Profile profile}) {
+  Container _cardProfile(BuildContext context, {required PatientPreview profile}) {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),

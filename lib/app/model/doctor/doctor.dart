@@ -55,6 +55,6 @@ class Doctor {
         "medicalSpecialtyName": medicalSpecialtyName,
         "avatarUrl": avatarUrl,
         "rating": rating,
-        "yearOfExperience":yearOfExperience
+        "yearOfExperience": yearOfExperience
     };
 }

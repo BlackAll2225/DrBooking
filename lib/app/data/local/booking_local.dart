@@ -1,3 +1,4 @@
+import 'package:drbooking/app/data/respository/appointment/request_payload/get_appointment_payload.dart';
 import 'package:drbooking/app/data/respository/booking_api.dart';
 import 'package:drbooking/app/model/booking/booking.dart';
 import 'package:drbooking/app/model/booking/booking_preview.dart';
@@ -153,16 +154,12 @@ class BookingLocal implements BookingApi{
   }
   
   @override
-  Future<List<AppointmentPreview>> getListAppointmentComming(String clientId, String patientId) {
+  Future<List<AppointmentPreview>> getListAppointmentComming( {required PayloadGetAppointment payload}) {
     // TODO: implement getListAppointmentComming
     throw UnimplementedError();
   }
   
-  @override
-  Future<List<AppointmentPreview>> getListAppointmentFinish(String clientId, String patientId) {
-    // TODO: implement getListAppointmentFinish
-    throw UnimplementedError();
-  }
+
 
   @override
   Future<List<MedicalRecord>> getListMedicalRecordByIdPatient({required String patientId}) {
@@ -171,7 +168,7 @@ class BookingLocal implements BookingApi{
   }
   
   @override
-  Future<bool> checkIn({required String appointmentId,required String clinicId, required double lat, required double lng}) {
+  Future<bool> checkIn({required String appointmentId, required double lat, required double lng}) {
     // TODO: implement checkIn
     throw UnimplementedError();
   }
@@ -185,6 +182,12 @@ class BookingLocal implements BookingApi{
   @override
   Future<String> createBooking({required PayloadCreateBooking payload}) {
     // TODO: implement createBooking
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<List<AppointmentPreview>> getListAppointmentFinish({required PayloadGetAppointment payload}) {
+    // TODO: implement getListAppointmentFinish
     throw UnimplementedError();
   }
   }

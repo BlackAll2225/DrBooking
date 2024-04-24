@@ -58,11 +58,30 @@ class BookingDetailController extends BaseController {
   }
 
   checkIn() async {
-    // await checkLocationPermission();
-    // await BookingRemote()
-    //     .checkIn(appointmentId: appointment.value.idAppointment!,clinicId: '', lat: currentPosition.latitude, lng: currentPosition.longitude)
-    //     .then((value) async {
-    //   if (value) {
+    DateTime timeA = DateTime.now();
+    DateTime timeB = appointment.value.start!;
+    if (timeB.difference(timeA).inMinutes > 0 &&
+        timeB.difference(timeA).inMinutes < 30 &&
+        timeB.difference(timeA).inHours < 2) {
+      await QuickAlert.show(
+        context: Get.context!,
+        type: QuickAlertType.warning,
+        title: 'Không hợp lệ',
+        text: 'Bạn chỉ có thể checkin trước thời gian tối đa 30 phút',
+        confirmBtnText: 'Trở về',
+        onConfirmBtnTap: () {
+          Get.back();
+        },
+      );
+    }else{
+    await checkLocationPermission();
+    await BookingRemote()
+        .checkIn(
+            appointmentId: appointment.value.idAppointment!,
+            lat: currentPosition.latitude,
+            lng: currentPosition.longitude)
+        .then((value) async {
+      if (value) {
         await QuickAlert.show(
           context: Get.context!,
           type: QuickAlertType.success,
@@ -73,13 +92,13 @@ class BookingDetailController extends BaseController {
             Get.offNamed(Routes.HOME);
           },
         );
-    //   }
-    // }).catchError((error) {
-    //   log("err:$error");
-    //   isLockButton(false);
-    //   UtilCommon.snackBar(text: '${error.message}', isFail: true);
-    // });
-    // ;
+      }
+    }).catchError((error) {
+      log("err:$error");
+      isLockButton(false);
+      UtilCommon.snackBar(text: '${error.message}', isFail: true);
+    });
+    }
   }
 
   Future<void> checkLocationPermission() async {
@@ -88,6 +107,28 @@ class BookingDetailController extends BaseController {
             permission == LocationPermission.always) &&
         await Geolocator.isLocationServiceEnabled()) {
       currentPosition = await Geolocator.getCurrentPosition();
-    } else {}
+    } else {
+      log("fail");
+    }
+  }
+
+  cancelRequest() async {
+    DateTime timeA = DateTime.now();
+    DateTime timeB = appointment.value.start!;
+    int differenceInMinutes = timeB.difference(timeA).inHours;
+    if (differenceInMinutes < 24) {
+      await QuickAlert.show(
+        context: Get.context!,
+        type: QuickAlertType.error,
+        title: 'Không hợp lệ',
+        text: 'Bạn chỉ có thể huỷ đơn trước 24 tiếng',
+        confirmBtnText: 'Trở về',
+        onConfirmBtnTap: () {
+          Get.back();
+        },
+      );
+    } else {
+      //Cancel
+    }
   }
 }

@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:drbooking/app/base/base_api_service.dart';
 import 'package:drbooking/app/base/base_common.dart';
+import 'package:drbooking/app/data/respository/appointment/request_payload/get_appointment_payload.dart';
 import 'package:drbooking/app/data/respository/booking_api.dart';
 import 'package:drbooking/app/model/booking/booking.dart';
 import 'package:drbooking/app/model/booking/booking_preview.dart';
@@ -18,9 +19,9 @@ class BookingRemote implements BookingApi {
   @override
   Future<AppointmentDetail> getAppointmentDetail(
       {required String idAppointment}) async {
-    AppointmentDetail appointment = await apiService.fetchDataObjectWithPost(
-        BaseLink.getAppointmentById, (p0) => AppointmentDetail.fromJson(p0),
-        body: idAppointment);
+    AppointmentDetail appointment = await apiService.fetchDataObject(
+        BaseLink.getAppointmentById + idAppointment, (p0) => AppointmentDetail.fromJson(p0),
+        );
     return appointment;
   }
 
@@ -101,27 +102,21 @@ class BookingRemote implements BookingApi {
 
   @override
   Future<List<AppointmentPreview>> getListAppointmentComming(
-      String clientId, String patientId) async {
-    Map<String, dynamic> body = {};
-    clientId.isNotEmpty ? body['clientId'] = clientId : null;
-    patientId.isNotEmpty ? body['patientId'] = patientId : null;
+    {required PayloadGetAppointment payload}) async {
     List<AppointmentPreview> listAppointment =
-        await apiService.fetchDataListWithPost(BaseLink.getAppointmentComming,
+        await apiService.fetchDataList(BaseLink.getAppointmentComming + payload.getEndPointQuery(),
             (p0) => AppointmentPreview.fromJson(p0),
-            body: body);
+           );
     return listAppointment;
   }
 
   @override
   Future<List<AppointmentPreview>> getListAppointmentFinish(
-      String clientId, String patientId) async {
-    Map<String, dynamic> body = {};
-    clientId.isNotEmpty ? body['clientId'] = clientId : null;
-    patientId.isNotEmpty ? body['patientId'] = patientId : null;
-    List<AppointmentPreview> listAppointment =
-        await apiService.fetchDataListWithPost(BaseLink.getAppointmentFinish,
+     {required PayloadGetAppointment payload}) async {
+   List<AppointmentPreview> listAppointment =
+        await apiService.fetchDataList(BaseLink.getAppointmentFinish + payload.getEndPointFinishQuery(),
             (p0) => AppointmentPreview.fromJson(p0),
-            body: body);
+           );
     return listAppointment;
   }
 
@@ -138,15 +133,13 @@ class BookingRemote implements BookingApi {
   @override
   Future<bool> checkIn(
       {required String appointmentId,
-      required String clinicId,
       required double lat,
       required double lng}) async {
     bool check = await apiService
-        .validationWithPost(BaseLink.checkinAppointment, body: {
-      "appointmentId": appointmentId,
-      "clinicId": clinicId,
-      "lat": lat,
-      "lng": lng
+        .validationWithPut(BaseLink.checkinAppointment, body: {
+      "AppointmentId": appointmentId,
+      "Longtitude": lat,
+      "Latitude": lng
     });
     return check;
   }

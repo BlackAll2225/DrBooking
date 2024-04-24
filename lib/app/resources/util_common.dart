@@ -1,3 +1,4 @@
+import 'package:drbooking/app/model/service/button_service.dart';
 import 'package:flutter/Material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -13,8 +14,18 @@ const listStatus = [
 "Đã đăng kí",
 "Đang diễn ra",
 "Kết thúc",
-"Đã huỷ"
+"Đã huỷ",
+"Đang xử lý"
 ];
+List<AppointmentType> appointmentTypeList = [
+  AppointmentType(label: 'Xét Nghiệm', color: Colors.green),
+  AppointmentType(label: 'Theo yêu cầu', color: Colors.green),
+  AppointmentType(label: 'Chuyên khoa', color: Colors.green),
+  AppointmentType(label: 'Tái khám', color: Colors.green),
+  AppointmentType(label: 'Tâm lý', color: Colors.green),
+  AppointmentType(label: 'Vaccin', color: Colors.green),
+];
+
 
 class UtilCommon {
   static void snackBar({required String text, bool isFail = false}) {

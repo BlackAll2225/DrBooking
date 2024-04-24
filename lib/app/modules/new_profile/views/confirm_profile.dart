@@ -137,7 +137,7 @@ class ConfirmProfileView extends BaseView<NewProfileController> {
           ),
         ),
         onPressed: () async {
-          controller.createProfile();
+          await controller.createProfile();
         },
       ),
     );

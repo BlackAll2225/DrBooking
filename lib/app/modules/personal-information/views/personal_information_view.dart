@@ -53,23 +53,34 @@ class PersonalInformationView extends BaseView<PersonalInformationController> {
                                 ? SizedBox()
                                 : SizedBox(),
                             Center(
-                              child: Container(
-                                height: UtilsReponsive.height(80, context),
-                                width: UtilsReponsive.height(80, context),
-                                decoration: BoxDecoration(
-                                    color: ColorsManager.primary,
-                                    shape: BoxShape.circle),
-                                child: CachedNetworkImage(
-                                  fit: BoxFit.fill,
-                                  imageUrl: controller.account.value.avatarUrl,
-                                  placeholder: (context, url) =>
-                                      const CircularProgressIndicator(
-                                    color: Colors.white,
+                              child:Obx(()=> Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    clipBehavior: Clip.hardEdge,
+                                    height: UtilsReponsive.height(80, context),
+                                    width: UtilsReponsive.height(80, context),
+                                    decoration: BoxDecoration(
+                                        color: ColorsManager.primary,
+                                        shape: BoxShape.circle),
+                                    child: CachedNetworkImage(
+                                      fit: BoxFit.fill,
+                                      imageUrl: controller.account.value.avatarUrl ?? '',
+                                      placeholder: (context, url) =>
+                                          const CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          Image.asset(ImageAssets.logo),
+                                    ),
                                   ),
-                                  errorWidget: (context, url, error) =>
-                                      Image.asset(ImageAssets.logo),
-                                ),
-                              ),
+                                 GestureDetector(
+                                  onTap: () async{
+                                  await  controller.pickImageFromCategory();
+                                  },
+                                  child: TextConstant.subTile3(context, text: 'Thay đổi', color: Colors.blue))
+                                ],
+                              )),
                             ),
                             Padding(
                               padding: UtilsReponsive.paddingOnly(context,
@@ -87,7 +98,7 @@ class PersonalInformationView extends BaseView<PersonalInformationController> {
                                   radiusBorder: 10,
                                   isEnabled: !controller.isLockUpdate.value,
                                   setValueFunc: (v) {},
-                                  initValue: controller.account.value.fullname,
+                                  initValue: controller.account.value.fullName,
                                   icon: Icon(Icons.person)),
                             ),
                             Padding(

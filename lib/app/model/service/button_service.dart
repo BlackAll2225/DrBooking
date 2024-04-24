@@ -37,11 +37,3 @@ class AppointmentType {
   AppointmentType({required this.label, required this.color});
 }
 
-List<AppointmentType> appointmentTypeList = [
-  AppointmentType(label: 'Xét Nghiệm', color: Colors.green),
-  AppointmentType(label: 'Theo yêu cầu', color: Colors.green),
-  AppointmentType(label: 'Chuyên khoa', color: Colors.green),
-  AppointmentType(label: 'Tái khám', color: Colors.green),
-  AppointmentType(label: 'Tâm lý', color: Colors.green),
-  AppointmentType(label: 'Vaccin', color: Colors.green),
-];

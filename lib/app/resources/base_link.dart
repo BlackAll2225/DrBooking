@@ -4,8 +4,23 @@ class BaseLink {
   //Auth
   static const login = '$domain/api/v1/authention/client-sign-in';
   static const register = '$domain/api/v1/authention/client-register';
+  static const refreshToken = '$domain/api/v1/authention/refresh-token';
   static const getInformation = '$domain/api/v1/client/get-single-by-id';
+  static const sendOTP = '$domain/api/v1/authention/client/send-email-otp';
+  static const confirmOTP = '$domain/api/v1/authention/client/confirm-email-otp';
+  static const updateAvatar = '$domain/api/v1/client/update-avatar';
+  static const changePassword = '$domain/api/v1/authention/client-change-password';
 
+
+  static String createPatient = '$domain/api/v1/patient-profile';
+  static String updatePatient = '$domain/a';
+  static String getPatients = '$domain/api/v1/patient-profile/many-by-client/';
+  static String getPatientById = '$domain/';
+  static String updatePatientImage = '$domain/a';
+
+
+
+  
   static String getClinic = '$domain/api/v1/clinic/get-many-active/';
 
 
@@ -17,16 +32,13 @@ class BaseLink {
   static String getClientsByIdAccount = '$domain/api/v1/patient-profile/get-many-by-client-id';
 
 
-  static String createPatient = '$domain/api/v1/patient-profile/create-patient-profile-async';
-  static String updatePatient = '$domain/api/v1/patient-profile/update';
-  static String getPatients = '$domain/api/v1/patient-profile/get-many-by-client-id';
-  static String getPatientById = '$domain/api/v1/patient-profile/get-patientprofile-by-id';
+
 
 //Appointment
-  static String getAppointmentComming= '$domain/api/v1/appointment/get-many-list-up-coming-appointment-by-client-id';
-  static String getAppointmentFinish= '$domain/api/v1/appointment/get-many-list-finish-appointment-by-client-id';
-  static String getAppointmentById = '$domain/api/v1/appointment/get-appointment-detail-for-mobile-by-appointment-id-async';
-  static String createAppointment = '$domain/api/v1/appointment/booking';
+  static String getAppointmentComming= '$domain/api/v1/appointment/many-up-coming/';
+  static String getAppointmentFinish= '$domain/api/v1/appointment/many-completed/';
+  static String getAppointmentById = '$domain/api/v1/appointment/single-appointment-mobile/appointmentId=';
+  static String createAppointment = '$domain/';
   static String checkinAppointment = '$domain/api/v1/appointment/check-in';
 //
   //DutySchedule

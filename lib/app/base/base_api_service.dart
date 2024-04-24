@@ -40,7 +40,6 @@ class ApiService {
       String apiUrl, T Function(Map<String, dynamic>) fromJson) async {
     final response = await http.get(Uri.parse(apiUrl),
         headers: BaseCommon.instance.headerRequest());
-
     log('StatusCode ${response.statusCode} - $apiUrl');
     log('Body ${response.body}');
     final data = json.decode(response.body)["data"];
@@ -68,6 +67,7 @@ class ApiService {
       {required Object body}) async {
     final response = await http.post(Uri.parse(apiUrl),
         headers: BaseCommon.instance.headerRequest(), body: jsonEncode(body));
+        log("payload: ${body.toString()}");
     log('StatusCode ${response.statusCode} - $apiUrl');
     log('Body ${response.body}');
     if (json.decode(response.body)['status'] == 'Status200OK') {

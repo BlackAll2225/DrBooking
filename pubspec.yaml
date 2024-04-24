@@ -30,7 +30,11 @@ dependencies:
   get:
   geolocator: ^10.1.0
   flutter_svg:
+  firebase_messaging: ^14.7.1
   intl:
+  image_picker:
+  month_year_picker:
+  dio:
   flutter: 
     sdk: flutter
   firebase_dynamic_links: ^5.4.8

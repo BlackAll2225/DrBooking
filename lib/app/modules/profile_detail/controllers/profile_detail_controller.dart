@@ -4,13 +4,13 @@ import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_controller.dart';
 import 'package:drbooking/app/data/address_api.dart';
-import 'package:drbooking/app/data/remote/profile_remote.dart';
-import 'package:drbooking/app/data/respository/profile_api.dart';
+import 'package:drbooking/app/data/remote/patient_remote.dart';
+import 'package:drbooking/app/data/respository/patient/patient_api.dart';
 import 'package:drbooking/app/model/address/district.dart';
 import 'package:drbooking/app/model/address/province.dart';
 import 'package:drbooking/app/model/address/ward.dart';
 import 'package:drbooking/app/model/profile.dart';
-import 'package:drbooking/app/model/profile/request_body_create_patient.dart';
+import 'package:drbooking/app/model/patient/request_body_create_patient.dart';
 import 'package:drbooking/app/modules/new_profile/controllers/new_profile_controller.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
@@ -73,7 +73,7 @@ class ProfileDetailController extends BaseController {
   @override
   void onInit() async {
     super.onInit();
-    initData();
+    // initData();
   }
 
   @override
@@ -136,18 +136,18 @@ class ProfileDetailController extends BaseController {
     bodyRequestCreatePatient.province = selectedProvince.value.provinceName;
     bodyRequestCreatePatient.ward = selectedWard.value.wardName;
     bodyRequestCreatePatient.addressLine = address;
-    await ProfileRemote()
-        .createNewProfile(bodyRequest: bodyRequestCreatePatient)
-        .then((value) {
-      // if (value) {
-      //   Get.offAllNamed(Routes.HOME);
-      //   UtilCommon.snackBar(text: 'Tạo hồ sơ thành công');
-      // }
-    }).catchError((error) {
-      log("err:$error");
-      isLockButton(false);
-      UtilCommon.snackBar(text: '${error.message}');
-    });
+    // await PatientRemote()
+    //     .createNewProfile(bodyRequest: bodyRequestCreatePatient)
+    //     .then((value) {
+    //   // if (value) {
+    //   //   Get.offAllNamed(Routes.HOME);
+    //   //   UtilCommon.snackBar(text: 'Tạo hồ sơ thành công');
+    //   // }
+    // }).catchError((error) {
+    //   log("err:$error");
+    //   isLockButton(false);
+    //   UtilCommon.snackBar(text: '${error.message}');
+    // });
   }
 
   bool validateName() {
@@ -312,47 +312,47 @@ class ProfileDetailController extends BaseController {
     String cccd = cccdTextController.text;
     String cccdDate = cccdDateTextController.text;
     String cccdAddress = cccdAddressTextController.text;
-    await ProfileRemote().updateProfile(idPatient: 'idPatient').then((value) {
-      nameTextController.text;
-      birthTextController.text;
-      genderTextController.text;
-      addressTextController.text;
-      bhtyTextController.text;
-      bhytExpTextController.text;
-      bhtyAddressTextController.text;
-      cccdTextController.text;
-      cccdDateTextController.text;
-      cccdAddressTextController.text;
-    }).catchError((error) {
-      UtilCommon.snackBar(text: '${error.message}');
-    });
+    // await PatientRemote().updateProfile(idPatient: 'idPatient').then((value) {
+    //   nameTextController.text;
+    //   birthTextController.text;
+    //   genderTextController.text;
+    //   addressTextController.text;
+    //   bhtyTextController.text;
+    //   bhytExpTextController.text;
+    //   bhtyAddressTextController.text;
+    //   cccdTextController.text;
+    //   cccdDateTextController.text;
+    //   cccdAddressTextController.text;
+    // }).catchError((error) {
+    //   UtilCommon.snackBar(text: '${error.message}');
+    // });
   }
 
-  initData() async {
-    isLoading(true);
-     await ProfileRemote().getProfileDetailById(idPatient: idPatient).then((value) {
-      nameTextController.text = value.fullname ?? '';
-      birthTextController.text = UtilCommon.convertDateTime(value.dateOfBirth!);
-      genderTextController.text = value.biologicalGender == 0 ? 'Nữ' : 'Nam';
-      addressTextController.text = value.nameAddress ?? '';
-      bhtyTextController.text = value.healthInsuranceCode ?? '';
-      bhytExpTextController.text = value.idIssuedDate != null
-          ? UtilCommon.convertDateTime(value.idIssuedDate!)
-          : '';
-      bhtyAddressTextController.text = value.hiIssuedPlace ?? '';
-      cccdTextController.text = value.idCode ?? '';
-      cccdDateTextController.text = value.expiredDate != null
-          ? UtilCommon.convertDateTime(value.expiredDate!)
-          : '';
-      cccdAddressTextController.text = value.idIssuedPlace ?? '';
-    }).catchError((error) {
-      isLoading(false);
+  // initData() async {
+  //   isLoading(true);
+  //    await PatientRemote().getProfileDetailById(idPatient: idPatient).then((value) {
+  //     nameTextController.text = value.fullname ?? '';
+  //     birthTextController.text = UtilCommon.convertDateTime(value.dateOfBirth!);
+  //     genderTextController.text = value.biologicalGender == 0 ? 'Nữ' : 'Nam';
+  //     addressTextController.text = value.nameAddress ?? '';
+  //     bhtyTextController.text = value.healthInsuranceCode ?? '';
+  //     bhytExpTextController.text = value.idIssuedDate != null
+  //         ? UtilCommon.convertDateTime(value.idIssuedDate!)
+  //         : '';
+  //     bhtyAddressTextController.text = value.hiIssuedPlace ?? '';
+  //     cccdTextController.text = value.idCode ?? '';
+  //     cccdDateTextController.text = value.expiredDate != null
+  //         ? UtilCommon.convertDateTime(value.expiredDate!)
+  //         : '';
+  //     cccdAddressTextController.text = value.idIssuedPlace ?? '';
+  //   }).catchError((error) {
+  //     isLoading(false);
 
-      log(error.toString());
-      UtilCommon.snackBar(text: '${error.message}', isFail: true);
-    });
-    isLoading(false);
-  }
+  //     log(error.toString());
+  //     UtilCommon.snackBar(text: '${error.message}', isFail: true);
+  //   });
+  //   isLoading(false);
+  // }
 
   onTapEdit() {
     isLockUpdate(false);

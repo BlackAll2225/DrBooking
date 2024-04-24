@@ -1,5 +1,45 @@
 {
   "status": "Status200OK",
   "message": "Ok",
-  "data": ""
+  "data": [
+    {
+      "patientName": "Brenna Collins",
+      "idPatientProfile": "5t1260ae-c78a-4f52-b43c-99f100ca0afd",
+      "idClient": "4d1260ae-c78a-4f52-b43c-99f100ca0afd",
+      "idAppointment": "2e0be727-2490-4aca-8acd-1f01223cfc83",
+      "doctorName": "Josiah Collier",
+      "start": "2024-04-19T10:00:00",
+      "clinicName": "Khai Nguyen",
+      "end": "2024-04-19T12:00:00",
+      "appointmentStatus": 0,
+      "appoinmentType": 0,
+      "paymentStatus": 0
+    },
+    {
+      "patientName": "Brenna Collins",
+      "idPatientProfile": "5t1260ae-c78a-4f52-b43c-99f100ca0afd",
+      "idClient": "4d1260ae-c78a-4f52-b43c-99f100ca0afd",
+      "idAppointment": "9c578b4f-a063-4766-8a7c-c58d396ccca9",
+      "doctorName": "Kamryn Reichel",
+      "start": "2024-04-11T13:00:00",
+      "clinicName": "Khai Nguyen",
+      "end": "2024-04-11T15:00:00",
+      "appointmentStatus": 0,
+      "appoinmentType": 2,
+      "paymentStatus": 0
+    },
+    {
+      "patientName": "Brenna Collins",
+      "idPatientProfile": "5t1260ae-c78a-4f52-b43c-99f100ca0afd",
+      "idClient": "4d1260ae-c78a-4f52-b43c-99f100ca0afd",
+      "idAppointment": "ec3f1af1-39e5-4c4f-8a67-63753e6da491",
+      "doctorName": "Jasen Stanton",
+      "start": "2024-04-20T08:00:00",
+      "clinicName": "Khai Nguyen",
+      "end": "2024-04-20T10:00:00",
+      "appointmentStatus": 0,
+      "appoinmentType": 0,
+      "paymentStatus": 0
+    }
+  ]
 }

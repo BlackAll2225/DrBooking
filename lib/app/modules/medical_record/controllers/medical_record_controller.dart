@@ -2,11 +2,11 @@ import 'dart:developer';
 
 import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_controller.dart';
-import 'package:drbooking/app/data/local/profile_local.dart';
+import 'package:drbooking/app/data/local/patient_local.dart';
 import 'package:drbooking/app/data/remote/booking_remote.dart';
-import 'package:drbooking/app/data/remote/profile_remote.dart';
+import 'package:drbooking/app/data/remote/patient_remote.dart';
 import 'package:drbooking/app/data/respository/booking_api.dart';
-import 'package:drbooking/app/data/respository/profile_api.dart';
+import 'package:drbooking/app/data/respository/patient/patient_api.dart';
 import 'package:drbooking/app/model/medical-record/medical_record.dart';
 import 'package:drbooking/app/model/profile.dart';
 import 'package:drbooking/app/model/request_booking.dart';
@@ -22,11 +22,11 @@ class MedicalRecordController extends BaseController {
   RxList<MedicalRecord> listMedicalRecord = <MedicalRecord>[].obs;
 
   final isLocal = BaseCommon.instance.mode == LOCAL_MODE;
-  late ProfileApi profileApi;
+  late PatientApi profileApi;
   final count = 0.obs;
   @override
   Future<void> onInit() async {
-    profileApi = ProfileRemote();
+    profileApi = PatientRemote();
     await fetchAlClients();
     await fetchMedicalRecord();
     super.onInit();
@@ -47,8 +47,8 @@ class MedicalRecordController extends BaseController {
       if (!isFetchData.value) {
         isLoading(true);
         isFetchData(true);
-        listProfile.value = await profileApi.getProfiles(
-            idAccount: BaseCommon.instance.accountSession!.clientId);
+        // listProfile.value = await profileApi.getProfiles(
+        //     idAccount: BaseCommon.instance.accountSession!.clientId!);
         selectedProfile.value = listProfile[0];
         isFetchData(false);
         isLoading(false);

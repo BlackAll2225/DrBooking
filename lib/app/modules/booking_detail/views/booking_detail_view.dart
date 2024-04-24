@@ -138,7 +138,7 @@ class BookingDetailView extends BaseView<BookingDetailController> {
                                 SizedBoxConst.size(context: context),
                                 _textData(context,
                                     title: 'Thời gian',
-                                    content: controller.slot.value),
+                                    content: listTime[controller.appointment.value.slotNumber!-1]),
                                 SizedBoxConst.size(context: context),
                                 _textData(context,
                                     title: 'Đối tượng',
@@ -282,7 +282,7 @@ class BookingDetailView extends BaseView<BookingDetailController> {
                                       ),
                                     ),
                                     onPressed: () async {
-                                     controller.checkIn();
+                                     await controller.checkIn();
                                     },
                                   ),
                                 ),
@@ -320,7 +320,9 @@ class BookingDetailView extends BaseView<BookingDetailController> {
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
-                                    onPressed: () async {},
+                                    onPressed: () async {
+                                     await controller.cancelRequest();
+                                    },
                                   ),
                                 ),
                               ],

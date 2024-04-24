@@ -1,3 +1,4 @@
+import 'package:drbooking/app/data/respository/appointment/request_payload/get_appointment_payload.dart';
 import 'package:drbooking/app/model/booking/booking.dart';
 import 'package:drbooking/app/model/booking/booking_preview.dart';
 import 'package:drbooking/app/model/booking/create-booking/request_create_booking.dart';
@@ -16,11 +17,11 @@ abstract class BookingApi {
   Future<List<DutySchedule>> checkDutyScheduleMedicalService({required DateTime date, required String clinicId, required String medicalServiceId});
   Future<List<DutySchedule>> checkDutyScheduleMagical({required DateTime date});
   
-  Future<List<AppointmentPreview>> getListAppointmentComming(String clientId, String patientId);
-  Future<List<AppointmentPreview>> getListAppointmentFinish(String clientId, String patientId);
+  Future<List<AppointmentPreview>> getListAppointmentComming( {required PayloadGetAppointment payload});
+  Future<List<AppointmentPreview>> getListAppointmentFinish({required PayloadGetAppointment payload});
   Future<List<MedicalRecord>> getListMedicalRecordByIdPatient({required String patientId});
 
-  Future<bool> checkIn({required String appointmentId,required String clinicId, required double lat, required double lng});
+  Future<bool> checkIn({required String appointmentId, required double lat, required double lng});
   
   Future<String> createBooking({required PayloadCreateBooking payload});
 
