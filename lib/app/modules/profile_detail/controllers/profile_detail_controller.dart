@@ -1,20 +1,12 @@
 import 'dart:developer';
 
-import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_controller.dart';
 import 'package:drbooking/app/data/address_api.dart';
-import 'package:drbooking/app/data/remote/patient_remote.dart';
-import 'package:drbooking/app/data/respository/patient/patient_api.dart';
 import 'package:drbooking/app/model/address/district.dart';
 import 'package:drbooking/app/model/address/province.dart';
 import 'package:drbooking/app/model/address/ward.dart';
-import 'package:drbooking/app/model/profile.dart';
 import 'package:drbooking/app/model/patient/request_body_create_patient.dart';
-import 'package:drbooking/app/modules/new_profile/controllers/new_profile_controller.dart';
-import 'package:drbooking/app/resources/color_manager.dart';
-import 'package:drbooking/app/resources/reponsive_utils.dart';
-import 'package:drbooking/app/resources/text_style.dart';
 import 'package:drbooking/app/resources/util_common.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

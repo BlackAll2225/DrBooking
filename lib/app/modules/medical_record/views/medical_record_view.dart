@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/common/widget/app_bar_custom.dart';
 import 'package:drbooking/app/model/medical-record/medical_record.dart';
+import 'package:drbooking/app/model/patient/patient_preview.dart';
 import 'package:drbooking/app/model/profile.dart';
 import 'package:drbooking/app/resources/assets_manager.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
@@ -72,7 +73,7 @@ class MedicalRecordView extends BaseView<MedicalRecordController> {
     ));
   }
 
-  Container _cardProfile(BuildContext context, {required Profile profile}) {
+  Container _cardProfile(BuildContext context, {required PatientPreview profile}) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -244,14 +245,14 @@ class MedicalRecordView extends BaseView<MedicalRecordController> {
 
   _dropDownDataProfile(BuildContext context) {
     log(controller.selectedProfile.value.fullname.toString());
-    return PopupMenuButton<Profile>(
-        onSelected: (Profile newValue) {
-          controller.onTapProfile(newValue);
+    return PopupMenuButton<PatientPreview>(
+        onSelected: (PatientPreview newValue) {
+          // controller.onTapProfile(newValue);
         },
         itemBuilder: (BuildContext context) {
           return controller.listProfile.value
-              .map<PopupMenuItem<Profile>>((Profile value) {
-            return PopupMenuItem<Profile>(
+              .map<PopupMenuItem<PatientPreview>>((PatientPreview value) {
+            return PopupMenuItem<PatientPreview>(
               value: value,
               child: Container(
                 height: 40, // Chiều cao của mỗi mục dropdown

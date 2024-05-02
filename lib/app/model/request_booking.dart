@@ -3,14 +3,14 @@ import 'package:drbooking/app/model/booking/medical_service.dart';
 import 'package:drbooking/app/model/clinic.dart';
 import 'package:drbooking/app/model/doctor/doctor.dart';
 import 'package:drbooking/app/model/doctor/specicalty.dart';
-import 'package:drbooking/app/model/profile.dart';
+import 'package:drbooking/app/model/patient/patient_preview.dart';
 import 'package:drbooking/app/model/service/button_service.dart';
 import 'package:drbooking/app/model/slot.dart';
 import 'package:drbooking/app/model/special.dart';
 
 class RequestParamBooking {
     Clinic? clinic;
-    Profile? profile;
+    PatientPreview? patient;
     Doctor? doctor;
     Slot? slot;
     SpecialModule? special;
@@ -23,7 +23,6 @@ class RequestParamBooking {
     String? symptom;
     RequestParamBooking({
       this.clinic,
-      this.profile,
       this.doctor,
       this.special,
       this.description,
@@ -32,6 +31,7 @@ class RequestParamBooking {
       this.dateBooking,
       this.dutySchedule,
       this.symptom,
+      this.patient,
       this.slot}
     );
    

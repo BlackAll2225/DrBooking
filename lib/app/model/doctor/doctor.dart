@@ -40,7 +40,7 @@ class Doctor {
         fullname: json["fullname"],
         degree: json["degree"]??'',
         isPartTime: json["isPartTime"],
-        medicalSpecialtyName: json["medicalSpecialtyName"],
+        medicalSpecialtyName: json["medicalSpecialtyName"] ?? '',
         avatarUrl: json["avatarUrl"]??'',
         rating: json["rating"]?.toDouble(),
         yearOfExperience: json["yearOfExperience"].toInt()

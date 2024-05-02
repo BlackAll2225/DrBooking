@@ -70,11 +70,11 @@ class HomeController extends BaseController {
     }
   }
   onTapBooking()async{
-   if (BaseCommon.instance.accountSession!.isEmailConfirmed == 'False') {
-      await initPopup();
-    } else {
-      Get.toNamed(Routes.BOOKING);
-    }
+  //  if (BaseCommon.instance.accountSession!.isEmailConfirmed == 'False') {
+  //     await initPopup();
+  //   } else {
+      Get.toNamed(Routes.BOOKING_PROCESS_PATIENT);
+    // }
   }
 
   initPopup() async {

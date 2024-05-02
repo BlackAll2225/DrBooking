@@ -1,25 +1,23 @@
+import 'package:drbooking/app/modules/booking/booking_general/bindings/booking_general_binding.dart';
+import 'package:drbooking/app/modules/booking/booking_general/views/booking_general_view.dart';
+import 'package:drbooking/app/modules/booking/booking_medical_serivce/bindings/booking_medical_serivce_binding.dart';
+import 'package:drbooking/app/modules/booking/booking_medical_serivce/views/booking_medical_serivce_view.dart';
+import 'package:drbooking/app/modules/booking/booking_process_clinic/bindings/booking_process_clinic_binding.dart';
+import 'package:drbooking/app/modules/booking/booking_process_clinic/views/booking_process_clinic_view.dart';
+import 'package:drbooking/app/modules/booking/booking_process_confirm/bindings/booking_process_confirm_binding.dart';
+import 'package:drbooking/app/modules/booking/booking_process_confirm/views/booking_process_confirm_view.dart';
+import 'package:drbooking/app/modules/booking/booking_process_main/bindings/booking_process_main_binding.dart';
+import 'package:drbooking/app/modules/booking/booking_process_main/views/booking_process_main_view.dart';
+import 'package:drbooking/app/modules/booking/booking_process_patient/bindings/booking_process_patient_binding.dart';
+import 'package:drbooking/app/modules/booking/booking_process_patient/views/booking_process_patient_view.dart';
+import 'package:drbooking/app/modules/booking/booking_process_service/bindings/booking_process_service_binding.dart';
+import 'package:drbooking/app/modules/booking/booking_process_service/views/booking_process_service_view.dart';
+import 'package:drbooking/app/modules/booking/booking_process_time/bindings/booking_process_time_binding.dart';
+import 'package:drbooking/app/modules/booking/booking_process_time/views/booking_process_time_view.dart';
 import 'package:get/get.dart';
 
-import '../modules/booking/bindings/booking_binding.dart';
-import '../modules/booking/views/booking_view.dart';
 import '../modules/booking_detail/bindings/booking_detail_binding.dart';
 import '../modules/booking_detail/views/booking_detail_view.dart';
-import '../modules/booking_general/bindings/booking_general_binding.dart';
-import '../modules/booking_general/views/booking_general_view.dart';
-import '../modules/booking_medical_serivce/bindings/booking_medical_serivce_binding.dart';
-import '../modules/booking_medical_serivce/views/booking_medical_serivce_view.dart';
-import '../modules/booking_process/bindings/booking_process_binding.dart';
-import '../modules/booking_process/views/booking_process_view.dart';
-import '../modules/booking_process_branch/bindings/booking_process_branch_binding.dart';
-import '../modules/booking_process_branch/views/booking_process_branch_view.dart';
-import '../modules/booking_process_confirm/bindings/booking_process_confirm_binding.dart';
-import '../modules/booking_process_confirm/views/booking_process_confirm_view.dart';
-import '../modules/booking_process_service/bindings/booking_process_service_binding.dart';
-import '../modules/booking_process_service/views/booking_process_service_view.dart';
-import '../modules/booking_process_time/bindings/booking_process_time_binding.dart';
-import '../modules/booking_process_time/views/booking_process_time_view.dart';
-import '../modules/booking_specialty/bindings/booking_specialty_binding.dart';
-import '../modules/booking_specialty/views/booking_specialty_view.dart';
 import '../modules/change-password/bindings/change_password_binding.dart';
 import '../modules/change-password/views/change_password_view.dart';
 import '../modules/doctor/bindings/doctor_binding.dart';
@@ -116,14 +114,14 @@ class AppPages {
       binding: HomeBinding(),
     ),
     GetPage(
-      name: _Paths.BOOKING,
-      page: () => const BookingView(),
-      binding: BookingBinding(),
+      name: _Paths.BOOKING_PROCESS_PATIENT,
+      page: () => const BookingProcessPatientView(),
+      binding: BookingProcessPatientBinding(),
     ),
     GetPage(
-        name: _Paths.BOOKING_PROCESS,
-        page: () => const BookingProcessView(),
-        binding: BookingProcessBinding(),
+        name: _Paths.BOOKING_PROCESS_MAIN,
+        page: () => const BookingProcessMainView(),
+        binding: BookingProcessMainBinding(),
         transition: Transition.rightToLeft),
     GetPage(
         name: _Paths.BOOKING_PROCESS_TIME,
@@ -146,9 +144,9 @@ class AppPages {
       binding: ProfileDetailBinding(),
     ),
     GetPage(
-        name: _Paths.BOOKING_PROCESS_BRANCH,
-        page: () => const BookingProcessBranchView(),
-        binding: BookingProcessBranchBinding(),
+        name: _Paths.BOOKING_PROCESS_CLINIC,
+        page: () => const BookingProcessClinicView(),
+        binding: BookingProcessClinicBinding(),
         transition: Transition.rightToLeft),
     GetPage(
       name: _Paths.BOOKING_PROCESS_SERVICE,
@@ -189,11 +187,6 @@ class AppPages {
       name: _Paths.BOOKING_GENERAL,
       page: () => const BookingGeneralView(),
       binding: BookingGeneralBinding(),
-    ),
-    GetPage(
-      name: _Paths.BOOKING_SPECIALTY,
-      page: () => const BookingSpecialtyView(),
-      binding: BookingSpecialtyBinding(),
     ),
     GetPage(
       name: _Paths.BOOKING_MEDICAL_SERIVCE,

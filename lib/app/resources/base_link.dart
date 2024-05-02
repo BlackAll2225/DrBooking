@@ -24,7 +24,7 @@ class BaseLink {
   static String getClinic = '$domain/api/v1/clinic/get-many-active/';
 
 
-  static String getSpecials = '$domain/api/v1/medical-specialty/get-many-by-clinic-id/';
+  static String getSpecials = '$domain/api/v1/medical-specialty/many-by-clinic/';
 
   static String getDoctorsByClinic = '$domain/api/v1/employee/doctor-by-clinic/';
   static String getDoctorById = '$domain/api/v1/employee/doctor/';
@@ -38,20 +38,24 @@ class BaseLink {
   static String getAppointmentComming= '$domain/api/v1/appointment/many-up-coming/';
   static String getAppointmentFinish= '$domain/api/v1/appointment/many-completed/';
   static String getAppointmentById = '$domain/api/v1/appointment/single-appointment-mobile/appointmentId=';
-  static String createAppointment = '$domain/';
+  static String createAppointment = '$domain/api/v1/appointment/booking';
   static String checkinAppointment = '$domain/api/v1/appointment/check-in';
+  static String cancelAppointment = '$domain/api/v1/appointment/cancel';
+  static String feedbackAppointment = '$domain/api/v1/feedback';
 //
   //DutySchedule
-  static String checkDutyScheduleTest = '$domain/api/v1/duty-schedule/get-many-by-doctor/';
-  static String checkDutyScheduleGeneral = '$domain/api/v1/slot/search-duty-schedule-get-slot';
-  static String checkDutyScheduleMedicalService = '$domain/api/v1/slot/search-slot-by-medical-service-date-clinic-id';
+  // static String checkDutyScheduleTest = '$domain/';
+  static String checkDutyScheduleGeneral = '$domain/t';
+  static String checkDutyScheduleMedicalExamination = '$domain/api/v1/duty-schedule/many-by-examination/';
+  static String checkDutyScheduleMedicalPsychology = '$domain/api/v1/duty-schedule/many-by-psychology/';
+  static String checkDutyScheduleMedicalVacination = '$domain/api/v1/duty-schedule/many-by-vacination/';
   static String checkDutyScheduleSpecialty =  '$domain/api/v1/slot/search-slot-for-demand-based';
 
 
   //Medical-service
-  static String getVaccinationService = '$domain/api/v1/medical-service/get-vaccination-services';
-  static String getExaminationService = '$domain/api/v1/medical-service/get-examination-services';
-  static String getPsychologicalService = '$domain/api/v1/medical-service/get-psychological-services';
+  static String getVaccinationService = '$domain/api/v1/medical-service/vaccination';
+  static String getExaminationService = '$domain/api/v1/medical-service/examination';
+  static String getPsychologicalService = '$domain/api/v1/medical-service/psychological';
 
 
   //Address

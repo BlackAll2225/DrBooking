@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:drbooking/app/resources/util_common.dart';
 import 'package:flutter/material.dart';
 
 class ButtonService {
@@ -23,13 +24,7 @@ class ButtonService {
       type: json["type"]);
 }
 
-enum TypeService {
-  generalExam,
-  specialtyExam,
-  labExam,
-  psychological,
-  vaccination
-}
+
 
 class AppointmentType {
   String label;

@@ -6,6 +6,7 @@ import 'package:drbooking/app/model/booking/booking.dart';
 import 'package:drbooking/app/resources/util_common.dart';
 import 'package:drbooking/app/routes/app_pages.dart';
 import 'package:drbooking/app/utils/format_data.dart';
+import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:quickalert/quickalert.dart';
@@ -21,6 +22,15 @@ class BookingDetailController extends BaseController {
   late Rx<String> slot = ''.obs;
   Rx<AppointmentDetail> appointment = AppointmentDetail().obs;
   late Position currentPosition;
+   List<String> templateReason = [
+    "Bệnh viện sạch sẽ",
+    "Nhân viên chu đáo",
+    "Bác sĩ tận tâm",
+    "Khác"
+  ];
+  TextEditingController textEdittingController = TextEditingController(text: '');
+
+  Rx<String> reasonChoice = 'Khác'.obs;
   @override
   Future<void> onInit() async {
     await fetchAppointmentDetail();

@@ -287,7 +287,7 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                         ),
                         SizedBoxConst.sizeWith(context: context, size: 5),
                         TextConstant.subTile3(context,
-                            text: booking.doctorName ?? ''),
+                            text: booking.patientName ?? ''),
                       ],
                     ),
                     SizedBoxConst.size(context: context),

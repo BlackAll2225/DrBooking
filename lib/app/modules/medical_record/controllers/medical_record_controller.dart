@@ -8,7 +8,8 @@ import 'package:drbooking/app/data/remote/patient_remote.dart';
 import 'package:drbooking/app/data/respository/booking_api.dart';
 import 'package:drbooking/app/data/respository/patient/patient_api.dart';
 import 'package:drbooking/app/model/medical-record/medical_record.dart';
-import 'package:drbooking/app/model/profile.dart';
+import 'package:drbooking/app/model/patient/patient.dart';
+import 'package:drbooking/app/model/patient/patient_preview.dart';
 import 'package:drbooking/app/model/request_booking.dart';
 import 'package:drbooking/app/resources/util_common.dart';
 import 'package:drbooking/app/routes/app_pages.dart';
@@ -16,8 +17,8 @@ import 'package:get/get.dart';
 
 class MedicalRecordController extends BaseController {
   //TODO: Implement MedicalRecordController
-  RxList<Profile> listProfile = <Profile>[].obs;
-  Rx<Profile> selectedProfile = Profile(fullname: 'Tất cả').obs;
+  RxList<PatientPreview> listProfile = <PatientPreview>[].obs;
+  Rx<PatientPreview> selectedProfile = PatientPreview(fullname: 'Tất cả').obs;
 
   RxList<MedicalRecord> listMedicalRecord = <MedicalRecord>[].obs;
 
@@ -58,16 +59,16 @@ class MedicalRecordController extends BaseController {
     }
   }
 
-  onTapProfileCard({required Profile profile}) {
-    RequestParamBooking requestParamBooking = RequestParamBooking();
-    requestParamBooking.profile = profile;
-    Get.toNamed(Routes.BOOKING_PROCESS_BRANCH, arguments: requestParamBooking);
-  }
+  // onTapProfileCard({required Patient profile}) {
+  //   RequestParamBooking requestParamBooking = RequestParamBooking();
+  //   requestParamBooking.patient = profile;
+  //   Get.toNamed(Routes.BOOKING_PROCESS_CLINIC, arguments: requestParamBooking);
+  // }
 
   fetchMedicalRecord() async {
         isFetchData(true);
     await BookingRemote()
-        .getListMedicalRecordByIdPatient(patientId: selectedProfile.value.id!)
+        .getListMedicalRecordByIdPatient(patientId: selectedProfile.value.patientId!)
         .then((value) {
       listMedicalRecord.value = value;
       isFetchData(false);
@@ -78,8 +79,8 @@ class MedicalRecordController extends BaseController {
       UtilCommon.snackBar(text: '${error.message}', isFail: true);
     });
   }
-   onTapProfile(Profile profile) async{
-    selectedProfile.value = profile;
-    await fetchMedicalRecord();
-  }
+  //  onTapProfile(Profile profile) async{
+  //   selectedProfile.value = profile;
+  //   await fetchMedicalRecord();
+  // }
 }

@@ -31,6 +31,7 @@ class AppointmentDetail {
     int? appoinmentType;
     int? appointmentStatus;
     int? paymentStatus;
+    bool? isReviewed;
 
     AppointmentDetail({
         this.idAppointment,
@@ -55,6 +56,7 @@ class AppointmentDetail {
         this.appoinmentType,
         this.appointmentStatus,
         this.paymentStatus,
+        this.isReviewed = false
     });
 
     AppointmentDetail copyWith({
@@ -80,6 +82,7 @@ class AppointmentDetail {
         int? appoinmentType,
         int? appointmentStatus,
         int? paymentStatus,
+        bool? isReviewed = false
     }) => 
         AppointmentDetail(
             idAppointment: idAppointment ?? this.idAppointment,
@@ -104,6 +107,7 @@ class AppointmentDetail {
             appoinmentType: appoinmentType ?? this.appoinmentType,
             appointmentStatus: appointmentStatus ?? this.appointmentStatus,
             paymentStatus: paymentStatus ?? this.paymentStatus,
+            isReviewed: isReviewed ?? this.isReviewed
         );
 
     factory AppointmentDetail.fromJson(Map<String, dynamic> json) => AppointmentDetail(
@@ -129,6 +133,7 @@ class AppointmentDetail {
         appoinmentType: json["appoinmentType"],
         appointmentStatus: json["appointmentStatus"],
         paymentStatus: json["paymentStatus"],
+        isReviewed: json["isReviewed"] ?? false
     );
 
     Map<String, dynamic> toJson() => {
@@ -154,5 +159,6 @@ class AppointmentDetail {
         "appoinmentType": appoinmentType,
         "appointmentStatus": appointmentStatus,
         "paymentStatus": paymentStatus,
+        "isReviewed":isReviewed
     };
 }

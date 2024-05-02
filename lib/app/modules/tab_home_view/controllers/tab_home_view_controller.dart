@@ -74,7 +74,6 @@ class TabHomeViewController extends BaseController {
   final isFetch2 = false.obs;
   @override
   Future<void> onInit() async {
-    super.onInit();
     await initalData();
     Timer.periodic(Duration(seconds: 3), (Timer timer) {
       if (currentPage < imgaeList.length - 1) {
@@ -89,6 +88,8 @@ class TabHomeViewController extends BaseController {
         curve: Curves.easeIn,
       );
     });
+    super.onInit();
+
   }
 
   @override

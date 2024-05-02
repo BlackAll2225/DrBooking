@@ -78,28 +78,28 @@ class DoctorLocal implements DoctorApi {
     throw UnimplementedError();
   }
 
-  @override
-  Future<List<Specialty>> getListSpecialtyByIdClinic(
-      {required String idClinic}) {
-    // TODO: implement getListSpecialtyByIdClinic
-    throw UnimplementedError();
-  }
 
   @override
-  Future<List<MedicalService>> getListMedicalServiceLab() {
+  Future<List<MedicalService>> getListMedicalServiceExamination() {
     // TODO: implement getListMedicalServiceLab
     throw UnimplementedError();
   }
 
   @override
-  Future<List<MedicalService>> getListMedicalServicePys() {
+  Future<List<MedicalService>> getListMedicalServicePyschological() {
     // TODO: implement getListMedicalServicePys
     throw UnimplementedError();
   }
 
   @override
-  Future<List<MedicalService>> getListMedicalServiceVacin() {
+  Future<List<MedicalService>> getListMedicalServiceVacination() {
     // TODO: implement getListMedicalServiceVacin
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<List<Specialty>> getListSpecialtyByIdClinic({required String idClinic, required String searchName}) {
+    // TODO: implement getListSpecialtyByIdClinic
     throw UnimplementedError();
   }
 }

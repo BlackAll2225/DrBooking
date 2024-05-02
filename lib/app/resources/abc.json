@@ -3,43 +3,36 @@
   "message": "Ok",
   "data": [
     {
-      "patientName": "Brenna Collins",
-      "idPatientProfile": "5t1260ae-c78a-4f52-b43c-99f100ca0afd",
-      "idClient": "4d1260ae-c78a-4f52-b43c-99f100ca0afd",
-      "idAppointment": "2e0be727-2490-4aca-8acd-1f01223cfc83",
-      "doctorName": "Josiah Collier",
-      "start": "2024-04-19T10:00:00",
-      "clinicName": "Khai Nguyen",
-      "end": "2024-04-19T12:00:00",
-      "appointmentStatus": 0,
-      "appoinmentType": 0,
-      "paymentStatus": 0
+      "dutyScheduleId": "df11fca3-b69b-4299-9879-d13ddb1c5038",
+      "startTime": "2024-05-04T08:00:00",
+      "endTime": "2024-05-04T10:00:00",
+      "slotNumber": 1,
+      "isAvaiable": true,
+      "countAppointment": 0
     },
     {
-      "patientName": "Brenna Collins",
-      "idPatientProfile": "5t1260ae-c78a-4f52-b43c-99f100ca0afd",
-      "idClient": "4d1260ae-c78a-4f52-b43c-99f100ca0afd",
-      "idAppointment": "9c578b4f-a063-4766-8a7c-c58d396ccca9",
-      "doctorName": "Kamryn Reichel",
-      "start": "2024-04-11T13:00:00",
-      "clinicName": "Khai Nguyen",
-      "end": "2024-04-11T15:00:00",
-      "appointmentStatus": 0,
-      "appoinmentType": 2,
-      "paymentStatus": 0
+      "dutyScheduleId": "08a16d05-19a2-404f-a65e-1bd24b992be0",
+      "startTime": "2024-05-04T10:00:00",
+      "endTime": "2024-05-04T12:00:00",
+      "slotNumber": 2,
+      "isAvaiable": true,
+      "countAppointment": 0
     },
     {
-      "patientName": "Brenna Collins",
-      "idPatientProfile": "5t1260ae-c78a-4f52-b43c-99f100ca0afd",
-      "idClient": "4d1260ae-c78a-4f52-b43c-99f100ca0afd",
-      "idAppointment": "ec3f1af1-39e5-4c4f-8a67-63753e6da491",
-      "doctorName": "Jasen Stanton",
-      "start": "2024-04-20T08:00:00",
-      "clinicName": "Khai Nguyen",
-      "end": "2024-04-20T10:00:00",
-      "appointmentStatus": 0,
-      "appoinmentType": 0,
-      "paymentStatus": 0
+      "dutyScheduleId": "a5c72f55-32e6-47f5-b981-7c95933434da",
+      "startTime": "2024-05-04T13:00:00",
+      "endTime": "2024-05-04T15:00:00",
+      "slotNumber": 3,
+      "isAvaiable": true,
+      "countAppointment": 0
+    },
+    {
+      "dutyScheduleId": "74a4f2e0-6c92-467e-aeab-58d547d9b0e7",
+      "startTime": "2024-05-04T15:00:00",
+      "endTime": "2024-05-04T17:00:00",
+      "slotNumber": 4,
+      "isAvaiable": true,
+      "countAppointment": 0
     }
   ]
 }

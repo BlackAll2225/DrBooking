@@ -9,7 +9,6 @@ import 'package:drbooking/app/data/respository/patient/request_payload/patient_p
 import 'package:drbooking/app/model/address/district.dart';
 import 'package:drbooking/app/model/address/province.dart';
 import 'package:drbooking/app/model/address/ward.dart';
-import 'package:drbooking/app/model/profile.dart';
 import 'package:drbooking/app/model/patient/request_body_create_patient.dart';
 import 'package:drbooking/app/modules/new_profile/views/confirm_profile.dart';
 import 'package:drbooking/app/resources/color_manager.dart';

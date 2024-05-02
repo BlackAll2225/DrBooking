@@ -28,26 +28,26 @@ class DoctorRemote implements DoctorApi {
   }
 
   @override
-  Future<List<Specialty>> getListSpecialtyByIdClinic({required String idClinic}) async{
-   List<Specialty> listSpecialty = await apiBase.fetchDataList(BaseLink.getSpecials + idClinic, (json) => Specialty.fromJson(json));
+  Future<List<Specialty>> getListSpecialtyByIdClinic({required String idClinic, required String searchName}) async{
+   List<Specialty> listSpecialty = await apiBase.fetchDataList(BaseLink.getSpecials + idClinic+'/$searchName', (json) => Specialty.fromJson(json));
    return listSpecialty;
   }
   
   @override
-  Future<List<MedicalService>> getListMedicalServiceLab() async{
-   List<MedicalService> listService = await apiBase.fetchDataListWithPost(BaseLink.getExaminationService, (p0) => MedicalService.fromJson(p0), body: {});
+  Future<List<MedicalService>> getListMedicalServiceExamination() async{
+   List<MedicalService> listService = await apiBase.fetchDataList(BaseLink.getExaminationService, (p0) => MedicalService.fromJson(p0), );
    return listService;
   }
   
   @override
-   Future<List<MedicalService>> getListMedicalServicePys()async{
-    List<MedicalService> listService = await apiBase.fetchDataListWithPost(BaseLink.getPsychologicalService, (p0) => MedicalService.fromJson(p0), body: {});
+   Future<List<MedicalService>> getListMedicalServicePyschological()async{
+    List<MedicalService> listService = await apiBase.fetchDataList(BaseLink.getPsychologicalService, (p0) => MedicalService.fromJson(p0), );
    return listService;
   }
   
   @override
-   Future<List<MedicalService>> getListMedicalServiceVacin()async {
-   List<MedicalService> listService = await apiBase.fetchDataListWithPost(BaseLink.getVaccinationService, (p0) => MedicalService.fromJson(p0), body: {});
+   Future<List<MedicalService>> getListMedicalServiceVacination()async {
+   List<MedicalService> listService = await apiBase.fetchDataList(BaseLink.getVaccinationService, (p0) => MedicalService.fromJson(p0), );
    return listService;
   }
   

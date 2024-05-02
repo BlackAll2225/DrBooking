@@ -3,7 +3,7 @@ import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/common/widget/app_bar_custom.dart';
 import 'package:drbooking/app/model/doctor/doctor.dart';
 import 'package:drbooking/app/model/doctor/doctor_preview.dart';
-import 'package:drbooking/app/modules/booking_process/controllers/booking_process_controller.dart';
+import 'package:drbooking/app/modules/booking/booking_process_main/controllers/booking_process_main_controller.dart';
 import 'package:drbooking/app/resources/assets_manager.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
@@ -17,7 +17,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../controllers/doctor_controller.dart';
 
-class DoctorView extends BaseView<BookingProcessController> {
+class DoctorView extends BaseView<BookingProcessMainController> {
   const DoctorView({Key? key}) : super(key: key);
   @override
   Widget buildView(BuildContext context) {

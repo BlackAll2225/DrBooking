@@ -5,7 +5,7 @@ import 'package:drbooking/app/base/base_controller.dart';
 import 'package:drbooking/app/data/local/booking_local.dart';
 import 'package:drbooking/app/data/remote/booking_remote.dart';
 import 'package:drbooking/app/data/remote/patient_remote.dart';
-import 'package:drbooking/app/data/respository/appointment/request_payload/get_appointment_payload.dart';
+import 'package:drbooking/app/model/booking/payload/get_appointment_payload.dart';
 import 'package:drbooking/app/data/respository/booking_api.dart';
 import 'package:drbooking/app/data/respository/patient/patient_api.dart';
 import 'package:drbooking/app/model/booking/booking_preview.dart';
