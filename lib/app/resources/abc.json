@@ -1,0 +1,38 @@
+{
+  "status": "Status200OK",
+  "message": "Ok",
+  "data": [
+    {
+      "dutyScheduleId": "df11fca3-b69b-4299-9879-d13ddb1c5038",
+      "startTime": "2024-05-04T08:00:00",
+      "endTime": "2024-05-04T10:00:00",
+      "slotNumber": 1,
+      "isAvaiable": true,
+      "countAppointment": 0
+    },
+    {
+      "dutyScheduleId": "08a16d05-19a2-404f-a65e-1bd24b992be0",
+      "startTime": "2024-05-04T10:00:00",
+      "endTime": "2024-05-04T12:00:00",
+      "slotNumber": 2,
+      "isAvaiable": true,
+      "countAppointment": 0
+    },
+    {
+      "dutyScheduleId": "a5c72f55-32e6-47f5-b981-7c95933434da",
+      "startTime": "2024-05-04T13:00:00",
+      "endTime": "2024-05-04T15:00:00",
+      "slotNumber": 3,
+      "isAvaiable": true,
+      "countAppointment": 0
+    },
+    {
+      "dutyScheduleId": "74a4f2e0-6c92-467e-aeab-58d547d9b0e7",
+      "startTime": "2024-05-04T15:00:00",
+      "endTime": "2024-05-04T17:00:00",
+      "slotNumber": 4,
+      "isAvaiable": true,
+      "countAppointment": 0
+    }
+  ]
+}

@@ -1,10 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/common/widget/app_bar_custom.dart';
+import 'package:drbooking/app/model/doctor/doctor.dart';
 import 'package:drbooking/app/model/doctor/doctor_preview.dart';
+import 'package:drbooking/app/modules/booking/booking_process_main/controllers/booking_process_main_controller.dart';
 import 'package:drbooking/app/resources/assets_manager.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
 import 'package:drbooking/app/resources/text_style.dart';
+import 'package:drbooking/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -13,7 +17,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../controllers/doctor_controller.dart';
 
-class DoctorView extends BaseView<DoctorController> {
+class DoctorView extends BaseView<BookingProcessMainController> {
   const DoctorView({Key? key}) : super(key: key);
   @override
   Widget buildView(BuildContext context) {
@@ -35,9 +39,17 @@ class DoctorView extends BaseView<DoctorController> {
               children: [
                 TextConstant.subTile1(context, text: "Mặc định"),
                 SizedBoxConst.sizeWith(context: context),
-                Icon(
-                  Icons.radio_button_checked,
-                  color: ColorsManager.primary,
+                Obx(()=>
+                  InkWell(
+                    onTap: () {
+                      controller.selectedDoctor.value = Doctor.emptyFactory();
+                      Get.back();
+                    },
+                    child: Icon(
+                      controller.selectedDoctor.value.id.isEmpty?Icons.radio_button_checked:Icons.radio_button_off,
+                      color: ColorsManager.primary,
+                    ),
+                  ),
                 )
               ],
             ),
@@ -54,18 +66,19 @@ class DoctorView extends BaseView<DoctorController> {
           SizedBoxConst.size(context: context),
           Expanded(
               child: Obx(() => ListView.separated(
-                    padding: EdgeInsets.all(UtilsReponsive.height(20, context)),
-                    itemCount: controller.listDoctorPreview.value.length,
+                    // padding: EdgeInsets.all(UtilsReponsive.height(20, context)),
+                    itemCount: controller.listDoctors.value.length,
                     shrinkWrap: true,
                     primary: false,
                     separatorBuilder: (context, index) =>
                         SizedBoxConst.size(context: context),
                     itemBuilder: (context, index) => GestureDetector(
-                      onTap: () {
+                      onTap: () async{
+                        controller.onTapCardDoctor(controller.listDoctors[index]);
                         Get.back();
                       },
                       child: _cardDoctor(context,
-                          doctor: controller.listDoctorPreview[index]),
+                          doctor: controller.listDoctors[index]),
                     ),
                   )))
         ],
@@ -73,10 +86,23 @@ class DoctorView extends BaseView<DoctorController> {
     );
   }
 
-  Container _cardDoctor(BuildContext context, {required DoctorPreview doctor}) {
+  Container _cardDoctor(BuildContext context, {required Doctor doctor}) {
     return Container(
+      padding: EdgeInsets.all(10),
       // color: Colors.red,
-      height: UtilsReponsive.height(100, context),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+          boxShadow:  [
+                    BoxShadow(
+                      color: Colors.grey,
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+      ),
+      height: UtilsReponsive.height(120, context),
       width: double.infinity,
       child: Column(
         children: [
@@ -84,54 +110,70 @@ class DoctorView extends BaseView<DoctorController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                          color: ColorsManager.primary, shape: BoxShape.circle),
-                      child: Image.asset(ImageAssets.logo)),
-                  SizedBoxConst.sizeWith(context: context, size: 5),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextConstant.subTile1(context, text: doctor.name),
-                      TextConstant.subTile2(context,
-                          text: doctor.special,
-                          size: 12,
-                          color: Colors.grey.withOpacity(0.8)),
-                    ],
-                  )
-                ],
-              ),
-              Column(
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorsManager.primary,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5)),
-                      padding: EdgeInsets.symmetric(
-                          vertical: UtilsReponsive.height(2, context),
-                          horizontal: UtilsReponsive.height(20, context)),
-                    ),
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Chi tiết',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.montserrat(
-                            color: Colors.white,
-                            fontSize: UtilsReponsive.formatFontSize(12, context),
-                            fontWeight: FontWeight.bold),
+              Expanded(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                            color: ColorsManager.primary, shape: BoxShape.circle),
+                        child: CachedNetworkImage(
+                                            fit: BoxFit.fill,
+                                            imageUrl: doctor.avatarUrl,
+                                            placeholder: (context, url) =>
+                                                const CircularProgressIndicator(color: Colors.white,),
+                                            errorWidget: (context, url, error) =>
+                                                Image.asset(ImageAssets.logo),
+                                          ),),
+                    SizedBoxConst.sizeWith(context: context, size: 5),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextConstant.subTile1(context, text: doctor.fullname),
+                          TextConstant.subTile2(context,
+                              text: doctor.medicalSpecialtyName,
+                              size: 12,
+                              color: Colors.grey.withOpacity(0.8)),
+                              // TextConstant.subTile2(context,
+                              // text: doctor.email,
+                              // size: 12,
+                              // color: Colors.grey.withOpacity(0.8)),
+                        ],
                       ),
-                    ),
-                    onPressed: () async {},
+                    )
+                  ],
+                ),
+              ),
+              SizedBoxConst.sizeWith(context: context),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: ColorsManager.primary,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)),
+                  padding: EdgeInsets.symmetric(
+                      vertical: UtilsReponsive.height(2, context),
+                      horizontal: UtilsReponsive.height(20, context)),
+                ),
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Chi tiết',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.montserrat(
+                        color: Colors.white,
+                        fontSize: UtilsReponsive.formatFontSize(12, context),
+                        fontWeight: FontWeight.bold),
                   ),
-                ],
+                ),
+                onPressed: () async {
+                  Get.toNamed(Routes.DOCTOR_DETAIL, parameters: {
+                    "idDoctor":doctor.id
+                  });
+                },
               ),
             ],
           ),
@@ -149,7 +191,7 @@ class DoctorView extends BaseView<DoctorController> {
                           color: const Color(0xff979797), fontSize: 12),
                     ),
                     TextSpan(
-                      text: '   ${doctor.exp} năm',
+                      text: '   ${doctor.rating} năm',
                       style: Theme.of(context)
                           .textTheme
                           .bodyLarge!
@@ -164,7 +206,7 @@ class DoctorView extends BaseView<DoctorController> {
                   RatingBar.builder(
                       unratedColor: const Color(0xff979797),
                       itemSize: 12,
-                      initialRating: doctor.rate,
+                      initialRating: doctor.rating,
                       direction: Axis.horizontal,
                       itemCount: 5,
                       itemBuilder: (context, _) => const Icon(
@@ -176,7 +218,7 @@ class DoctorView extends BaseView<DoctorController> {
                     width: 4,
                   ),
                   Text(
-                    '(${doctor.countReview})',
+                    '(${doctor.rating})',
                     style: Theme.of(context)
                         .textTheme
                         .titleSmall!

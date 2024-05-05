@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "434413082334",
+    "project_id": "drbooking-app",
+    "storage_bucket": "drbooking-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:434413082334:android:ac7cc3a51fb454e3d9144f",
+        "android_client_info": {
+          "package_name": "com.example.drbooking"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1p9tBlvuozOhKDxujYnO50woPH9Nn2Wc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

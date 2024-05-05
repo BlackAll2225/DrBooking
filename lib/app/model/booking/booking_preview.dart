@@ -1,45 +1,92 @@
 // To parse this JSON data, do
 //
-//     final bookingPreview = bookingPreviewFromJson(jsonString);
+//     final appointmentPreview = appointmentPreviewFromJson(jsonString);
 
 import 'dart:convert';
 
-BookingPreview bookingPreviewFromJson(String str) => BookingPreview.fromJson(json.decode(str));
+AppointmentPreview appointmentPreviewFromJson(String str) => AppointmentPreview.fromJson(json.decode(str));
 
-String bookingPreviewToJson(BookingPreview data) => json.encode(data.toJson());
+String appointmentPreviewToJson(AppointmentPreview data) => json.encode(data.toJson());
 
-class BookingPreview {
-    String id;
-    String time;
-    String date;
-    String name;
-    String branch;
-    bool isNew;
+class AppointmentPreview {
+    String? patientName;
+    String? idPatientProfile;
+    String? idAppointment;
+    String? doctorName;
+    String? start;
+    String? end;
+    int? slotNumber;
+    String? clinicName;
+    int? appointmentStatus;
+    int? appoinmentType;
+    int? paymentStatus;
 
-    BookingPreview({
-         this.id = "",
-        required this.time,
-        required this.date,
-        required this.name,
-        required this.branch,
-        required this.isNew,
+    AppointmentPreview({
+        this.patientName,
+        this.idPatientProfile,
+        this.idAppointment,
+        this.doctorName,
+        this.start,
+        this.end,
+        this.slotNumber,
+        this.clinicName,
+        this.appointmentStatus,
+        this.appoinmentType,
+        this.paymentStatus,
     });
 
-    factory BookingPreview.fromJson(Map<String, dynamic> json) => BookingPreview(
-        id: json["id"],
-        time: json["time"],
-        date: json["date"],
-        name: json["name"],
-        branch: json["branch"],
-        isNew: json["isNew"],
+    AppointmentPreview copyWith({
+        String? patientName,
+        String? idPatientProfile,
+        String? idAppointment,
+        String? doctorName,
+        String? start,
+        String? end,
+        int? slotNumber,
+        String? clinicName,
+        int? appointmentStatus,
+        int? appoinmentType,
+        int? paymentStatus,
+    }) => 
+        AppointmentPreview(
+            patientName: patientName ?? this.patientName,
+            idPatientProfile: idPatientProfile ?? this.idPatientProfile,
+            idAppointment: idAppointment ?? this.idAppointment,
+            doctorName: doctorName ?? this.doctorName,
+            start: start ?? this.start,
+            end: end ?? this.end,
+            slotNumber: slotNumber ?? this.slotNumber,
+            clinicName: clinicName ?? this.clinicName,
+            appointmentStatus: appointmentStatus ?? this.appointmentStatus,
+            appoinmentType: appoinmentType ?? this.appoinmentType,
+            paymentStatus: paymentStatus ?? this.paymentStatus,
+        );
+
+    factory AppointmentPreview.fromJson(Map<String, dynamic> json) => AppointmentPreview(
+        patientName: json["patientName"],
+        idPatientProfile: json["idPatientProfile"],
+        idAppointment: json["idAppointment"],
+        doctorName: json["doctorName"],
+        start: json["start"],
+        end: json["end"],
+        slotNumber: json["slotNumber"],
+        clinicName: json["clinicName"],
+        appointmentStatus: json["appointmentStatus"],
+        appoinmentType: json["appoinmentType"],
+        paymentStatus: json["paymentStatus"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id,
-        "time": time,
-        "date": date,
-        "name": name,
-        "branch": branch,
-        "isNew": isNew,
+        "patientName": patientName,
+        "idPatientProfile": idPatientProfile,
+        "idAppointment": idAppointment,
+        "doctorName": doctorName,
+        "start": start,
+        "end": end,
+        "slotNumber": slotNumber,
+        "clinicName": clinicName,
+        "appointmentStatus": appointmentStatus,
+        "appoinmentType": appoinmentType,
+        "paymentStatus": paymentStatus,
     };
 }

@@ -17,7 +17,7 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
   @override
   Widget buildView(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar:   Container(
+      bottomNavigationBar:   SizedBox(
         height:UtilsReponsive.height(50, context),
           width: double.infinity,
           // padding: EdgeInsets.symmetric(
@@ -50,74 +50,79 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
             },
           ),
         ),
-        body: SafeArea(
+        body:Obx(()=> _body(context)));
+  }
+
+  SafeArea _body(BuildContext context) {
+    return SafeArea(
+          child: Column(
+    children: [
+      AppBarCustom(
+          callback: () {
+            Get.back();
+          },
+          title: 'Thông tin bác sĩ'),
+          SizedBoxConst.size(context: context),
+      Expanded(
+          child: SingleChildScrollView(
+              child: Stack(
+        children: [
+          Container(
+            height: UtilsReponsive.height(200, context),
+            width: double.infinity,
+            child: Image.asset(ImageAssets.imageWall,fit: BoxFit.fill,),
+          ),
+          Positioned(
+            top: UtilsReponsive.height(160, context),
+            left: UtilsReponsive.height(10, context),
+            child: Row(
+              children: [
+                Container(
+                  height: UtilsReponsive.height(80, context),
+                  width: UtilsReponsive.height(80, context),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle, color: Colors.white),
+                  child: Image.asset(ImageAssets.logo),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                      vertical: UtilsReponsive.height(5, context),
+                      horizontal: UtilsReponsive.height(20, context)),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                        UtilsReponsive.height(20, context)),
+                    color: ColorsManager.primary,
+                  ),
+                  child: TextConstant.subTile2(context,
+                      text: controller.doctor.value.fullname, color: Colors.black),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(UtilsReponsive.height(20, context)),
             child: Column(
-      children: [
-        AppBarCustom(
-            callback: () {
-              Get.back();
-            },
-            title: 'Thông tin bác sĩ'),
-        Expanded(
-            child: SingleChildScrollView(
-                child: Stack(
-          children: [
-            Container(
-              height: UtilsReponsive.height(200, context),
-              width: double.infinity,
-              color: Colors.grey,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBoxConst.size(context: context, size: 230),
+                SizedBox(
+                  width: double.infinity,
+                  child: TextConstant.subTile3(context,
+                      text:
+                          "Một số thông tin mô tả về bác sĩ.Một số thông tin mô tả về bác sĩ.Một số thông tin mô tả về bác sĩ"),
+                ),
+                Obx(() => _tabAboutFeedBack(context)),
+                SizedBoxConst.size(context: context, size: 20),
+                Obx(() => !controller.isFeedback.value
+                    ? _tabAbout(context)
+                    : _tabFeedback(context))
+              ],
             ),
-            Positioned(
-              top: UtilsReponsive.height(160, context),
-              left: UtilsReponsive.height(10, context),
-              child: Row(
-                children: [
-                  Container(
-                    height: UtilsReponsive.height(80, context),
-                    width: UtilsReponsive.height(80, context),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.white),
-                    child: Image.asset(ImageAssets.logo),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        vertical: UtilsReponsive.height(5, context),
-                        horizontal: UtilsReponsive.height(20, context)),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                          UtilsReponsive.height(20, context)),
-                      color: ColorsManager.primary,
-                    ),
-                    child: TextConstant.subTile2(context,
-                        text: "NGUYỄN VĂN A", color: Colors.black),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(UtilsReponsive.height(20, context)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBoxConst.size(context: context, size: 230),
-                  SizedBox(
-                    width: double.infinity,
-                    child: TextConstant.subTile3(context,
-                        text:
-                            "Một số thông tin mô tả về bác sĩ.Một số thông tin mô tả về bác sĩ.Một số thông tin mô tả về bác sĩ"),
-                  ),
-                  Obx(() => _tabAboutFeedBack(context)),
-                  SizedBoxConst.size(context: context, size: 20),
-                  Obx(() => !controller.isFeedback.value
-                      ? _tabAbout(context)
-                      : _tabFeedback(context))
-                ],
-              ),
-            )
-          ],
-        )))
-      ],
-    )));
+          )
+        ],
+      )))
+    ],
+  ));
   }
 
   _tabFeedback(BuildContext context) {
@@ -263,11 +268,11 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
           children: [
             Expanded(
               child: _buildOverviewTile(
-                  Icons.work, 'Kinh nghiệm', '18 năm', context),
+                  Icons.work, 'Kinh nghiệm', '${controller.doctor.value.yearOfExperience}', context),
             ),
             Expanded(
               child: _buildOverviewTile(
-                  Icons.folder_special, 'Chuyên khoa', 'Nội tổng hợp', context),
+                  Icons.folder_special, 'Chuyên khoa', controller.doctor.value.medicalSpecialtyName, context),
             ),
           ],
         ),
@@ -282,7 +287,7 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
             ),
             Expanded(
               child: _buildOverviewTile(
-                  Icons.work, 'Chi nhánh', 'Nguyễn Văn C', context),
+                  Icons.work, 'Bằng cấp', controller.doctor.value.degree, context),
             ),
           ],
         ),

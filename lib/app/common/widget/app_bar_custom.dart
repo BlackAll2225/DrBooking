@@ -6,7 +6,8 @@ import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 class AppBarCustom extends StatelessWidget {
   final Function callback;
   final String title;
-  AppBarCustom({Key? key, required this.callback, required this.title})
+  final Widget? traling;
+  AppBarCustom({Key? key, required this.callback, required this.title,this.traling})
       : super(key: key);
 
   @override
@@ -27,7 +28,7 @@ class AppBarCustom extends StatelessWidget {
           ),
           TextConstant.titleH2(context,
               text: title, fontWeight: FontWeight.w700),
-          const SizedBox.shrink(),
+          traling??const SizedBox.shrink(),
         ],
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/model/nav_account.dart';
 import 'package:drbooking/app/resources/assets_manager.dart';
@@ -34,7 +35,7 @@ class TabAccountView extends BaseView<TabAccountController> {
                     ),
                     TextConstant.titleH2(
                       context,
-                      text: 'Nguyen Van A',
+                      text: '${BaseCommon.instance.accountSession?.fullName??""}',
                     ),
                     const Expanded(child: SizedBox())
                   ],
@@ -93,7 +94,7 @@ class TabAccountView extends BaseView<TabAccountController> {
   GestureDetector _logoutButton(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.offAllNamed(Routes.LOGIN);
+        Get.offAllNamed(Routes.SIGN_IN);
       },
       child: Container(
         padding: EdgeInsets.symmetric(

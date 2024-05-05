@@ -1,7 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/common/widget/app_bar_custom.dart';
+import 'package:drbooking/app/resources/assets_manager.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/form_field_widget.dart';
+import 'package:drbooking/app/resources/loading_widget.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
 import 'package:drbooking/app/resources/text_style.dart';
 import 'package:flutter/material.dart';
@@ -15,113 +18,228 @@ class PersonalInformationView extends BaseView<PersonalInformationController> {
   @override
   Widget buildView(BuildContext context) {
     return Scaffold(
-     
       body: SafeArea(
         child: Column(
           children: [
-           AppBarCustom(callback: (){Get.back();}, title: 'Cập Nhật Tài Khoản'),
-           SizedBoxConst.size(context: context,size: 20),
+            AppBarCustom(
+                callback: () {
+                  Get.back();
+                },
+                title: 'Cập Nhật Tài Khoản'),
+            SizedBoxConst.size(context: context, size: 20),
             Expanded(
-              child: Material(
-                child: Container(
-                  width: UtilsReponsive.width(375,context, ),
-                  height: UtilsReponsive.height(812,context, ),
-                  color: Colors.white,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        controller.isLoading.value == true ? SizedBox() : SizedBox(),
-                        Center(
-                            child: ClipOval(
-                                child: Image.asset('assets/images/user1.png',
-                                    fit: BoxFit.fill,
+              child: Obx(() =>controller.isLoading.value?
+              Center(
+                child: LoadingWidget()
+              )
+              : Material(
+                    child: Container(
+                      width: UtilsReponsive.width(
+                        375,
+                        context,
+                      ),
+                      height: UtilsReponsive.height(
+                        812,
+                        context,
+                      ),
+                      color: Colors.white,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            controller.isLoading.value == true
+                                ? SizedBox()
+                                : SizedBox(),
+                            Center(
+                              child:Obx(()=> Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    clipBehavior: Clip.hardEdge,
                                     height: UtilsReponsive.height(80, context),
-                                    width: UtilsReponsive.height(80, context)))),
-                        Padding(
-                          padding:
-                              UtilsReponsive.paddingOnly(context, top: 30, left: 20),
-                          child: TextConstant.subTile3(
-                            context,
-                           text: "Họ & Tên",
-                          ),
-                        ),
-                        Padding(
-                          padding: UtilsReponsive.paddingOnly(context,
-                              top: 20, right: 20, left: 20),
-                          child: FormFieldWidget(
-                          setValueFunc: (v){},
-                          initValue: 'Nguyễn Văn C',
-                             icon : Icon(Icons.person)
-                          ),
-                        ),
-                        Padding(
-                          padding:
-                              UtilsReponsive.paddingOnly(context, top: 30, left: 20),
-                          child:TextConstant.subTile3(
-                            context,
-                           text:
-                            "Email",
-                          ),
-                        ),
-                        Padding(
-                            padding: UtilsReponsive.paddingOnly(context,
-                                top: 20, right: 20, left: 20),
-                            child: FormFieldWidget(
-                          setValueFunc: (v){},
-                          initValue: "abc@hihi.com",
-                             icon : Icon(Icons.person)
-                          ),),
-                        Padding(
-                          padding:
-                              UtilsReponsive.paddingOnly(context, top: 30, left: 20),
-                          child: TextConstant.subTile3(
-                            context,
-                           text:
-                            "Số Điện Thoại",
-                          ),
-                        ),
-                        Padding(
-                          padding: UtilsReponsive.paddingOnly(context,
-                              top: 20, right: 20, left: 20),
-                          child:FormFieldWidget(
-                          setValueFunc: (v){},
-                          initValue: '0982 9999 90',
-                             icon : Icon(Icons.person)
-                          )
-                        ),
-                      
-                        Padding(
-                          padding: UtilsReponsive.paddingOnly(context,
-                              top: 50, left: 20, right: 20, bottom: 50),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: ColorsManager.primary,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15)),
-                              padding: UtilsReponsive.paddingOnly(context,
-                                  top: 15, bottom: 15),
+                                    width: UtilsReponsive.height(80, context),
+                                    decoration: BoxDecoration(
+                                        color: ColorsManager.primary,
+                                        shape: BoxShape.circle),
+                                    child: CachedNetworkImage(
+                                      fit: BoxFit.fill,
+                                      imageUrl: controller.account.value.avatarUrl ?? '',
+                                      placeholder: (context, url) =>
+                                          const CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          Image.asset(ImageAssets.logo),
+                                    ),
+                                  ),
+                                 GestureDetector(
+                                  onTap: () async{
+                                  await  controller.pickImageFromCategory();
+                                  },
+                                  child: TextConstant.subTile3(context, text: 'Thay đổi', color: Colors.blue))
+                                ],
+                              )),
                             ),
-            
-                            // ignore: sort_child_properties_last
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Lưu Thay Đổi',
-                                textAlign: TextAlign.center,
+                            Padding(
+                              padding: UtilsReponsive.paddingOnly(context,
+                                  top: 30, left: 20),
+                              child: TextConstant.subTile3(
+                                context,
+                                text: "Họ & Tên",
                               ),
                             ),
-                            onPressed: () async{
-                            },
-                          ),
+                            Padding(
+                              padding: UtilsReponsive.paddingOnly(context,
+                                  top: 20, right: 20, left: 20),
+                              child: FormFieldWidget(
+                                 borderColor: Colors.grey,
+                                  radiusBorder: 10,
+                                  isEnabled: !controller.isLockUpdate.value,
+                                  setValueFunc: (v) {},
+                                  initValue: controller.account.value.fullName,
+                                  icon: Icon(Icons.person)),
+                            ),
+                            Padding(
+                              padding: UtilsReponsive.paddingOnly(context,
+                                  top: 30, left: 20),
+                              child: TextConstant.subTile3(
+                                context,
+                                text: "Email",
+                              ),
+                            ),
+                            Padding(
+                              padding: UtilsReponsive.paddingOnly(context,
+                                  top: 20, right: 20, left: 20),
+                              child: FormFieldWidget(
+                                 borderColor: Colors.grey,
+                                  radiusBorder: 10,
+                                  isEnabled: !controller.isLockUpdate.value,
+                                  setValueFunc: (v) {},
+                                  initValue: controller.account.value.email,
+                                  icon: Icon(Icons.email)),
+                            ),
+                            Padding(
+                              padding: UtilsReponsive.paddingOnly(context,
+                                  top: 30, left: 20),
+                              child: TextConstant.subTile3(
+                                context,
+                                text: "Số Điện Thoại",
+                              ),
+                            ),
+                            Padding(
+                                padding: UtilsReponsive.paddingOnly(context,
+                                    top: 20, right: 20, left: 20),
+                                child: FormFieldWidget(
+                                  borderColor: Colors.grey,
+                                  radiusBorder: 10,
+                                    isEnabled: !controller.isLockUpdate.value,
+                                    setValueFunc: (v) {},
+                                    initValue:
+                                        controller.account.value.phoneNumber,
+                                    icon: Icon(Icons.phone))),
+                            Padding(
+                                padding: UtilsReponsive.paddingOnly(context,
+                                    top: 50, left: 20, right: 20, bottom: 50),
+                                child: Obx(() => controller.isLockUpdate.value
+                                    ? ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              ColorsManager.primary,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          padding: UtilsReponsive.paddingOnly(
+                                              context,
+                                              top: 15,
+                                              bottom: 15),
+                                        ),
+
+                                        // ignore: sort_child_properties_last
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            'Chỉnh sửa thông tin',
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                        onPressed: () async {
+                                          controller.onTapEdit();
+                                        },
+                                      )
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Expanded(
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  side: BorderSide(color: ColorsManager.primary),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15)),
+                                                padding:
+                                                    UtilsReponsive.paddingOnly(
+                                                        context,
+                                                        top: 15,
+                                                        bottom: 15),
+                                              ),
+
+                                              // ignore: sort_child_properties_last
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                child: TextConstant.subTile3(context,text:
+                                                  'Huỷ bỏ',
+                                                  color: ColorsManager.primary,
+                                                ),
+                                              ),
+                                              onPressed: () async {
+                                                controller.onTapEdit();
+                                              },
+                                            ),
+                                          ),
+                                          SizedBoxConst.sizeWith(
+                                              context: context),
+                                          Expanded(
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    ColorsManager.primary,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15)),
+                                                padding:
+                                                    UtilsReponsive.paddingOnly(
+                                                        context,
+                                                        top: 15,
+                                                        bottom: 15),
+                                              ),
+
+                                              // ignore: sort_child_properties_last
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  'Cập nhật',
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                              onPressed: () async {
+                                                controller.onTapEdit();
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ))),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              ),
+                  )),
             ),
           ],
         ),
