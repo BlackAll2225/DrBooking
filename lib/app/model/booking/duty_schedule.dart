@@ -54,7 +54,7 @@ class DutySchedule {
         dutyScheduleId: '',
         startTime: DateTime.now(),
         endTime: DateTime.now(),
-        slotNumber: 1,
+        slotNumber: -1,
         isAvaiable: false,
         countAppointment: 1,
     );

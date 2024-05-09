@@ -212,8 +212,7 @@ class BookingProcessMainView extends BaseView<BookingProcessMainController> {
                           SizedBoxConst.size(context: context),
                           GestureDetector(
                             onTap: () async {
-                              Get.to(() => const DoctorView(),
-                                  transition: Transition.downToUp);
+                             controller.onTapChoiceDoctor();
                             },
                             child: Container(
                                 width: double.infinity,
@@ -231,7 +230,7 @@ class BookingProcessMainView extends BaseView<BookingProcessMainController> {
                                   children: [
                                     TextConstant.subTile2(context,
                                         text: controller
-                                            .selectedDoctor.value.fullname),
+                                            .selectedDoctor.value.fullname??''),
                                     const Icon(Icons.arrow_drop_down)
                                   ],
                                 )),
@@ -318,7 +317,7 @@ class BookingProcessMainView extends BaseView<BookingProcessMainController> {
                     ])),
                 SizedBoxConst.size(context: context),
                 FormFieldWidget(
-                  controllerEditting: controller.symptomTextController,
+                  controllerEditting: controller.symptomController,
                   setValueFunc: (value) {},
                   maxLine: 4,
                   borderColor: Colors.grey,
@@ -327,46 +326,45 @@ class BookingProcessMainView extends BaseView<BookingProcessMainController> {
                   paddingVerti: 15,
                   radiusBorder: 10,
                 ),
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(
-                      horizontal: UtilsReponsive.height(10, context)),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorsManager.primary,
-                      shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                              color: ColorsManager.primary,
-                              width: UtilsReponsive.height(2, context)),
-                          borderRadius: BorderRadius.circular(5)),
-                      padding: EdgeInsets.symmetric(
-                          vertical: UtilsReponsive.height(2, context),
-                          horizontal: UtilsReponsive.height(20, context)),
-                    ),
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Tiếp theo',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.montserrat(
-                            color: Colors.white,
-                            fontSize:
-                                UtilsReponsive.formatFontSize(12, context),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    onPressed: () {
-                      //  Get.toNamed(Routes.BOOKING_PROCESS_CONFIRM, arguments: controller.requestParamBooking);
-                      controller.onTapConfirm();
-                    },
-                  ),
-                ),
+                             Obx(()=>_buttomNext(context, controller.selectedSlot.value.dutyScheduleId.isNotEmpty)),
               ],
             ),
           ))
         ],
       ),
     ));
+  }
+   Container _buttomNext(BuildContext context, bool isEnable) {
+    return Container(
+      width: double.infinity,
+      padding:
+          EdgeInsets.symmetric(horizontal: UtilsReponsive.height(10, context)),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor:isEnable? ColorsManager.primary:Colors.grey,
+          shape: RoundedRectangleBorder(
+              side: BorderSide(
+                  color: isEnable? ColorsManager.primary:Colors.grey,
+                  width: UtilsReponsive.height(2, context)),
+              borderRadius: BorderRadius.circular(5)),
+          padding: EdgeInsets.symmetric(
+              vertical: UtilsReponsive.height(2, context),
+              horizontal: UtilsReponsive.height(20, context)),
+        ),
+        child: Container(
+          alignment: Alignment.center,
+          child: TextConstant.subTile2(
+            context,
+            text: 'Tiếp theo',
+            color: isEnable?Colors.white:Colors.black
+          ),
+        ),
+        onPressed: () async {
+          // controller.selectedSlot.value = DutySchedule.emtyObject();
+          controller.onTapNextButton();
+        },
+      ),
+    );
   }
 
   Container _cardProfile(BuildContext context) {

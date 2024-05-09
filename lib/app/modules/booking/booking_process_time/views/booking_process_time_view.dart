@@ -16,7 +16,8 @@ class BookingProcessTimeView extends BaseView<BookingProcessTimeController> {
   @override
   Widget buildView(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: _buttonSubmit(context),
+      bottomNavigationBar: Obx(() => _buttonSubmit(
+          context, controller.selectedSlot.value.dutyScheduleId.isNotEmpty)),
       body: SafeArea(
         child: Column(
           children: [
@@ -137,8 +138,8 @@ class BookingProcessTimeView extends BaseView<BookingProcessTimeController> {
                             crossAxisCount: 3,
                             crossAxisSpacing: 4.0,
                             mainAxisSpacing: 8.0,
-                            children: List.generate(controller.listSlot.length,
-                                (index) {
+                            children: List.generate(
+                                controller.listDutySchedule.length, (index) {
                               return GestureDetector(
                                 onTap: () {
                                   controller.onSelectedSlot(
@@ -161,7 +162,10 @@ class BookingProcessTimeView extends BaseView<BookingProcessTimeController> {
                                   child: FittedBox(
                                     fit: BoxFit.cover,
                                     child: TextConstant.subTile3(context,
-                                        text: controller.listSlot[index],
+                                        text: controller.listSlot[controller
+                                                .listDutySchedule[index]
+                                                .slotNumber -
+                                            1],
                                         color: Colors.white),
                                   ),
                                 ),
@@ -174,7 +178,7 @@ class BookingProcessTimeView extends BaseView<BookingProcessTimeController> {
     );
   }
 
-  Container _buttonSubmit(BuildContext context) {
+  Container _buttonSubmit(BuildContext context, bool isEnable) {
     return Container(
       margin: EdgeInsets.only(bottom: UtilsReponsive.height(10, context)),
       width: double.infinity,
@@ -186,7 +190,7 @@ class BookingProcessTimeView extends BaseView<BookingProcessTimeController> {
           backgroundColor: ColorsManager.primary,
           shape: RoundedRectangleBorder(
               side: BorderSide(
-                  color: ColorsManager.primary,
+                  color: isEnable ? ColorsManager.primary : Colors.grey ,
                   width: UtilsReponsive.height(2, context)),
               borderRadius: BorderRadius.circular(5)),
           padding: EdgeInsets.symmetric(
@@ -195,14 +199,8 @@ class BookingProcessTimeView extends BaseView<BookingProcessTimeController> {
         ),
         child: Container(
           alignment: Alignment.center,
-          child: Text(
-            'Xác nhận',
-            textAlign: TextAlign.center,
-            style: GoogleFonts.montserrat(
-                color: Colors.white,
-                fontSize: UtilsReponsive.formatFontSize(12, context),
-                fontWeight: FontWeight.bold),
-          ),
+          child: TextConstant.titleH3(context,
+              text: 'Xác nhận', color: isEnable ? Colors.white : Colors.black),
         ),
         onPressed: () async {
           controller.onTapSubmitButton();
@@ -212,4 +210,3 @@ class BookingProcessTimeView extends BaseView<BookingProcessTimeController> {
     );
   }
 }
-

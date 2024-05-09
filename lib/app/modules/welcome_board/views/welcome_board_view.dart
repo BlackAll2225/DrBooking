@@ -23,7 +23,8 @@ class WelcomeBoardView extends BaseView<WelcomeBoardController> {
       child: Container(
         height: double.infinity,
         width: double.infinity,
-        child: Stack(children: [
+        child: 
+        Stack(children: [
           PageView(
             onPageChanged: (value) {
               controller.changePage(value);

@@ -334,7 +334,7 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                       borderRadius: BorderRadius.circular(
                           UtilsReponsive.height(8, context))),
                   child: TextConstant.subTile3(context,
-                      text: appointmentTypeList[booking.appoinmentType ?? 0]
+                      text: appointmentTypeList[booking.appoinmentType!>0 ?booking.appoinmentType!: 0]
                           .label
                           .toString(),
                       color: Colors.white),

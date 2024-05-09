@@ -12,11 +12,13 @@ class PayloadGetDutySchedule {
     String? date;
     String? clinicId;
     String? specialtyId;
+    String? doctorId;
 
     PayloadGetDutySchedule({
         this.date,
         this.clinicId,
         this.specialtyId,
+        this.doctorId
     });
 
     PayloadGetDutySchedule copyWith({

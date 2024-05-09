@@ -9,8 +9,10 @@ import 'package:drbooking/app/model/booking/duty_schedule.dart';
 import 'package:drbooking/app/model/booking/request_body_create_booking.dart';
 import 'package:drbooking/app/model/clinic.dart';
 import 'package:drbooking/app/model/doctor/doctor.dart';
+import 'package:drbooking/app/model/doctor/doctor_preview.dart';
 import 'package:drbooking/app/model/doctor/specicalty.dart';
 import 'package:drbooking/app/model/request_booking.dart';
+import 'package:drbooking/app/modules/doctor/views/doctor_view.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
 import 'package:drbooking/app/resources/text_style.dart';
 import 'package:drbooking/app/resources/util_common.dart';
@@ -23,7 +25,6 @@ class BookingProcessMainController extends BaseController {
   //TODO: Implement BookingProcessController
   BookingProcessMainController({required this.requestParamBooking});
   final RequestParamBooking requestParamBooking;
-  TextEditingController symptomTextController = TextEditingController(text: '');
   DoctorApi doctorApi = DoctorRemote();
 
   RxList<Clinic> listClinic = <Clinic>[].obs;
@@ -32,10 +33,10 @@ class BookingProcessMainController extends BaseController {
 
   RxList<Specialty> listSpecialty = <Specialty>[].obs;
   Rx<Specialty> selectedSpecialty =
-      Specialty( name: 'Vui lòng chọn chuyên khoa').obs;
+      Specialty(name: 'Vui lòng chọn chuyên khoa').obs;
 
-  RxList<Doctor> listDoctors = <Doctor>[].obs;
-  Rx<Doctor> selectedDoctor = Doctor.emptyFactory().obs;
+  RxList<DoctorPreview> listDoctors = <DoctorPreview>[].obs;
+  Rx<DoctorPreview> selectedDoctor = DoctorPreview().obs;
 
   Rx<RequestParamBooking> requestData = RequestParamBooking().obs;
 
@@ -45,16 +46,16 @@ class BookingProcessMainController extends BaseController {
 
   BookingApi bookingApi = BookingRemote();
   TextEditingController searchController = TextEditingController(text: '');
+  TextEditingController symptomController = TextEditingController(text: '');
 
   @override
   Future<void> onInit() async {
     requestData.value = requestParamBooking;
     selectedClinic.value = requestParamBooking.clinic ??
         Clinic(createdAt: DateTime.now(), name: 'Vui lòng chọn chi nhánh');
-    selectedSpecialty.value = requestParamBooking.specialty ??
-        Specialty( name: 'Vui lòng chọn chuyên khoa');
+    selectedSpecialty.value =
+        Specialty(name: 'Vui lòng chọn chuyên khoa');
     await fetchDataClinic();
-    // await fetchDataDoctor(idClinic: requestParamBooking.clinic!.id);
     // await fetchDataSpecialtys(idClinic: requestParamBooking.clinic!.id);
     super.onInit();
   }
@@ -69,13 +70,13 @@ class BookingProcessMainController extends BaseController {
     super.onClose();
   }
 
-  onTapConfirm() {
+  onTapNextButton() {
     requestParamBooking.dateBooking =
         DateFormat('yyyy-MM-dd').format(selectedDate.value);
     requestParamBooking.dutySchedule = selectedSlot.value;
     requestParamBooking.specialty = selectedSpecialty.value;
     requestParamBooking.doctor = selectedDoctor.value;
-    requestParamBooking.symptom = symptomTextController.text;
+    requestParamBooking.symptom = symptomController.text;
     Get.toNamed(Routes.BOOKING_PROCESS_CONFIRM, arguments: requestParamBooking);
   }
 
@@ -104,13 +105,17 @@ class BookingProcessMainController extends BaseController {
     }).catchError(handleError);
   }
 
-  onTapCardDoctor(Doctor doctor) {
+  onTapCardDoctor(DoctorPreview doctor) {
     selectedDoctor.value = doctor;
     requestParamBooking.doctor = doctor;
   }
 
-  fetchDataDoctor({required String idClinic}) async {
-    await doctorApi.getListDoctorRandom(param: idClinic).then((value) {
+  fetchDataDoctor(
+      {required String idClinic, required String idSpecicalty}) async {
+    await doctorApi
+        .getListDoctorBySpecialAndClinic(
+            idClinic: idClinic, idSpecialty: idSpecicalty)
+        .then((value) {
       listDoctors.value = value;
     });
   }
@@ -126,8 +131,8 @@ class BookingProcessMainController extends BaseController {
   }
 
   onTapClinic(Clinic clinic) async {
-    selectedSpecialty.value =Specialty( name: 'Vui lòng chọn chuyên khoa');
-    selectedDoctor.value = Doctor.emptyFactory();
+    selectedSpecialty.value = Specialty(name: 'Vui lòng chọn chuyên khoa');
+    selectedDoctor.value = DoctorPreview();
     selectedSlot.value = DutySchedule.emtyObject();
     selectedClinic.value = clinic;
   }
@@ -178,9 +183,10 @@ class BookingProcessMainController extends BaseController {
   }
 
   onTapSpecial(Specialty specialty) async {
-    selectedDoctor.value = Doctor.emptyFactory();
+    selectedDoctor.value = DoctorPreview();
     selectedSlot.value = DutySchedule.emtyObject();
-    
+    concatSlotTime.value = 'Mời chọn thời gian';
+
     selectedSpecialty.value = specialty;
     requestParamBooking.specialty = specialty;
   }
@@ -213,4 +219,16 @@ class BookingProcessMainController extends BaseController {
     body.symptoms = '';
     body.dutyScheduleId = selectedSlot.value.dutyScheduleId;
   }
+
+  onTapChoiceDoctor() async {
+    await fetchDataDoctor(
+        idClinic: requestParamBooking.clinic!.id,
+        idSpecicalty: requestParamBooking.specialty!.id!);
+    Get.to(() => DoctorView(), transition: Transition.downToUp);
+  }
+
+  // onTapNextButton() {
+  //   requestParamBooking.symptom = symptomController.text;
+  //   Get.toNamed(Routes.BOOKING_PROCESS_CONFIRM, arguments: requestParamBooking);
+  // }
 }

@@ -46,15 +46,18 @@ class TabPatientController extends BaseController {
   fetchAlClients() async {
     try {
       if (!isFetchMore.value) {
+        isFetchMore(true);
         List<PatientPreview> listData = await profileApi.getPatients(
             searchName: searchTextController.text, take: take + 10, skip: skip);
         if (listData.isNotEmpty) {
           take += 10;
           skip += 10;
         }
-          listPatients.addAll(listData);
+        listPatients.addAll(listData);
       }
+      isFetchMore(false);
     } catch (e) {
+      isFetchMore(false);
       log(e.toString());
     }
   }
@@ -62,7 +65,7 @@ class TabPatientController extends BaseController {
   fetchWithSearch() async {
     take = 0;
     skip = 0;
-    listPatients.value.clear() ;
+    listPatients.value.clear();
     await fetchAlClients();
   }
 

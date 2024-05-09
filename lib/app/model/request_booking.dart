@@ -2,6 +2,7 @@ import 'package:drbooking/app/model/booking/duty_schedule.dart';
 import 'package:drbooking/app/model/booking/medical_service.dart';
 import 'package:drbooking/app/model/clinic.dart';
 import 'package:drbooking/app/model/doctor/doctor.dart';
+import 'package:drbooking/app/model/doctor/doctor_preview.dart';
 import 'package:drbooking/app/model/doctor/specicalty.dart';
 import 'package:drbooking/app/model/patient/patient_preview.dart';
 import 'package:drbooking/app/model/service/button_service.dart';
@@ -11,7 +12,7 @@ import 'package:drbooking/app/model/special.dart';
 class RequestParamBooking {
     Clinic? clinic;
     PatientPreview? patient;
-    Doctor? doctor;
+    DoctorPreview? doctor;
     Slot? slot;
     SpecialModule? special;
     String? description;

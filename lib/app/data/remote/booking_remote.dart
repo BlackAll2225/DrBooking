@@ -121,9 +121,12 @@ class BookingRemote implements BookingApi {
 
   @override
   Future<List<DutySchedule>> checkDutyScheduleGeneral(
-      {required PayloadGetDutySchedule payload}) {
-    // TODO: implement checkDutyScheduleGeneral
-    throw UnimplementedError();
+      {required PayloadGetDutySchedule payload})async {
+    String endpoint = 'date=${payload.date}&&clinicId=${payload.clinicId}';
+    List<DutySchedule> list = await apiService.fetchDataList(
+        BaseLink.checkDutyScheduleGeneral + endpoint,
+        (p0) => DutySchedule.fromJson(p0));
+    return list;
 }
 
   @override
@@ -138,9 +141,12 @@ class BookingRemote implements BookingApi {
 
   @override
   Future<List<DutySchedule>> checkDutyScheduleSpecialty(
-      {required PayloadGetDutySchedule payload}) {
-    // TODO: implement checkDutyScheduleSpecialty
-    throw UnimplementedError();
+      {required PayloadGetDutySchedule payload}) async{
+        String endpoint = 'date=${payload.date}&&clinicId=${payload.clinicId}&&specialtyId=${payload.specialtyId}/${payload.doctorId??''}';
+        List<DutySchedule> list = await apiService.fetchDataList(
+        BaseLink.checkDutyScheduleSpecialty + endpoint,
+        (p0) => DutySchedule.fromJson(p0));
+    return list;
   }
 
   @override

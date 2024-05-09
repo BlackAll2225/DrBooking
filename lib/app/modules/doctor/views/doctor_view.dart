@@ -42,11 +42,11 @@ class DoctorView extends BaseView<BookingProcessMainController> {
                 Obx(()=>
                   InkWell(
                     onTap: () {
-                      controller.selectedDoctor.value = Doctor.emptyFactory();
+                      controller.selectedDoctor.value = DoctorPreview();
                       Get.back();
                     },
                     child: Icon(
-                      controller.selectedDoctor.value.id.isEmpty?Icons.radio_button_checked:Icons.radio_button_off,
+                      controller.selectedDoctor.value.id==null?Icons.radio_button_checked:Icons.radio_button_off,
                       color: ColorsManager.primary,
                     ),
                   ),
@@ -86,7 +86,7 @@ class DoctorView extends BaseView<BookingProcessMainController> {
     );
   }
 
-  Container _cardDoctor(BuildContext context, {required Doctor doctor}) {
+  Container _cardDoctor(BuildContext context, {required DoctorPreview doctor}) {
     return Container(
       padding: EdgeInsets.all(10),
       // color: Colors.red,
@@ -121,7 +121,7 @@ class DoctorView extends BaseView<BookingProcessMainController> {
                             color: ColorsManager.primary, shape: BoxShape.circle),
                         child: CachedNetworkImage(
                                             fit: BoxFit.fill,
-                                            imageUrl: doctor.avatarUrl,
+                                            imageUrl: doctor.avatarUrl??'',
                                             placeholder: (context, url) =>
                                                 const CircularProgressIndicator(color: Colors.white,),
                                             errorWidget: (context, url, error) =>
@@ -133,9 +133,9 @@ class DoctorView extends BaseView<BookingProcessMainController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          TextConstant.subTile1(context, text: doctor.fullname),
+                          TextConstant.subTile1(context, text: doctor.fullname!),
                           TextConstant.subTile2(context,
-                              text: doctor.medicalSpecialtyName,
+                              text: doctor.medicalSpecialtyName!,
                               size: 12,
                               color: Colors.grey.withOpacity(0.8)),
                               // TextConstant.subTile2(context,
@@ -171,7 +171,7 @@ class DoctorView extends BaseView<BookingProcessMainController> {
                 ),
                 onPressed: () async {
                   Get.toNamed(Routes.DOCTOR_DETAIL, parameters: {
-                    "idDoctor":doctor.id
+                    "idDoctor":doctor.id!
                   });
                 },
               ),
@@ -206,7 +206,7 @@ class DoctorView extends BaseView<BookingProcessMainController> {
                   RatingBar.builder(
                       unratedColor: const Color(0xff979797),
                       itemSize: 12,
-                      initialRating: doctor.rating,
+                      initialRating: doctor.rating!.toDouble(),
                       direction: Axis.horizontal,
                       itemCount: 5,
                       itemBuilder: (context, _) => const Icon(

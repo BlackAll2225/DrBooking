@@ -28,6 +28,9 @@ class BaseLink {
 
   static String getDoctorsByClinic = '$domain/api/v1/employee/doctor-by-clinic/';
   static String getDoctorById = '$domain/api/v1/employee/doctor/';
+  static String getListDoctorBySpecialAndClinic = '$domain/api/v1/employee/mobile-doctor/';
+
+  //api/v1/employee/mobile-doctor/
 
   static String getClientsByIdAccount = '$domain/api/v1/patient-profile/get-many-by-client-id';
 
@@ -45,11 +48,11 @@ class BaseLink {
 //
   //DutySchedule
   // static String checkDutyScheduleTest = '$domain/';
-  static String checkDutyScheduleGeneral = '$domain/t';
+  static String checkDutyScheduleGeneral = '$domain/api/v1/duty-schedule/many-by-general-health-check/';
   static String checkDutyScheduleMedicalExamination = '$domain/api/v1/duty-schedule/many-by-examination/';
   static String checkDutyScheduleMedicalPsychology = '$domain/api/v1/duty-schedule/many-by-psychology/';
   static String checkDutyScheduleMedicalVacination = '$domain/api/v1/duty-schedule/many-by-vacination/';
-  static String checkDutyScheduleSpecialty =  '$domain/api/v1/slot/search-slot-for-demand-based';
+  static String checkDutyScheduleSpecialty =  '$domain/api/v1/duty-schedule/many-by-specialty/';
 
 
   //Medical-service

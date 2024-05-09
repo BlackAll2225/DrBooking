@@ -9,40 +9,78 @@ DoctorPreview doctorPreviewFromJson(String str) => DoctorPreview.fromJson(json.d
 String doctorPreviewToJson(DoctorPreview data) => json.encode(data.toJson());
 
 class DoctorPreview {
-    String id;
-    String name;
-    String special;
-    String branch;
-    double exp;
-    double rate;
-    int countReview;
+    String? id;
+    String? email;
+    String? fullname;
+    String? degree;
+    bool? isPartTime;
+    String? clinicName;
+    String? medicalSpecialtyName;
+    String? avatarUrl;
+    int? rating;
+    int? yearOfExperience;
 
     DoctorPreview({
-        required this.id,
-        required this.name,
-        required this.special,
-        required this.exp,
-        required this.rate,
-        required this.branch,
-        required this.countReview,
+        this.id,
+        this.email,
+        this.fullname = 'Mặc định',
+        this.degree,
+        this.isPartTime,
+        this.clinicName,
+        this.medicalSpecialtyName,
+        this.avatarUrl,
+        this.rating,
+        this.yearOfExperience,
     });
+
+    DoctorPreview copyWith({
+        String? id,
+        String? email,
+        String? fullname,
+        String? degree,
+        bool? isPartTime,
+        String? clinicName,
+        String? medicalSpecialtyName,
+        String? avatarUrl,
+        int? rating,
+        int? yearOfExperience,
+    }) => 
+        DoctorPreview(
+            id: id ?? this.id,
+            email: email ?? this.email,
+            fullname: fullname ?? this.fullname,
+            degree: degree ?? this.degree,
+            isPartTime: isPartTime ?? this.isPartTime,
+            clinicName: clinicName ?? this.clinicName,
+            medicalSpecialtyName: medicalSpecialtyName ?? this.medicalSpecialtyName,
+            avatarUrl: avatarUrl ?? this.avatarUrl,
+            rating: rating ?? this.rating,
+            yearOfExperience: yearOfExperience ?? this.yearOfExperience,
+        );
 
     factory DoctorPreview.fromJson(Map<String, dynamic> json) => DoctorPreview(
         id: json["id"],
-        name: json["name"],
-        branch: json["branch"],
-        special: json["special"],
-        exp: json["exp"]?.toDouble(),
-        rate: json["rate"]?.toDouble(),
-        countReview: json["countReview"],
+        email: json["email"],
+        fullname: json["fullname"],
+        degree: json["degree"],
+        isPartTime: json["isPartTime"],
+        clinicName: json["clinicName"],
+        medicalSpecialtyName: json["medicalSpecialtyName"],
+        avatarUrl: json["avatarUrl"],
+        rating: json["rating"],
+        yearOfExperience: json["yearOfExperience"],
     );
 
     Map<String, dynamic> toJson() => {
         "id": id,
-        "name": name,
-        "special": special,
-        "exp": exp,
-        "rate": rate,
-        "countReview": countReview,
+        "email": email,
+        "fullname": fullname,
+        "degree": degree,
+        "isPartTime": isPartTime,
+        "clinicName": clinicName,
+        "medicalSpecialtyName": medicalSpecialtyName,
+        "avatarUrl": avatarUrl,
+        "rating": rating,
+        "yearOfExperience": yearOfExperience,
     };
 }

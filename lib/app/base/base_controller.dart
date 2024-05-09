@@ -15,6 +15,7 @@ abstract class BaseController extends GetxController {
     try {
       log("errApi:" + error.toString());
       isLockButton(false);
+      isLoading(false);
       UtilCommon.snackBar(text: '${error.message}', isFail: true);
     } catch (e) {
       UtilCommon.snackBar(text: '$error', isFail: true);

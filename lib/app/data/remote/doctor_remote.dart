@@ -51,6 +51,14 @@ class DoctorRemote implements DoctorApi {
    return listService;
   }
   
+  @override
+  Future<List<DoctorPreview>> getListDoctorBySpecialAndClinic({required String idClinic, required String idSpecialty}) async{
+    //getListDoctorBySpecialAndClinic
+    List<DoctorPreview> listDoctor = await apiBase.fetchDataList('${BaseLink.getListDoctorBySpecialAndClinic}specialtyId=$idSpecialty&&clinicId=$idClinic', (p0) => DoctorPreview.fromJson(p0));
+
+    return listDoctor;
+  }
+  
 
 
   

@@ -42,6 +42,7 @@ class BookingProcessTimeController extends BaseController {
   }
 
   getTimeSelectedInit(TypeService type) async {
+    isLoading(true);
     switch (type) {
       case TypeService.generalExam:
         selectedDate.value =
@@ -86,32 +87,30 @@ class BookingProcessTimeController extends BaseController {
   }
 
   checkTimeByTypeService(DateTime dateTime) async {
-    try {
-      switch (type) {
-        case TypeService.generalExam:
-          await checkTimeGeneral(dateTime,
-              Get.find<BookingGeneralController>().requestParamBooking);
-          break;
-        case TypeService.specialtyExam:
-          await checkTimeSpeciality(dateTime,
-              Get.find<BookingProcessMainController>().requestParamBooking);
-          break;
-        case TypeService.labExam:
-          await getDutyScheduleExamination(selectedDate.value,
-              Get.find<BookingMedicalSerivceController>().requestParamBooking);
-          break;
-        case TypeService.psychological:
-          await getDutySchedulePsychology(selectedDate.value,
-              Get.find<BookingMedicalSerivceController>().requestParamBooking);
-          break;
-        case TypeService.vaccination:
-           await getDutyScheduleVacination(selectedDate.value,
-              Get.find<BookingMedicalSerivceController>().requestParamBooking);
-          break;
-        default:
-      }
-    } catch (e) {
-      log("222" + '$e');
+    isLoading(true);
+    listDutySchedule.value = [];
+    switch (type) {
+      case TypeService.generalExam:
+        await checkTimeGeneral(
+            dateTime, Get.find<BookingGeneralController>().requestParamBooking);
+        break;
+      case TypeService.specialtyExam:
+        await checkTimeSpeciality(dateTime,
+            Get.find<BookingProcessMainController>().requestParamBooking);
+        break;
+      case TypeService.labExam:
+        await getDutyScheduleExamination(dateTime,
+            Get.find<BookingMedicalSerivceController>().requestParamBooking);
+        break;
+      case TypeService.psychological:
+        await getDutySchedulePsychology(dateTime,
+            Get.find<BookingMedicalSerivceController>().requestParamBooking);
+        break;
+      case TypeService.vaccination:
+        await getDutyScheduleVacination(dateTime,
+            Get.find<BookingMedicalSerivceController>().requestParamBooking);
+        break;
+      default:
     }
   }
 
@@ -119,58 +118,37 @@ class BookingProcessTimeController extends BaseController {
       DateTime dateSelected, RequestParamBooking requestParamBooking) async {
     selectedDate.value = dateSelected;
     selectedSlot.value = DutySchedule.emtyObject();
-    // await BookingRemote()
-    //     .checkDutyScheduleMagical(date: dateSelected)
-    //     .then((value) {
-    //   listDutySchedule.value = value;
-    //   log("message:${listDutySchedule.toList()}");
-    // }).catchError((error) {
-    //   log("err:$error");
-    //   isLockButton(false);
-    //   UtilCommon.snackBar(text: '${error.message}');
-    // });
-    // await BookingRemote()
-    //     .checkDutyScheduleGeneral(
-    //         clinicId: requestParamBooking.clinic!.id, date: dateSelected)
-    //     .then((value) {
-    //   listDutySchedule.value = value;
-    //   log("message:" + listDutySchedule.value.toList().toString());
-    // }).catchError((error) {
-    //   log("err:$error");
-    //   isLockButton(false);
-    //   UtilCommon.snackBar(text: '${error.message}');
-    // });
+
+    PayloadGetDutySchedule payload = PayloadGetDutySchedule();
+    payload.date = DateFormat('yyyy-MM-dd').format(dateSelected);
+    payload.clinicId = requestParamBooking.clinic!.id;
+    
+    await BookingRemote()
+        .checkDutyScheduleGeneral(payload: payload)
+        .then((value) {
+      listDutySchedule.value = value;
+      log("message:${listDutySchedule.toList()}");
+    isLoading(false);
+    }).catchError(handleError);
+    
   }
 
   checkTimeSpeciality(
       DateTime dateSelected, RequestParamBooking requestParamBooking) async {
     selectedDate.value = dateSelected;
-    // await BookingRemote()
-    //     .checkDutyScheduleMagical(date: dateSelected)
-    //     .then((value) {
-    //   listDutySchedule.value = value;
-    //   listDutySchedule.value.sort((a, b) => a.slotNumber.compareTo(b.slotNumber));
-    //   log("message:${listDutySchedule.value.toList()}");
-    // }).catchError((error) {
-    //   log("err:$error");
-    //   isLockButton(false);
-    //   UtilCommon.snackBar(text: '${error.message}');
-    // });
-    // await BookingRemote()
-    //     .checkDutyScheduleSpecialty(
-    //         clinicId: requestParamBooking.clinic!.id,
-    //         date: dateSelected,
-    //         doctorId: requestParamBooking.doctor?.id,
-    //         specialtyId: requestParamBooking.specialty!.id,
-    //         medicalServiceId: null)
-    //     .then((value) {
-    //   listDutySchedule.value = value;
-    //   log("message:${listDutySchedule.toList()}");
-    // }).catchError((error) {
-    //   log("err:$error");
-    //   isLockButton(false);
-    //   UtilCommon.snackBar(text: '${error.message}');
-    // });
+
+    PayloadGetDutySchedule payload = PayloadGetDutySchedule();
+    payload.date = DateFormat('yyyy-MM-dd').format(dateSelected);
+    payload.clinicId = requestParamBooking.clinic!.id;
+    payload.specialtyId = requestParamBooking.specialty!.id;
+    payload.doctorId = requestParamBooking.doctor?.id;
+    await BookingRemote()
+        .checkDutyScheduleSpecialty(payload: payload)
+        .then((value) {
+      listDutySchedule.value = value;
+      log("message:${listDutySchedule.toList()}");
+      isLoading(false);
+    }).catchError(handleError);
   }
 
   getDutyScheduleExamination(
@@ -179,17 +157,13 @@ class BookingProcessTimeController extends BaseController {
     PayloadGetDutySchedule payload = PayloadGetDutySchedule();
     payload.date = DateFormat('yyyy-MM-dd').format(dateSelected);
     payload.clinicId = requestParamBooking.clinic!.id;
-      await BookingRemote()
-        .checkDutyScheduleExamination(
-           payload: payload)
+    await BookingRemote()
+        .checkDutyScheduleExamination(payload: payload)
         .then((value) {
       listDutySchedule.value = value;
       log("message:${listDutySchedule.toList()}");
-    }).catchError((error) {
-      log("err:$error");
-      isLockButton(false);
-      UtilCommon.snackBar(text: '${error.message}');
-    });
+      isLoading(false);
+    }).catchError(handleError);
   }
 
   getDutySchedulePsychology(
@@ -198,17 +172,13 @@ class BookingProcessTimeController extends BaseController {
     PayloadGetDutySchedule payload = PayloadGetDutySchedule();
     payload.date = DateFormat('yyyy-MM-dd').format(dateSelected);
     payload.clinicId = requestParamBooking.clinic!.id;
-      await BookingRemote()
-        .checkDutySchedulePsychology(
-           payload: payload)
+    await BookingRemote()
+        .checkDutySchedulePsychology(payload: payload)
         .then((value) {
       listDutySchedule.value = value;
       log("message:${listDutySchedule.toList()}");
-    }).catchError((error) {
-      log("err:$error");
-      isLockButton(false);
-      UtilCommon.snackBar(text: '${error.message}');
-    });
+      isLoading(false);
+    }).catchError(handleError);
   }
 
   getDutyScheduleVacination(
@@ -217,11 +187,11 @@ class BookingProcessTimeController extends BaseController {
     PayloadGetDutySchedule payload = PayloadGetDutySchedule();
     payload.date = DateFormat('yyyy-MM-dd').format(dateSelected);
     payload.clinicId = requestParamBooking.clinic!.id;
-      await BookingRemote()
-        .checkDutyScheduleVacination(
-           payload: payload)
+    await BookingRemote()
+        .checkDutyScheduleVacination(payload: payload)
         .then((value) {
       listDutySchedule.value = value;
+      isLoading(false);
       log("message:${listDutySchedule.toList()}");
     }).catchError(handleError);
   }

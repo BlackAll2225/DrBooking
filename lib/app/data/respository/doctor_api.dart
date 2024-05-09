@@ -10,6 +10,7 @@ abstract class DoctorApi {
   Future<List<Clinic>> getListClinic({required String param});
   Future<Doctor> getDoctorDetailById({required String id});
 
+  Future<List<DoctorPreview>> getListDoctorBySpecialAndClinic({required String idClinic, required String idSpecialty});
   Future<List<Specialty>> getListSpecialtyByIdClinic({required String idClinic, required String searchName});
 
   Future<List<MedicalService>> getListMedicalServiceExamination();

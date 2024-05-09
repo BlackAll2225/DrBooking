@@ -9,40 +9,40 @@ class DoctorLocal implements DoctorApi {
   @override
   Future<List<Doctor>> getListDoctorRandom({required String param}) async {
     await Future.delayed(Duration(seconds: 1));
-    List<DoctorPreview> listDoctor = [
-      DoctorPreview(
-          id: "1",
-          name: "Nguyễn Thị Na",
-          branch: "Chi nhánh Lê Văn Việt",
-          special: "Khoa tim mạch",
-          exp: 1.5,
-          rate: 4,
-          countReview: 100),
-      DoctorPreview(
-          id: "2",
-          name: "Nguyễn Văn C",
-          branch: "Chi nhánh Lê Văn Việt",
-          special: "Khoa tâm lý học",
-          exp: 2,
-          rate: 4,
-          countReview: 120),
-      DoctorPreview(
-          id: "3",
-          name: "Trần Hạo Nam",
-          branch: "Chi nhánh Lê Văn Việt",
-          special: "Khoa gan",
-          exp: 4,
-          rate: 5,
-          countReview: 130),
-      DoctorPreview(
-          id: "4",
-          name: "Nguyễn Thị Na",
-          branch: "Chi nhánh Lê Văn Việt",
-          special: "Khoa nội tim mạch",
-          exp: 15,
-          rate: 3,
-          countReview: 140)
-    ];
+    // List<DoctorPreview> listDoctor = [
+    //   DoctorPreview(
+    //       id: "1",
+    //       name: "Nguyễn Thị Na",
+    //       branch: "Chi nhánh Lê Văn Việt",
+    //       special: "Khoa tim mạch",
+    //       exp: 1.5,
+    //       rate: 4,
+    //       countReview: 100),
+    //   DoctorPreview(
+    //       id: "2",
+    //       name: "Nguyễn Văn C",
+    //       branch: "Chi nhánh Lê Văn Việt",
+    //       special: "Khoa tâm lý học",
+    //       exp: 2,
+    //       rate: 4,
+    //       countReview: 120),
+    //   DoctorPreview(
+    //       id: "3",
+    //       name: "Trần Hạo Nam",
+    //       branch: "Chi nhánh Lê Văn Việt",
+    //       special: "Khoa gan",
+    //       exp: 4,
+    //       rate: 5,
+    //       countReview: 130),
+    //   DoctorPreview(
+    //       id: "4",
+    //       name: "Nguyễn Thị Na",
+    //       branch: "Chi nhánh Lê Văn Việt",
+    //       special: "Khoa nội tim mạch",
+    //       exp: 15,
+    //       rate: 3,
+    //       countReview: 140)
+    // ];
     return [];
   }
 
@@ -100,6 +100,12 @@ class DoctorLocal implements DoctorApi {
   @override
   Future<List<Specialty>> getListSpecialtyByIdClinic({required String idClinic, required String searchName}) {
     // TODO: implement getListSpecialtyByIdClinic
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<List<DoctorPreview>> getListDoctorBySpecialAndClinic({required String idClinic, required String idSpecialty}) {
+    // TODO: implement getListDoctorBySpecialAndClinic
     throw UnimplementedError();
   }
 }

@@ -15,6 +15,7 @@ import 'package:drbooking/app/resources/util_common.dart';
 import 'package:drbooking/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class BookingGeneralController extends BaseController {
   //TODO: Implement BookingGeneralController
@@ -30,6 +31,8 @@ class BookingGeneralController extends BaseController {
   Rx<DateTime> selectedDate = DateTime.now().add(Duration(days: 3)).obs;
   Rx<DutySchedule> selectedSlot = DutySchedule.emtyObject().obs;
   final concatSlotTime = 'Xin mời chọn thời gian'.obs;
+  TextEditingController symptomController = TextEditingController(text: '');
+
 
   @override
   void onInit() {
@@ -117,5 +120,13 @@ class BookingGeneralController extends BaseController {
         ],
       ),
     ));
+  }
+
+    onTapNextButton() {
+    requestParamBooking.dateBooking =
+        DateFormat('yyyy-MM-dd').format(selectedDate.value);
+    requestParamBooking.dutySchedule = selectedSlot.value;
+    requestParamBooking.symptom = symptomController.text;
+    Get.toNamed(Routes.BOOKING_PROCESS_CONFIRM, arguments: requestParamBooking);
   }
 }
