@@ -30,9 +30,9 @@ class PatientRemote implements PatientApi {
   }
 
   @override
-  Future<Patient> getPatientById({required String idPatient}) {
-    // TODO: implement getPatientById
-    throw UnimplementedError();
+  Future<Patient> getPatientById({required String idPatient}) async{
+      Patient patiet = await apiService.fetchDataObject(BaseLink.getPatientById + 'patientProfileId=$idPatient', (p0) => Patient.fromJson(p0));
+      return patiet;
   }
 
   @override

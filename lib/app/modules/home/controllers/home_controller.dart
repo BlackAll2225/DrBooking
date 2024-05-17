@@ -59,7 +59,7 @@ class HomeController extends BaseController {
       case 2:
         break;
       case 3:
-       await Get.find<TabPatientController>().fetchAlClients();
+       await Get.find<TabPatientController>().fetchAllPatients();
         indexSelected(3);
         break;
       case 4:

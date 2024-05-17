@@ -15,7 +15,7 @@ class BaseLink {
   static String createPatient = '$domain/api/v1/patient-profile';
   static String updatePatient = '$domain/a';
   static String getPatients = '$domain/api/v1/patient-profile/many-by-client/';
-  static String getPatientById = '$domain/';
+  static String getPatientById = '$domain/api/v1/patient-profile/single-by-id/';
   static String updatePatientImage = '$domain/a';
 
 
@@ -27,8 +27,9 @@ class BaseLink {
   static String getSpecials = '$domain/api/v1/medical-specialty/many-by-clinic/';
 
   static String getDoctorsByClinic = '$domain/api/v1/employee/doctor-by-clinic/';
-  static String getDoctorById = '$domain/api/v1/employee/doctor/';
+  static String getDoctorById = '$domain/api/v1/employee/doctor-mobile/';
   static String getListDoctorBySpecialAndClinic = '$domain/api/v1/employee/mobile-doctor/';
+  static String getTop5Doctor = '$domain/api/v1/employee/top-doctors/';
 
   //api/v1/employee/mobile-doctor/
 
@@ -42,6 +43,7 @@ class BaseLink {
   static String getAppointmentFinish= '$domain/api/v1/appointment/many-completed/';
   static String getAppointmentById = '$domain/api/v1/appointment/single-appointment-mobile/appointmentId=';
   static String createAppointment = '$domain/api/v1/appointment/booking';
+  static String createAppointmentHealthCheck = '$domain/api/v1/general-health-check/booking';
   static String checkinAppointment = '$domain/api/v1/appointment/check-in';
   static String cancelAppointment = '$domain/api/v1/appointment/cancel';
   static String feedbackAppointment = '$domain/api/v1/feedback';

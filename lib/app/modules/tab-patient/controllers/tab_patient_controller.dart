@@ -22,14 +22,14 @@ class TabPatientController extends BaseController {
 
   @override
   Future<void> onInit() async {
-    super.onInit();
-    isLoading(true);
-    await fetchAlClients();
-    scroller.addListener(() async {
+     scroller.addListener(() async {
       if (scroller.position.pixels == scroller.position.maxScrollExtent) {
-        await fetchAlClients();
+        await fetchAllPatients();
       }
     });
+    isLoading(true);
+    await fetchAllPatients();
+    super.onInit();
     isLoading(false);
   }
 
@@ -43,7 +43,7 @@ class TabPatientController extends BaseController {
     super.onClose();
   }
 
-  fetchAlClients() async {
+  fetchAllPatients() async {
     try {
       if (!isFetchMore.value) {
         isFetchMore(true);
@@ -66,7 +66,7 @@ class TabPatientController extends BaseController {
     take = 0;
     skip = 0;
     listPatients.value.clear();
-    await fetchAlClients();
+    await fetchAllPatients();
   }
 
   clearText() async {

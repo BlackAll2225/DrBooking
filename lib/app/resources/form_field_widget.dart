@@ -24,7 +24,8 @@ class FormFieldWidget extends StatelessWidget {
       this.paddingVerti = 0,
       this.fillColor = Colors.white,
       this.directLTR = true,
-      this.borderColor = Colors.white
+      this.borderColor = Colors.white,
+      this.isCenter = false
       });
   final FocusNode? focusNode;
   final Icon? icon;
@@ -46,6 +47,7 @@ class FormFieldWidget extends StatelessWidget {
   final Color? fillColor;
   final bool directLTR ;
   final Color borderColor;
+  final bool isCenter;
 
 
   @override
@@ -53,6 +55,7 @@ class FormFieldWidget extends StatelessWidget {
     return TextFormField(
       textDirection:directLTR?TextDirection.ltr: TextDirection.rtl,
       cursorColor: Colors.white,
+      textAlign: isCenter?TextAlign.center:TextAlign.start,
       style: styleInput,
       enableInteractiveSelection: enableInteractiveSelection,
       initialValue: initValue,

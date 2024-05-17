@@ -119,11 +119,11 @@ class TabPatientView extends BaseView<TabPatientController> {
                                   }
                                   return GestureDetector(
                                       onTap: () {
-                                        // Get.toNamed(
-                                        //     Routes.PROFILE_DETAIL, parameters:{
-                                        //       "idPatient": controller.listPatients
-                                        //       .value[index].id!
-                                        //     } );
+                                        Get.toNamed(
+                                            Routes.PROFILE_DETAIL, parameters:{
+                                              "idPatient": controller.listPatients
+                                              .value[index].patientId!
+                                            } );
                                       },
                                       child: _cardProfile(context,
                                           profile: controller

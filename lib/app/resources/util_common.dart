@@ -40,6 +40,7 @@ List<AppointmentType> appointmentTypeList = [
   AppointmentType(label: 'Tái khám', color: Colors.green),
   AppointmentType(label: 'Tâm lý', color: Colors.green),
   AppointmentType(label: 'Vaccin', color: Colors.green),
+    AppointmentType(label: 'Tổng quát', color: Colors.green),
 ];
 
 enum TypeService {

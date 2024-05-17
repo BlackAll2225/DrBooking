@@ -10,8 +10,9 @@ import 'package:drbooking/app/resources/base_link.dart';
 class DoctorRemote implements DoctorApi {
   ApiService apiBase = ApiService();
   @override
-  Future<List<Doctor>> getListDoctorRandom({required String param}) async{
-     List<Doctor> listDoctor = await apiBase.fetchDataList(BaseLink.getDoctorsByClinic + param, (json) => Doctor.fromJson(json));
+  Future<List<DoctorPreview>> getListDoctorRandom({required String? param}) async {
+    String endpoint = param ?? '';
+     List<DoctorPreview> listDoctor = await apiBase.fetchDataList(BaseLink.getTop5Doctor + endpoint, (json) => DoctorPreview.fromJson(json));
     return listDoctor;
   }
 

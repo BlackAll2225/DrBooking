@@ -170,4 +170,10 @@ class BookingLocal implements BookingApi {
     // TODO: implement feedbackAppointment
     throw UnimplementedError();
   }
+  
+  @override
+  Future<String> createBookingGeneral({required PayloadCreateBooking payload}) {
+    // TODO: implement createBookingGeneral
+    throw UnimplementedError();
+  }
 }

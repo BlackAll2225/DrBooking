@@ -3,6 +3,7 @@ import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/model/booking/booking_preview.dart';
 import 'package:drbooking/app/model/doctor/doctor.dart';
+import 'package:drbooking/app/model/doctor/doctor_preview.dart';
 import 'package:drbooking/app/resources/assets_manager.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
@@ -143,7 +144,7 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                     itemBuilder: (context, index) => GestureDetector(
                       onTap: () {
                         controller.opTapCardDoctor(
-                            idDoctor: controller.listDoctorPreview[index].id);
+                            idDoctor: controller.listDoctorPreview[index].id!);
                       },
                       child: _cardDoctor(context,
                           doctor: controller.listDoctorPreview[index]),
@@ -263,7 +264,7 @@ class TabHomeView extends BaseView<TabHomeViewController> {
     );
   }
 
-  Widget _cardDoctor(BuildContext context, {required Doctor doctor}) {
+  Widget _cardDoctor(BuildContext context, {required DoctorPreview doctor}) {
     return AnimationConfiguration.staggeredList(
       position: 0,
       duration: const Duration(milliseconds: 500),
@@ -305,7 +306,7 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                                 shape: BoxShape.circle),
                             child: CachedNetworkImage(
                               fit: BoxFit.fill,
-                              imageUrl: doctor.avatarUrl,
+                              imageUrl: '${doctor.avatarUrl}',
                               placeholder: (context, url) =>
                                   const CircularProgressIndicator(
                                 color: Colors.white,
@@ -321,13 +322,13 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 TextConstant.subTile1(context,
-                                    text: doctor.fullname),
+                                    text: '${doctor.fullname}'),
                                 TextConstant.subTile2(context,
-                                    text: doctor.medicalSpecialtyName,
+                                    text: '${doctor.medicalSpecialtyName}',
                                     size: 12,
                                     color: Colors.grey.withOpacity(0.8)),
                                 TextConstant.subTile2(context,
-                                    text: doctor.email,
+                                    text: '${doctor.email}',
                                     size: 12,
                                     color: Colors.grey.withOpacity(0.8)),
                               ],
@@ -359,7 +360,7 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                         ),
                       ),
                       onPressed: () async {
-                        controller.opTapCardDoctor(idDoctor: doctor.id);
+                        controller.opTapCardDoctor(idDoctor: '${doctor.id}');
                       },
                     ),
                   ],
@@ -401,7 +402,7 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                         RatingBar.builder(
                             unratedColor: const Color(0xff979797),
                             itemSize: 12,
-                            initialRating: doctor.rating,
+                            initialRating: doctor.rating??0,
                             direction: Axis.horizontal,
                             itemCount: 5,
                             itemBuilder: (context, _) => const Icon(

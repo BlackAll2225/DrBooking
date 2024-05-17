@@ -31,5 +31,7 @@ abstract class BookingApi {
 
   
   Future<String> createBooking({required PayloadCreateBooking payload});
+  Future<String> createBookingGeneral({required PayloadCreateBooking payload});
+
 
 }

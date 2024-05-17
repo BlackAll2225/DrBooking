@@ -17,7 +17,7 @@ class DoctorPreview {
     String? clinicName;
     String? medicalSpecialtyName;
     String? avatarUrl;
-    int? rating;
+    double? rating;
     int? yearOfExperience;
 
     DoctorPreview({
@@ -42,7 +42,7 @@ class DoctorPreview {
         String? clinicName,
         String? medicalSpecialtyName,
         String? avatarUrl,
-        int? rating,
+        double? rating,
         int? yearOfExperience,
     }) => 
         DoctorPreview(
@@ -67,7 +67,7 @@ class DoctorPreview {
         clinicName: json["clinicName"],
         medicalSpecialtyName: json["medicalSpecialtyName"],
         avatarUrl: json["avatarUrl"],
-        rating: json["rating"],
+        rating: json["rating"].toDouble(),
         yearOfExperience: json["yearOfExperience"],
     );
 

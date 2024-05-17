@@ -7,7 +7,7 @@ import 'package:drbooking/app/model/doctor/specicalty.dart';
 
 class DoctorLocal implements DoctorApi {
   @override
-  Future<List<Doctor>> getListDoctorRandom({required String param}) async {
+  Future<List<DoctorPreview>> getListDoctorRandom({required String? param}) async {
     await Future.delayed(Duration(seconds: 1));
     // List<DoctorPreview> listDoctor = [
     //   DoctorPreview(

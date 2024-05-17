@@ -122,7 +122,7 @@ class BookingGeneralController extends BaseController {
     ));
   }
 
-    onTapNextButton() {
+onTapNextButton() {
     requestParamBooking.dateBooking =
         DateFormat('yyyy-MM-dd').format(selectedDate.value);
     requestParamBooking.dutySchedule = selectedSlot.value;

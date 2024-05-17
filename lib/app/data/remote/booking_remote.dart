@@ -174,4 +174,22 @@ class BookingRemote implements BookingApi {
     // TODO: implement feedbackAppointment
     throw UnimplementedError();
   }
+  
+  @override
+  Future<String> createBookingGeneral({required PayloadCreateBooking payload})async {
+   Map<String, dynamic> body = {};
+    payload.toJson().forEach((key, value) {
+      if (value != null && value.toString().isNotEmpty) {
+        body[key] = value;
+      }
+    });
+    final response = await http.post(Uri.parse(BaseLink.createAppointmentHealthCheck),
+        headers: BaseCommon.instance.headerRequest(), body: jsonEncode(body));
+
+    if (json.decode(response.body)['status'] == 'Status200OK') {
+      final String payment_url = json.decode(response.body)["data"];
+      return payment_url;
+    } else
+      throw Exception('Failed to load data');
+  }
 }

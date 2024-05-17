@@ -18,7 +18,7 @@ class DoctorDetailController extends BaseController {
   final isFeedback =false.obs;
   DoctorApi doctorApi = BaseCommon.instance.mode == LOCAL_MODE ? DoctorLocal(): DoctorRemote();
 
-  late Rx<Doctor> doctor = Doctor.emptyFactory().obs;
+  late Rx<Doctor> doctor = Doctor().obs;
   @override
   Future<void> onInit() async {
     await fetchDataDoctor();

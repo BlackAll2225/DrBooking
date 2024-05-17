@@ -11,6 +11,7 @@ import 'package:drbooking/app/data/respository/doctor_api.dart';
 import 'package:drbooking/app/model/booking/booking_preview.dart';
 import 'package:drbooking/app/model/button_feature.dart';
 import 'package:drbooking/app/model/doctor/doctor.dart';
+import 'package:drbooking/app/model/doctor/doctor_preview.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class TabHomeViewController extends BaseController {
   final isLocal = BaseCommon.instance.mode == LOCAL_MODE;
 
   final count = 0.obs;
-  RxList<Doctor> listDoctorPreview = <Doctor>[].obs;
+  RxList<DoctorPreview> listDoctorPreview = <DoctorPreview>[].obs;
   RxList<AppointmentPreview> listBookingPreview = <AppointmentPreview>[].obs;
   final List<ButtonFeature> listButton = [
     ButtonFeature(

@@ -3,9 +3,11 @@ import 'dart:developer';
 import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_controller.dart';
 import 'package:drbooking/app/data/address_api.dart';
+import 'package:drbooking/app/data/remote/patient_remote.dart';
 import 'package:drbooking/app/model/address/district.dart';
 import 'package:drbooking/app/model/address/province.dart';
 import 'package:drbooking/app/model/address/ward.dart';
+import 'package:drbooking/app/model/patient/patient.dart';
 import 'package:drbooking/app/model/patient/request_body_create_patient.dart';
 import 'package:drbooking/app/resources/util_common.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +17,7 @@ import 'package:intl/intl.dart';
 class ProfileDetailController extends BaseController {
   ProfileDetailController({required this.idPatient});
   final String idPatient;
-   TextEditingController nameTextController = TextEditingController(text: '');
+  TextEditingController nameTextController = TextEditingController(text: '');
   TextEditingController phoneTextController = TextEditingController(text: '');
   TextEditingController birthTextController =
       TextEditingController(text: 'Chọn');
@@ -31,6 +33,8 @@ class ProfileDetailController extends BaseController {
       TextEditingController(text: 'Chọn');
   TextEditingController cccdAddressTextController =
       TextEditingController(text: '');
+
+  TextEditingController heightController = TextEditingController(text: '0');
 
   Rx<String> nameError = ''.obs;
   Rx<String> phoneError = ''.obs;
@@ -60,12 +64,14 @@ class ProfileDetailController extends BaseController {
   Rx<District> selectedDistrict = District().obs;
   Rx<Ward> selectedWard = Ward().obs;
 
+  Rx<Patient> patient = Patient().obs;
+
   final isLockUpdate = false.obs;
 
   @override
   void onInit() async {
+    await initData();
     super.onInit();
-    // initData();
   }
 
   @override
@@ -93,7 +99,6 @@ class ProfileDetailController extends BaseController {
     bhytExpTextController.text = UtilCommon.convertDateTime(date);
   }
 
-
   createProfile() async {
     String fullName = nameTextController.text;
     String address = addressTextController.text;
@@ -108,20 +113,24 @@ class ProfileDetailController extends BaseController {
 
     bodyRequestCreatePatient.phoneNumber = phoneTextController.text;
     bodyRequestCreatePatient.fullname = fullName;
-    bodyRequestCreatePatient.dateOfBirth = DateFormat('yyyy-MM-dd').format(dateCurrent.value);
-    bodyRequestCreatePatient.clientId = BaseCommon.instance.accountSession!.clientId;
+    bodyRequestCreatePatient.dateOfBirth =
+        DateFormat('yyyy-MM-dd').format(dateCurrent.value);
+    bodyRequestCreatePatient.clientId =
+        BaseCommon.instance.accountSession!.clientId;
     bodyRequestCreatePatient.biologicalGender = selectedGender.value.id;
 //Insurence
-    if(cccdTextController.text.isNotEmpty){
+    if (cccdTextController.text.isNotEmpty) {
       bodyRequestCreatePatient.idCode = cccdTextController.text;
-      bodyRequestCreatePatient.idIssuedDate = DateFormat('yyyy-MM-dd').format(dateCCCDDate.value);
+      bodyRequestCreatePatient.idIssuedDate =
+          DateFormat('yyyy-MM-dd').format(dateCCCDDate.value);
       bodyRequestCreatePatient.idIssuedPlace = cccdAddressTextController.text;
     }
 
-    if(bhtyTextController.text.isNotEmpty){
+    if (bhtyTextController.text.isNotEmpty) {
       bodyRequestCreatePatient.healthInsuranceCode = bhtyTextController.text;
       bodyRequestCreatePatient.hiIssuedPlace = bhtyAddressTextController.text;
-      bodyRequestCreatePatient.expiredDate = DateFormat('yyyy-MM-dd').format(dateBHYTExp.value);
+      bodyRequestCreatePatient.expiredDate =
+          DateFormat('yyyy-MM-dd').format(dateBHYTExp.value);
     }
 //CodePerson
     bodyRequestCreatePatient.district = selectedDistrict.value.districtName;
@@ -221,7 +230,8 @@ class ProfileDetailController extends BaseController {
     validatePhone();
     if (addressError.isEmpty &&
         nameError.isEmpty &&
-        birthError.isEmpty && phoneError.isEmpty &&
+        birthError.isEmpty &&
+        phoneError.isEmpty &&
         cccdError.isEmpty) {
       return true;
     }
@@ -320,39 +330,47 @@ class ProfileDetailController extends BaseController {
     // });
   }
 
-  // initData() async {
-  //   isLoading(true);
-  //    await PatientRemote().getProfileDetailById(idPatient: idPatient).then((value) {
-  //     nameTextController.text = value.fullname ?? '';
-  //     birthTextController.text = UtilCommon.convertDateTime(value.dateOfBirth!);
-  //     genderTextController.text = value.biologicalGender == 0 ? 'Nữ' : 'Nam';
-  //     addressTextController.text = value.nameAddress ?? '';
-  //     bhtyTextController.text = value.healthInsuranceCode ?? '';
-  //     bhytExpTextController.text = value.idIssuedDate != null
-  //         ? UtilCommon.convertDateTime(value.idIssuedDate!)
-  //         : '';
-  //     bhtyAddressTextController.text = value.hiIssuedPlace ?? '';
-  //     cccdTextController.text = value.idCode ?? '';
-  //     cccdDateTextController.text = value.expiredDate != null
-  //         ? UtilCommon.convertDateTime(value.expiredDate!)
-  //         : '';
-  //     cccdAddressTextController.text = value.idIssuedPlace ?? '';
-  //   }).catchError((error) {
-  //     isLoading(false);
+  initData() async {
+    isLoading(true);
+    await PatientRemote().getPatientById(idPatient: idPatient).then((value) {
+      patient.value = value;
+      nameTextController.text = value.fullname ?? '';
+      birthTextController.text = UtilCommon.convertDateTime(value.dateOfBirth!);
+      genderTextController.text = value.biologicalGender == 0 ? 'Nữ' : 'Nam';
+      addressTextController.text = (value.addressLine ?? '') +
+          (value.street ?? '') +
+          (value.district ?? '') +
+          (value.ward ?? '');
+      bhtyTextController.text = value.healthInsuranceCode ?? '';
+      bhytExpTextController.text = value.idIssuedDate != null
+          ? UtilCommon.convertDateTime(DateTime.parse(value.idIssuedDate!))
+          : '';
+      bhtyAddressTextController.text = value.hiIssuedPlace ?? '';
+      cccdTextController.text = value.idCode ?? '';
+      cccdDateTextController.text = value.expiredDate != null
+          ? UtilCommon.convertDateTime(DateTime.parse(value.expiredDate!))
+          : '';
+      cccdAddressTextController.text = value.idIssuedPlace ?? '';
+      phoneTextController.text = value.phoneNumber ?? 'N/A';
+      heightController.text = '${value.height ?? 0}';
+    }).catchError((error) {
+      isLoading(false);
 
-  //     log(error.toString());
-  //     UtilCommon.snackBar(text: '${error.message}', isFail: true);
-  //   });
-  //   isLoading(false);
-  // }
+      log(error.toString());
+      UtilCommon.snackBar(text: '${error.message}', isFail: true);
+    });
+    isLoading(false);
+  }
 
   onTapEdit() {
     isLockUpdate(false);
   }
+
   onTapCancel() {
     isLockUpdate(true);
   }
-   onTapUpdate() async{
+
+  onTapUpdate() async {
     isLockUpdate(true);
   }
 }

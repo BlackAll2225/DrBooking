@@ -42,19 +42,37 @@ class BookingProcessConfirmController extends BaseController {
     payload.symptoms = requestParam.symptom!;
     payload.note = null;
     payload.dutyScheduleId = requestParam.dutySchedule!.dutyScheduleId;
-    payload.appointmentType = UtilCommon.getEnumAppointmentType(requestParam.dataButton!.type);
-    await BookingRemote().createBooking(payload: payload).then((value) async {
-      String payment = value;
-      log(payment);
-      if (await canLaunchUrl(Uri.parse(payment))) {
-        await launchUrl(Uri.parse(payment),
-            mode: LaunchMode.externalApplication);
-      }
-    }).catchError((error) {
-      log("err:$error");
-      isLockButton(false);
-      isLoading(false);
-      UtilCommon.snackBar(text: '${error.message}', isFail: true);
-    });
+    payload.appointmentType =
+        UtilCommon.getEnumAppointmentType(requestParam.dataButton!.type);
+
+    if (requestParam.dataButton!.type == TypeService.generalExam) {
+        await BookingRemote().createBookingGeneral(payload: payload).then((value) async {
+        String payment = value;
+        log(payment);
+        if (await canLaunchUrl(Uri.parse(payment))) {
+          await launchUrl(Uri.parse(payment),
+              mode: LaunchMode.externalApplication);
+        }
+      }).catchError((error) {
+        log("err:$error");
+        isLockButton(false);
+        isLoading(false);
+        UtilCommon.snackBar(text: '${error.message}', isFail: true);
+      });
+    } else {
+      await BookingRemote().createBooking(payload: payload).then((value) async {
+        String payment = value;
+        log(payment);
+        if (await canLaunchUrl(Uri.parse(payment))) {
+          await launchUrl(Uri.parse(payment),
+              mode: LaunchMode.externalApplication);
+        }
+      }).catchError((error) {
+        log("err:$error");
+        isLockButton(false);
+        isLoading(false);
+        UtilCommon.snackBar(text: '${error.message}', isFail: true);
+      });
+    }
   }
 }

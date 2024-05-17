@@ -6,7 +6,7 @@ import 'package:drbooking/app/model/doctor/doctor_preview.dart';
 import 'package:drbooking/app/model/doctor/specicalty.dart';
 
 abstract class DoctorApi {
-  Future<List<Doctor>> getListDoctorRandom({required String param});
+  Future<List<DoctorPreview>> getListDoctorRandom({required String? param});
   Future<List<Clinic>> getListClinic({required String param});
   Future<Doctor> getDoctorDetailById({required String id});
 

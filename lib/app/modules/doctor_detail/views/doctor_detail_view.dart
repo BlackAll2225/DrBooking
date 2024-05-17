@@ -94,7 +94,7 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
                     color: ColorsManager.primary,
                   ),
                   child: TextConstant.subTile2(context,
-                      text: controller.doctor.value.fullname, color: Colors.black),
+                      text: '${controller.doctor.value.fullname}', color: Colors.black),
                 )
               ],
             ),
@@ -272,7 +272,7 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
             ),
             Expanded(
               child: _buildOverviewTile(
-                  Icons.folder_special, 'Chuyên khoa', controller.doctor.value.medicalSpecialtyName, context),
+                  Icons.folder_special, 'Chuyên khoa', '${controller.doctor.value.specialtyName}', context),
             ),
           ],
         ),
@@ -287,7 +287,7 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
             ),
             Expanded(
               child: _buildOverviewTile(
-                  Icons.work, 'Bằng cấp', controller.doctor.value.degree, context),
+                  Icons.work, 'Bằng cấp', '${controller.doctor.value.degree}', context),
             ),
           ],
         ),

@@ -53,7 +53,7 @@ class BookingDetailView extends BaseView<BookingDetailController> {
           ),
           Obx(
             () => controller.isLoading.value
-                ? Center(
+                ? const Center(
                     child: CupertinoActivityIndicator(),
                   )
                 : Expanded(
@@ -230,8 +230,8 @@ class BookingDetailView extends BaseView<BookingDetailController> {
                                 _textData(context,
                                     title: 'Giới tính',
                                     content: listGender[controller.appointment
-                                            .value.biologicalGender!].name
-                                        ),
+                                            .value.biologicalGender!]
+                                        .name),
                                 SizedBoxConst.size(context: context),
                                 _textData(context,
                                     title: 'Năm sinh',
@@ -243,6 +243,7 @@ class BookingDetailView extends BaseView<BookingDetailController> {
                                   color: Colors.grey,
                                   height: UtilsReponsive.height(5, context),
                                 ),
+                                controller.appointment.value.appointmentStatus == 1 ||   controller.appointment.value.appointmentStatus == 0 ?
                                 Padding(
                                   padding: EdgeInsets.all(
                                       UtilsReponsive.height(20, context)),
@@ -271,12 +272,35 @@ class BookingDetailView extends BaseView<BookingDetailController> {
                                           context: context, size: 5),
                                     ],
                                   ),
-                                ),
-                                controller.appointment.value.appointmentStatus == 0?
-                                _buttonCheckin(context):const SizedBox.shrink(),
-                                controller.appointment.value.appointmentStatus == 0?
-                                _buttonCancel(context):const SizedBox.shrink(),
-                                 controller.appointment.value.appointmentStatus == 2 && !controller.appointment.value.isReviewed!?
+                                ):SizedBox.shrink(),
+                                controller.appointment.value
+                                            .appointmentStatus ==
+                                        0
+                                    ? _buttonCheckin(context)
+                                    : const SizedBox.shrink(),
+                                controller.appointment.value
+                                            .appointmentStatus ==
+                                        0
+                                    ? _buttonCancel(context)
+                                    : const SizedBox.shrink(),
+                                controller.appointment.value
+                                                .appointmentStatus ==
+                                            2 &&
+                                        controller.appointment.value.rating !=
+                                            -1
+                                    ? Center(
+                                        child: RatingBarIndicator(
+                                        rating: controller.appointment.value.rating!.toDouble(),
+                                        itemBuilder: (context, index) => Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                        itemCount: 5,
+                                        itemSize: 50.0,
+                                        direction: Axis.horizontal,
+                                      ))
+                                    : const SizedBox.shrink(),
+                                controller.appointment.value.appointmentStatus == 2 && controller.appointment.value.rating == -1?
                                 _buttonReview(context):const SizedBox.shrink(),
                               ],
                             ),
@@ -400,9 +424,13 @@ class BookingDetailView extends BaseView<BookingDetailController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        TextConstant.subTile2(context, text: title, color: Colors.black87),
-        TextConstant.subTile2(context,
-            text: content, fontWeight: FontWeight.bold),
+        Expanded(
+            child: TextConstant.subTile2(context,
+                text: title, color: Colors.black87)),
+        Expanded(
+          child: TextConstant.subTile2(context,
+              text: content, fontWeight: FontWeight.bold),
+        ),
       ],
     );
   }
