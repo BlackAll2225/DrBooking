@@ -43,7 +43,7 @@ class UniService {
     if (uri == null || uri.queryParameters.isEmpty) return;
     if (uri.path == '/payment-success') {
       Get.to(() => BookingSuccess());
-      if (uri.queryParameters['appointmentId'].toString().toUpperCase() ==
+      if (uri.queryParameters['isGeneralHealthCheck'].toString().toUpperCase() ==
           'FALSE') {
         await updateAppointment(
             uri.queryParameters['appointmentId'].toString());

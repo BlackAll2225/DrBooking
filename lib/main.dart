@@ -30,6 +30,7 @@ Future<void> main() async {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
+        MonthYearPickerLocalizations.delegate,
       ],
       supportedLocales: const [
         Locale('vi', 'VN'),
