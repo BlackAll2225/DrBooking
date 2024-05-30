@@ -13,10 +13,10 @@ class BaseLink {
 
 
   static String createPatient = '$domain/api/v1/patient-profile';
-  static String updatePatient = '$domain/a';
+  static String updatePatient = '$domain/api/v1/patient-profile';
   static String getPatients = '$domain/api/v1/patient-profile/many-by-client/';
   static String getPatientById = '$domain/api/v1/patient-profile/single-by-id/';
-  static String updatePatientImage = '$domain/a';
+  static String updatePatientImage = '$domain/api/v1/patient-profile/avatar/';
 
 
 
@@ -47,6 +47,7 @@ class BaseLink {
   static String checkinAppointment = '$domain/api/v1/appointment/check-in';
   static String cancelAppointment = '$domain/api/v1/appointment/cancel';
   static String feedbackAppointment = '$domain/api/v1/feedback';
+  static String getFeedbackByIdDoctor = '$domain/api/v1/feedback/many-by-doctor/';
 //
   //DutySchedule
   // static String checkDutyScheduleTest = '$domain/';

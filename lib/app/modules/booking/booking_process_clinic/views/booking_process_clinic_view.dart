@@ -50,7 +50,7 @@ class BookingProcessClinicView
                             shrinkWrap: true,
                             itemBuilder: (context, index) => GestureDetector(
                                 onTap: () {
-                                  controller.onTapBranchCard(
+                                  controller.onTapClinicCard(
                                       clinic: controller.listClinic[index]);
                                   // Get.toNamed(Routes.BOOKING_PROCESS_SERVICE, arguments: controller.requestParamBooking);
                                 },

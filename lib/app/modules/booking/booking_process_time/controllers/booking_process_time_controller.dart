@@ -65,21 +65,21 @@ class BookingProcessTimeController extends BaseController {
             Get.find<BookingMedicalSerivceController>().selectedSlot.value;
         selectedDate.value =
             Get.find<BookingMedicalSerivceController>().selectedDate.value;
-        await getDutyScheduleExamination(selectedDate.value,
+        await checkTimeExamination(selectedDate.value,
             Get.find<BookingMedicalSerivceController>().requestParamBooking);
         break;
       case TypeService.psychological:
         Get.find<BookingMedicalSerivceController>().selectedSlot.value;
         selectedDate.value =
             Get.find<BookingMedicalSerivceController>().selectedDate.value;
-        await getDutySchedulePsychology(selectedDate.value,
+        await checkTimePsychology(selectedDate.value,
             Get.find<BookingMedicalSerivceController>().requestParamBooking);
         break;
       case TypeService.vaccination:
         Get.find<BookingMedicalSerivceController>().selectedSlot.value;
         selectedDate.value =
             Get.find<BookingMedicalSerivceController>().selectedDate.value;
-        await getDutyScheduleVacination(selectedDate.value,
+        await checkTimeVacination(selectedDate.value,
             Get.find<BookingMedicalSerivceController>().requestParamBooking);
         break;
       default:
@@ -99,15 +99,15 @@ class BookingProcessTimeController extends BaseController {
             Get.find<BookingProcessMainController>().requestParamBooking);
         break;
       case TypeService.labExam:
-        await getDutyScheduleExamination(dateTime,
+        await checkTimeExamination(dateTime,
             Get.find<BookingMedicalSerivceController>().requestParamBooking);
         break;
       case TypeService.psychological:
-        await getDutySchedulePsychology(dateTime,
+        await checkTimePsychology(dateTime,
             Get.find<BookingMedicalSerivceController>().requestParamBooking);
         break;
       case TypeService.vaccination:
-        await getDutyScheduleVacination(dateTime,
+        await checkTimeVacination(dateTime,
             Get.find<BookingMedicalSerivceController>().requestParamBooking);
         break;
       default:
@@ -151,7 +151,7 @@ class BookingProcessTimeController extends BaseController {
     }).catchError(handleError);
   }
 
-  getDutyScheduleExamination(
+  checkTimeExamination(
       DateTime dateSelected, RequestParamBooking requestParamBooking) async {
     selectedDate.value = dateSelected;
     PayloadGetDutySchedule payload = PayloadGetDutySchedule();
@@ -166,7 +166,7 @@ class BookingProcessTimeController extends BaseController {
     }).catchError(handleError);
   }
 
-  getDutySchedulePsychology(
+  checkTimePsychology(
       DateTime dateSelected, RequestParamBooking requestParamBooking) async {
     selectedDate.value = dateSelected;
     PayloadGetDutySchedule payload = PayloadGetDutySchedule();
@@ -181,7 +181,7 @@ class BookingProcessTimeController extends BaseController {
     }).catchError(handleError);
   }
 
-  getDutyScheduleVacination(
+  checkTimeVacination(
       DateTime dateSelected, RequestParamBooking requestParamBooking) async {
     selectedDate.value = dateSelected;
     PayloadGetDutySchedule payload = PayloadGetDutySchedule();

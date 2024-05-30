@@ -1,5 +1,6 @@
 import 'package:drbooking/app/data/respository/patient/patient_api.dart';
 import 'package:drbooking/app/data/respository/patient/request_payload/patient_payload.dart';
+import 'package:drbooking/app/data/respository/patient/request_payload/patient_update_payload.dart';
 import 'package:drbooking/app/model/patient/patient.dart';
 import 'package:drbooking/app/model/patient/patient_preview.dart';
 import 'package:drbooking/app/model/profile.dart';
@@ -25,7 +26,7 @@ class PatientLocal implements PatientApi{
   }
 
   @override
-  Future<Patient> updatePatient({required PatientPayload payload}) {
+  Future<Patient> updatePatient({required PatientUpdatePayload payload}) {
     // TODO: implement updatePatient
     throw UnimplementedError();
   }

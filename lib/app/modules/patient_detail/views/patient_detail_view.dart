@@ -13,12 +13,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-import '../controllers/profile_detail_controller.dart';
+import '../controllers/patient_detail_controller.dart';
 
-class ProfileDetailView extends BaseView<ProfileDetailController> {
-  const ProfileDetailView({Key? key}) : super(key: key);
+class PatientDetailView extends BaseView<PatientDetailController> {
+  const PatientDetailView({Key? key}) : super(key: key);
   @override
   Widget buildView(BuildContext context) {
     controller.dateCurrent.value;
@@ -62,7 +63,14 @@ class ProfileDetailView extends BaseView<ProfileDetailController> {
                                   context,
                                   text: 'Thông tin cá nhân',
                                 ),
-                                Icon(Icons.edit)
+                                GestureDetector(
+                                    onTap: () {
+                                      showBottomUpdateBasic(context);
+                                    },
+                                    child: Icon(
+                                      Icons.edit,
+                                      size: UtilsReponsive.height(20, context),
+                                    ))
                               ],
                             ),
                             _dividerColor(context),
@@ -75,7 +83,7 @@ class ProfileDetailView extends BaseView<ProfileDetailController> {
                             _textData(context,
                                 title: 'Cân nặng',
                                 content:
-                                    '${controller.patient.value.height ?? 'Chưa cập nhật'}'),
+                                    '${controller.patient.value.weight ?? 'Chưa cập nhật'}'),
                             SizedBoxConst.size(context: context, size: 15),
                             _textData(context,
                                 title: 'Số điện thoại',
@@ -89,7 +97,13 @@ class ProfileDetailView extends BaseView<ProfileDetailController> {
                                   context,
                                   text: 'Địa chỉ',
                                 ),
-                                Icon(Icons.edit)
+                                GestureDetector(
+                                    onTap: () {
+                                      showBottomUpdateAddress(context);
+                                    },
+                                    child: Icon(Icons.edit,
+                                        size:
+                                            UtilsReponsive.height(20, context)))
                               ],
                             ),
                             _dividerColor(context),
@@ -105,27 +119,39 @@ class ProfileDetailView extends BaseView<ProfileDetailController> {
                                   context,
                                   text: 'Thông tin bảo hiểm',
                                 ),
-                                Icon(Icons.edit)
+                                GestureDetector(
+                                  onTap: () {
+                                    showBottomUpdateInsurance(context);
+                                  },
+                                  child: Icon(Icons.edit,
+                                      size: UtilsReponsive.height(20, context)),
+                                )
                               ],
                             ),
                             _dividerColor(context),
                             SizedBoxConst.size(context: context, size: 15),
                             _textData(context,
                                 title: 'Số BHYT',
-                                content: controller.patient.value.healthInsuranceCode ??
-                                    'Chưa cập nhật'),
-                             SizedBoxConst.size(context: context, size: 15),
-                            _textData(context,
-                                title: 'Ngày hết hạn',
-                                content: controller.patient.value.idIssuedDate!=null? 
-                                DateFormat('dd-MM-yyyy').format(DateTime.parse(controller.patient.value.idIssuedDate!)):
+                                content: controller
+                                        .patient.value.healthInsuranceCode ??
                                     'Chưa cập nhật'),
                             SizedBoxConst.size(context: context, size: 15),
                             _textData(context,
+                                title: 'Ngày hết hạn',
+                                content:
+                                    controller.patient.value.idIssuedDate !=
+                                            null
+                                        ? DateFormat('dd-MM-yyyy').format(
+                                            DateTime.parse(controller
+                                                .patient.value.idIssuedDate!))
+                                        : 'Chưa cập nhật'),
+                            SizedBoxConst.size(context: context, size: 15),
+                            _textData(context,
                                 title: 'Địa chỉ cấp',
-                                content: controller.patient.value.hiIssuedPlace??
-                                    'Chưa cập nhật'),
-                               SizedBoxConst.size(context: context, size: 30),
+                                content:
+                                    controller.patient.value.hiIssuedPlace ??
+                                        'Chưa cập nhật'),
+                            SizedBoxConst.size(context: context, size: 30),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -133,7 +159,8 @@ class ProfileDetailView extends BaseView<ProfileDetailController> {
                                   context,
                                   text: 'Thẻ Căn Cước / CMND',
                                 ),
-                                Icon(Icons.edit)
+                                // Icon(Icons.edit,
+                                //     size: UtilsReponsive.height(20, context))
                               ],
                             ),
                             _dividerColor(context),
@@ -142,18 +169,22 @@ class ProfileDetailView extends BaseView<ProfileDetailController> {
                                 title: 'Số CCCD/CMND',
                                 content: controller.patient.value.idCode ??
                                     'Chưa cập nhật'),
-                             SizedBoxConst.size(context: context, size: 15),
+                            SizedBoxConst.size(context: context, size: 15),
                             _textData(context,
                                 title: 'Ngày cấp',
-                                content: controller.patient.value.idIssuedDate!=null? 
-                                DateFormat('dd-MM-yyyy').format(DateTime.parse(controller.patient.value.idIssuedDate!)):
-                                    'Chưa cập nhật'),
+                                content:
+                                    controller.patient.value.idIssuedDate !=
+                                            null
+                                        ? DateFormat('dd-MM-yyyy').format(
+                                            DateTime.parse(controller
+                                                .patient.value.idIssuedDate!))
+                                        : 'Chưa cập nhật'),
                             SizedBoxConst.size(context: context, size: 15),
                             _textData(context,
                                 title: 'Địa chỉ cấp',
-                                content: controller.patient.value.idIssuedPlace??
-                                    'Chưa cập nhật'),
-                            
+                                content:
+                                    controller.patient.value.idIssuedPlace ??
+                                        'Chưa cập nhật'),
                           ],
                         ),
                       )
@@ -163,6 +194,371 @@ class ProfileDetailView extends BaseView<ProfileDetailController> {
         ],
       )),
     );
+  }
+
+  showBottomUpdateAddress(BuildContext context) {
+    Get.bottomSheet(
+        Container(
+            padding: EdgeInsets.all(UtilsReponsive.height(20, context)),
+            width: double.infinity,
+            height: UtilsReponsive.height(400, context),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(UtilsReponsive.height(20, context)),
+                  topRight: Radius.circular(UtilsReponsive.height(20, context)),
+                )),
+            child: SingleChildScrollView(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Get.back();
+                            },
+                            child: Icon(Icons.close))
+                        ],
+                      ),
+                  Row(
+                    children: [
+                      Expanded(
+                          child: TextConstant.subTile3(context,
+                              text: 'Thành Phố/ Tỉnh')),
+                      Expanded(
+                          child: TextConstant.subTile3(context,
+                              text: 'Quận/ huyện')),
+                    ],
+                  ),
+                  SizedBoxConst.size(
+                    context: context,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                          child: GestureDetector(
+                        onTap: () => onTapProvince(context),
+                        child: Container(
+                            padding: EdgeInsets.all(
+                                UtilsReponsive.height(5, context)),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black),
+                                borderRadius:
+                                    BorderRadius.circular(UtilsReponsive.height(
+                                  5,
+                                  context,
+                                ))),
+                            child: Obx(() {
+                              controller.dateCurrent.value;
+                              return TextConstant.subTile3(context,
+                                  text: controller.selectedProvince.value
+                                          .provinceName ??
+                                      'Chọn');
+                            })),
+                      )),
+                      SizedBoxConst.sizeWith(context: context, size: 10),
+                      Expanded(
+                          child: GestureDetector(
+                        onTap: () => onTapDistrict(context),
+                        child: Container(
+                            padding: EdgeInsets.all(
+                                UtilsReponsive.height(5, context)),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black),
+                                borderRadius:
+                                    BorderRadius.circular(UtilsReponsive.height(
+                                  5,
+                                  context,
+                                ))),
+                            child: Obx(() {
+                              controller.dateCurrent.value;
+                              return TextConstant.subTile3(context,
+                                  text: controller.selectedDistrict.value
+                                          .districtName ??
+                                      'Chọn');
+                            })),
+                      )),
+                    ],
+                  ),
+                  SizedBoxConst.size(context: context),
+                  TextConstant.subTile3(context, text: 'Phường/ Xã'),
+                  SizedBoxConst.size(
+                    context: context,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => onTapWard(context),
+                          child: Container(
+                              padding: EdgeInsets.all(
+                                  UtilsReponsive.height(5, context)),
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.black),
+                                  borderRadius: BorderRadius.circular(
+                                      UtilsReponsive.height(
+                                    5,
+                                    context,
+                                  ))),
+                              child: Obx(() {
+                                return TextConstant.subTile3(context,
+                                    text: controller
+                                            .selectedWard.value.wardName ??
+                                        'Chọn');
+                              })),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TextField(
+                    controller: controller.addressLineTextController,
+                    decoration: const InputDecoration(
+                      hintText: 'Số nhà, tên đường',
+                    ),
+                  ),
+                  SizedBoxConst.size(context: context),
+                  ConstrainedBox(
+                      constraints:
+                          BoxConstraints.tightFor(width: context.width),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          backgroundColor:
+                              MaterialStateProperty.all(ColorsManager.primary),
+                          padding:
+                              MaterialStateProperty.all(EdgeInsets.all(14)),
+                        ),
+                        child: TextConstant.subTile2(
+                          context,
+                          text: 'Cập nhật',
+                          color: Colors.white,
+                        ),
+                        onPressed: () async {
+                          await controller.updateAddressPatient();
+                        },
+                      )),
+                ]))),
+        isDismissible: false);
+  }
+showBottomUpdateBasic(BuildContext context) {
+    controller.heightController.text =
+        '${controller.patient.value.height ?? '0'}';
+    controller.weightController.text =
+        '${controller.patient.value.height ?? '0'}';
+    controller.phoneTextController.text =
+        controller.patient.value.phoneNumber ?? '0';
+
+    Get.bottomSheet(Container(
+      padding: EdgeInsets.all(UtilsReponsive.height(20, context)),
+      width: double.infinity,
+      height: UtilsReponsive.height(400, context),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(UtilsReponsive.height(20, context)),
+            topRight: Radius.circular(UtilsReponsive.height(20, context)),
+          )),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextConstant.titleH3(context, text: 'Chiều cao:'),
+            SizedBoxConst.size(context: context),
+            FormFieldWidget(
+              controllerEditting: controller.heightController,
+              padding: 20,
+              setValueFunc: (value) {},
+              borderColor: ColorsManager.primary,
+              radiusBorder: 15,
+            ),
+            SizedBoxConst.size(context: context),
+            TextConstant.titleH3(context, text: 'Cân nặng:'),
+            SizedBoxConst.size(context: context),
+            FormFieldWidget(
+              controllerEditting: controller.weightController,
+              padding: 20,
+              textInputType: TextInputType.number,
+              setValueFunc: (value) {},
+              borderColor: ColorsManager.primary,
+              radiusBorder: 15,
+            ),
+            SizedBoxConst.size(context: context),
+            TextConstant.titleH3(context, text: 'Số điện thoại'),
+            SizedBoxConst.size(context: context),
+            FormFieldWidget(
+              controllerEditting: controller.phoneTextController,
+              padding: 20,
+              textInputType: TextInputType.number,
+              setValueFunc: (value) {},
+              borderColor: ColorsManager.primary,
+              radiusBorder: 15,
+            ),
+            SizedBoxConst.size(context: context),
+            ConstrainedBox(
+                constraints: BoxConstraints.tightFor(width: context.width),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    backgroundColor:
+                        MaterialStateProperty.all(ColorsManager.primary),
+                    padding: MaterialStateProperty.all(EdgeInsets.all(14)),
+                  ),
+                  child: TextConstant.subTile2(
+                    context,
+                    text: 'Cập nhật',
+                    color: Colors.white,
+                  ),
+                  onPressed: () async {
+                    await controller.updateBasicPatient();
+                  },
+                )),
+          ],
+        ),
+      ),
+    ));
+  }
+
+showBottomUpdateInsurance(BuildContext context) {
+    controller.heightController.text =
+        '${controller.patient.value.height ?? '0'}';
+    controller.weightController.text =
+        '${controller.patient.value.height ?? '0'}';
+    controller.phoneTextController.text =
+        controller.patient.value.phoneNumber ?? '0';
+
+    Get.bottomSheet(Container(
+      padding: EdgeInsets.all(UtilsReponsive.height(20, context)),
+      width: double.infinity,
+      height: UtilsReponsive.height(400, context),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(UtilsReponsive.height(20, context)),
+            topRight: Radius.circular(UtilsReponsive.height(20, context)),
+          )),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+             Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: () async{
+                              Get.back();
+                              await controller.initData();
+                            },
+                            child: Icon(Icons.close))
+                        ],
+                      ),
+                      SizedBoxConst.size(context: context),
+            _titleText(context, title: 'Số BHYT', subTitle: ''),
+          SizedBoxConst.size(context: context, size: 5),
+          TextField(
+            controller: controller.bhtyTextController,
+            keyboardType: TextInputType.number,
+          ),
+          Obx(
+            () => Visibility(
+              visible: controller.bhtyError.value.isNotEmpty,
+              child: GestureDetector(
+                onTap: () {
+                  controller.resetBhyt();
+                },
+                child: RichText(
+                    text: TextSpan(
+                        style: Theme.of(context).textTheme.titleSmall,
+                        children: <TextSpan>[
+                      TextSpan(
+                          text: controller.bhtyError.value,
+                          style: GoogleFonts.montserrat(
+                              fontSize: UtilsReponsive.height(12, context),
+                              fontWeight: FontWeight.w600,
+                              color: Colors.red)),
+                      TextSpan(
+                          text: 'vào đây',
+                          style: GoogleFonts.montserrat(
+                              decoration: TextDecoration.underline,
+                              fontSize: UtilsReponsive.height(12, context),
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue)),
+                    ])),
+              ),
+            ),
+          ),
+          SizedBoxConst.size(context: context, size: 20),
+          Row(
+            children: [
+              
+              _titleText(context, title: 'Ngày hết hạn', subTitle: ''),
+              SizedBoxConst.sizeWith(context: context, size: 5),
+              GestureDetector(
+                onTap: () => onTapBHYTDate(context),
+                child: Container(
+                    padding: EdgeInsets.all(UtilsReponsive.height(5, context)),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        borderRadius:
+                            BorderRadius.circular(UtilsReponsive.height(
+                          5,
+                          context,
+                        ))),
+                    child: Obx(() {
+                      controller.dateBHYTExp.value;
+                      return TextConstant.subTile3(context,
+                          text: controller.bhytExpTextController.text);
+                    })),
+              )
+            ],
+          ),
+          SizedBoxConst.size(context: context, size: 20),
+          _titleText(context, title: 'Nơi cấp', subTitle: ''),
+          SizedBoxConst.size(context: context, size: 5),
+          TextField(
+            controller: controller.bhtyAddressTextController,
+          ),
+          SizedBoxConst.size(context: context, size: 20),
+            ConstrainedBox(
+                constraints: BoxConstraints.tightFor(width: context.width),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    backgroundColor:
+                        MaterialStateProperty.all(ColorsManager.primary),
+                    padding: MaterialStateProperty.all(EdgeInsets.all(14)),
+                  ),
+                  child: TextConstant.subTile2(
+                    context,
+                    text: 'Cập nhật',
+                    color: Colors.white,
+                  ),
+                  onPressed: () async {
+                    await controller.updateInsurance();
+                  },
+                )),
+          ],
+        ),
+      ),
+    ),
+    isDismissible: false
+    );
+    
   }
 
   Row _textData(BuildContext context,
@@ -216,7 +612,7 @@ class ProfileDetailView extends BaseView<ProfileDetailController> {
             right: 0,
             child: GestureDetector(
               onTap: () async {
-                //  await controller.pickImageFromCategory();
+                await controller.pickImageFromCategory();
               },
               child: Container(
                 padding: EdgeInsets.all(UtilsReponsive.height(5, context)),
@@ -240,298 +636,6 @@ class ProfileDetailView extends BaseView<ProfileDetailController> {
     );
   }
 
-  SingleChildScrollView bk1(BuildContext context) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.all(UtilsReponsive.height(20, context)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TextConstant.subTile1(
-            context,
-            text: 'Thông tin cá nhân',
-          ),
-          _dividerColor(context),
-          SizedBoxConst.size(context: context, size: 20),
-          _titleText(context, title: 'Họ và tên', subTitle: '*'),
-          SizedBoxConst.size(context: context),
-          Obx(
-            () => FormFieldWidget(
-                isEnabled: !controller.isLockUpdate.value,
-                controllerEditting: controller.nameTextController,
-                radiusBorder: 15,
-                padding: 15,
-                fillColor: ColorsManager.primary.withOpacity(0.15),
-                setValueFunc: (value) {}),
-          ),
-          Row(
-            children: [
-              Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBoxConst.size(context: context, size: 20),
-                  _titleText(context, title: 'Ngày sinh', subTitle: '*'),
-                  SizedBoxConst.size(context: context),
-                  GestureDetector(
-                    onTap: () async {
-                      if (!controller.isLockUpdate.value) {
-                        await onTapBirth(context);
-                      }
-                    },
-                    child: FormFieldWidget(
-                        isEnabled: false,
-                        controllerEditting: controller.birthTextController,
-                        radiusBorder: 15,
-                        padding: 15,
-                        fillColor: ColorsManager.primary.withOpacity(0.15),
-                        setValueFunc: (value) {}),
-                  )
-                ],
-              )),
-              Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBoxConst.size(context: context, size: 20),
-                  _titleText(context, title: 'Giới tính', subTitle: '*'),
-                  SizedBoxConst.sizeWith(context: context, size: 10),
-                  Obx(() => IgnorePointer(
-                        ignoring: true,
-                        child: DropdownButton<Gender>(
-                          value: controller.selectedGender.value,
-                          onChanged: (Gender? newValue) {
-                            controller.selectedGender.value = newValue!;
-                          },
-                          items: listGender.map((Gender item) {
-                            return DropdownMenuItem<Gender>(
-                              value: item,
-                              child: Text(item.name),
-                            );
-                          }).toList(),
-                        ),
-                      ))
-                ],
-              ))
-            ],
-          ),
-          SizedBoxConst.size(context: context, size: 20),
-          _titleText(context, title: 'Địa chỉ', subTitle: '*'),
-          SizedBoxConst.size(context: context),
-          Obx(
-            () => FormFieldWidget(
-                isEnabled: !controller.isLockUpdate.value,
-                controllerEditting: controller.addressTextController,
-                radiusBorder: 15,
-                padding: 15,
-                fillColor: ColorsManager.primary.withOpacity(0.15),
-                setValueFunc: (value) {}),
-          ),
-          SizedBoxConst.size(context: context, size: 20),
-          TextConstant.subTile1(
-            context,
-            text: 'Thông tin khác',
-          ),
-          _dividerColor(context),
-          SizedBoxConst.size(context: context),
-          Row(
-            children: [
-              Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBoxConst.size(context: context, size: 20),
-                  _titleText(context, title: 'Số BHYT', subTitle: ''),
-                  SizedBoxConst.size(context: context),
-                  Obx(
-                    () => FormFieldWidget(
-                        isEnabled: !controller.isLockUpdate.value,
-                        controllerEditting: controller.bhtyTextController,
-                        radiusBorder: 15,
-                        padding: 15,
-                        fillColor: ColorsManager.primary.withOpacity(0.15),
-                        setValueFunc: (value) {}),
-                  )
-                ],
-              )),
-              Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBoxConst.size(context: context, size: 20),
-                  _titleText(context, title: 'Ngày hết hạn', subTitle: ''),
-                  SizedBoxConst.size(context: context),
-                  GestureDetector(
-                    onTap: () {
-                      onTapBHYTDate(context);
-                    },
-                    child: FormFieldWidget(
-                        isEnabled: false,
-                        controllerEditting: controller.bhytExpTextController,
-                        radiusBorder: 15,
-                        padding: 15,
-                        fillColor: ColorsManager.primary.withOpacity(0.15),
-                        setValueFunc: (value) {}),
-                  )
-                ],
-              ))
-            ],
-          ),
-          SizedBoxConst.size(context: context, size: 20),
-          _titleText(context, title: 'Nơi cấp', subTitle: ''),
-          SizedBoxConst.size(context: context),
-          Obx(
-            () => FormFieldWidget(
-                isEnabled: !controller.isLockUpdate.value,
-                controllerEditting: controller.bhtyAddressTextController,
-                radiusBorder: 15,
-                padding: 15,
-                fillColor: ColorsManager.primary.withOpacity(0.15),
-                setValueFunc: (value) {}),
-          ),
-          SizedBoxConst.size(
-            context: context,
-          ),
-          Row(
-            children: [
-              Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBoxConst.size(context: context, size: 20),
-                  _titleText(context, title: 'Số CCCD/ CMND', subTitle: ''),
-                  SizedBoxConst.size(context: context),
-                  Obx(
-                    () => FormFieldWidget(
-                        isEnabled: !controller.isLockUpdate.value,
-                        controllerEditting: controller.cccdTextController,
-                        radiusBorder: 15,
-                        padding: 15,
-                        fillColor: ColorsManager.primary.withOpacity(0.15),
-                        setValueFunc: (value) {}),
-                  )
-                ],
-              )),
-              Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBoxConst.size(context: context, size: 20),
-                  _titleText(context, title: 'Ngày cấp', subTitle: ''),
-                  SizedBoxConst.size(context: context),
-                  GestureDetector(
-                    onTap: () {
-                      if (!controller.isLockUpdate.value) {
-                        onTapCccdDate(context);
-                      }
-                    },
-                    child: FormFieldWidget(
-                        isEnabled: false,
-                        controllerEditting: controller.cccdDateTextController,
-                        radiusBorder: 15,
-                        padding: 15,
-                        fillColor: ColorsManager.primary.withOpacity(0.15),
-                        setValueFunc: (value) {}),
-                  )
-                ],
-              ))
-            ],
-          ),
-          SizedBoxConst.size(
-            context: context,
-          ),
-          _titleText(context, title: 'Nơi cấp', subTitle: ''),
-          SizedBoxConst.size(context: context),
-          Obx(
-            () => FormFieldWidget(
-                isEnabled: !controller.isLockUpdate.value,
-                controllerEditting: controller.cccdAddressTextController,
-                radiusBorder: 15,
-                padding: 15,
-                fillColor: ColorsManager.primary.withOpacity(0.15),
-                setValueFunc: (value) {}),
-          ),
-          SizedBoxConst.size(context: context),
-          Padding(
-              padding: UtilsReponsive.paddingOnly(context,
-                  top: 50, left: 20, right: 20, bottom: 50),
-              child: Obx(() => controller.isLockUpdate.value
-                  ? ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: ColorsManager.primary,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)),
-                        padding: UtilsReponsive.paddingOnly(context,
-                            top: 15, bottom: 15),
-                      ),
-
-                      // ignore: sort_child_properties_last
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: TextConstant.subTile3(context,
-                            text: 'Chỉnh sửa thông tin', color: Colors.white),
-                      ),
-                      onPressed: () async {
-                        controller.onTapEdit();
-                      },
-                    )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                  side:
-                                      BorderSide(color: ColorsManager.primary),
-                                  borderRadius: BorderRadius.circular(15)),
-                              padding: UtilsReponsive.paddingOnly(context,
-                                  top: 15, bottom: 15),
-                            ),
-
-                            // ignore: sort_child_properties_last
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: TextConstant.subTile3(
-                                context,
-                                text: 'Huỷ bỏ',
-                                fontWeight: FontWeight.bold,
-                                color: ColorsManager.primary,
-                              ),
-                            ),
-                            onPressed: () async {
-                              // controller.onTapEdit();
-                            },
-                          ),
-                        ),
-                        SizedBoxConst.sizeWith(context: context),
-                        Expanded(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: ColorsManager.primary,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15)),
-                              padding: UtilsReponsive.paddingOnly(context,
-                                  top: 15, bottom: 15),
-                            ),
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: TextConstant.subTile3(context,
-                                  text: 'Cập nhật',
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                            onPressed: () async {
-                              await controller.onTapUpdate();
-                            },
-                          ),
-                        ),
-                      ],
-                    ))),
-        ],
-      ),
-    );
-  }
 
   Container _dividerColor(BuildContext context) {
     return Container(
@@ -542,8 +646,9 @@ class ProfileDetailView extends BaseView<ProfileDetailController> {
     );
   }
 
-  RichText _titleText(BuildContext context,
-      {required String title, required String subTitle}) {
+
+ RichText _titleText(BuildContext context,
+      {required String title, required String subTitle,  String? textLimit}) {
     return RichText(
         text: TextSpan(
             style: Theme.of(context).textTheme.titleSmall,
@@ -561,34 +666,15 @@ class ProfileDetailView extends BaseView<ProfileDetailController> {
                 color: Colors.red,
                 fontSize: UtilsReponsive.height(14, context)),
           ),
+       
+       TextSpan(
+            text: textLimit??'',
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                color: Colors.black,
+                fontSize: UtilsReponsive.height(10, context)),
+          )
         ]));
   }
-
-  onTapBirth(BuildContext context) async {
-    await Get.defaultDialog(
-        title: 'Ngày cấp',
-        content: SizedBox(
-          height: UtilsReponsive.height(300, context),
-          width: UtilsReponsive.height(300, context),
-          child: CalendarDatePicker2(
-            config: CalendarDatePicker2Config(
-              currentDate: controller.dateCurrent.value,
-              lastDate: DateTime.now().add(Duration(days: 30)),
-              calendarType: CalendarDatePicker2Type.single,
-              centerAlignModePicker: true,
-              selectedDayTextStyle:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
-              selectedDayHighlightColor: ColorsManager.primary,
-            ),
-            onValueChanged: (value) async {
-              controller.setValueBirth(value[0]!);
-              Get.back();
-            },
-            value: [controller.dateCurrent.value],
-          ),
-        ));
-  }
-
   onTapCccdDate(BuildContext context) async {
     await Get.defaultDialog(
         title: 'Ngày cấp',

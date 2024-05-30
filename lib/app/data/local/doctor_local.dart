@@ -4,6 +4,7 @@ import 'package:drbooking/app/model/clinic.dart';
 import 'package:drbooking/app/model/doctor/doctor.dart';
 import 'package:drbooking/app/model/doctor/doctor_preview.dart';
 import 'package:drbooking/app/model/doctor/specicalty.dart';
+import 'package:drbooking/app/model/feedback.dart';
 
 class DoctorLocal implements DoctorApi {
   @override
@@ -106,6 +107,12 @@ class DoctorLocal implements DoctorApi {
   @override
   Future<List<DoctorPreview>> getListDoctorBySpecialAndClinic({required String idClinic, required String idSpecialty}) {
     // TODO: implement getListDoctorBySpecialAndClinic
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Feedback>> getFeedbackByIdDoctor({required String idDoctor}) {
+    // TODO: implement getFeedbackByIdDoctor
     throw UnimplementedError();
   }
 }

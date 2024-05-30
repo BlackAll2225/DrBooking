@@ -49,7 +49,7 @@ class SignUpView extends BaseView<SignUpController> {
                           isEnabled: !controller.isLockButton.value,
                           controllerEditting: controller.nameTextController,
                           radiusBorder: 10,
-                          borderColor: Colors.black,
+                          borderColor: ColorsManager.primary,
                           padding: 10,
                           textInputType: TextInputType.text,
                           errorText: "${controller.errorNameInput}",
@@ -66,7 +66,7 @@ class SignUpView extends BaseView<SignUpController> {
                           isEnabled: !controller.isLockButton.value,
                           controllerEditting: controller.phoneTextController,
                           radiusBorder: 10,
-                          borderColor: Colors.black,
+                          borderColor: ColorsManager.primary,
                           padding: 10,
                           textInputType: TextInputType.number,
                           errorText: "${controller.errorPhoneInput}",
@@ -83,7 +83,7 @@ class SignUpView extends BaseView<SignUpController> {
                           isEnabled: !controller.isLockButton.value,
                           controllerEditting: controller.emailController,
                           radiusBorder: 10,
-                          borderColor: Colors.black,
+                          borderColor: ColorsManager.primary,
                           padding: 10,
                           textInputType: TextInputType.emailAddress,
                           errorText: "${controller.errorEmail}",
@@ -98,7 +98,7 @@ class SignUpView extends BaseView<SignUpController> {
                     Obx(
                       () => FormFieldWidget(
                           isEnabled: !controller.isLockButton.value,
-                          borderColor: Colors.black,
+                          borderColor: ColorsManager.primary,
                           controllerEditting: controller.passwordTextController,
                           radiusBorder: 10,
                           padding: 10,
@@ -127,7 +127,7 @@ class SignUpView extends BaseView<SignUpController> {
                     Obx(
                       () => FormFieldWidget(
                           isEnabled: !controller.isLockButton.value,
-                          borderColor: Colors.black,
+                          borderColor: ColorsManager.primary,
                           controllerEditting:
                               controller.rePasswordTextController,
                           radiusBorder: 10,

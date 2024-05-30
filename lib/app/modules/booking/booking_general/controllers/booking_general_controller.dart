@@ -68,7 +68,9 @@ class BookingGeneralController extends BaseController {
   }
 
   onTapClinic(Clinic clinic) async {
+    selectedSlot.value = DutySchedule.emtyObject();
     selectedClinic.value = clinic;
+    requestParamBooking.clinic = clinic;
   }
 
   onTapTimeWidget() {

@@ -4,6 +4,7 @@ import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_controller.dart';
 import 'package:drbooking/app/data/address_api.dart';
 import 'package:drbooking/app/data/remote/patient_remote.dart';
+import 'package:drbooking/app/data/respository/patient/request_payload/patient_update_payload.dart';
 import 'package:drbooking/app/model/address/district.dart';
 import 'package:drbooking/app/model/address/province.dart';
 import 'package:drbooking/app/model/address/ward.dart';
@@ -12,10 +13,11 @@ import 'package:drbooking/app/model/patient/request_body_create_patient.dart';
 import 'package:drbooking/app/resources/util_common.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
-class ProfileDetailController extends BaseController {
-  ProfileDetailController({required this.idPatient});
+class PatientDetailController extends BaseController {
+  PatientDetailController({required this.idPatient});
   final String idPatient;
   TextEditingController nameTextController = TextEditingController(text: '');
   TextEditingController phoneTextController = TextEditingController(text: '');
@@ -23,6 +25,8 @@ class ProfileDetailController extends BaseController {
       TextEditingController(text: 'Chọn');
   TextEditingController genderTextController = TextEditingController(text: '');
   TextEditingController addressTextController = TextEditingController(text: '');
+  TextEditingController addressLineTextController =
+      TextEditingController(text: '');
   TextEditingController bhtyTextController = TextEditingController(text: '');
   TextEditingController bhytExpTextController =
       TextEditingController(text: 'Chọn');
@@ -35,6 +39,7 @@ class ProfileDetailController extends BaseController {
       TextEditingController(text: '');
 
   TextEditingController heightController = TextEditingController(text: '0');
+  TextEditingController weightController = TextEditingController(text: '0');
 
   Rx<String> nameError = ''.obs;
   Rx<String> phoneError = ''.obs;
@@ -68,6 +73,8 @@ class ProfileDetailController extends BaseController {
 
   final isLockUpdate = false.obs;
 
+  final isUpdatingAddess = false.obs;
+
   @override
   void onInit() async {
     await initData();
@@ -99,56 +106,68 @@ class ProfileDetailController extends BaseController {
     bhytExpTextController.text = UtilCommon.convertDateTime(date);
   }
 
-  createProfile() async {
-    String fullName = nameTextController.text;
-    String address = addressTextController.text;
-    String bhyt = bhtyTextController.text;
-    String bhytExp = bhytExpTextController.text;
-    String bhytAddress = bhtyAddressTextController.text;
-    String cccd = cccdTextController.text;
-    String cccdDate = cccdDateTextController.text;
-    String cccdAddress = cccdAddressTextController.text;
-    BodyRequestCreatePatient bodyRequestCreatePatient =
-        BodyRequestCreatePatient();
+  updateInsurance() async {
+    if (validateInforMore()) {
+      if (bhtyAddressTextController.text != '') {
+        PatientUpdatePayload payload = PatientUpdatePayload();
+        payload.id = patient.value.patientId;
+        payload.hiIssuedPlace = bhtyAddressTextController.text;
+        payload.expiredDate =
+            DateFormat('yyyy-MM-dd').format(dateBHYTExp.value);
+        payload.healthInsuranceCode = bhtyTextController.text;
 
-    bodyRequestCreatePatient.phoneNumber = phoneTextController.text;
-    bodyRequestCreatePatient.fullname = fullName;
-    bodyRequestCreatePatient.dateOfBirth =
-        DateFormat('yyyy-MM-dd').format(dateCurrent.value);
-    bodyRequestCreatePatient.clientId =
-        BaseCommon.instance.accountSession!.clientId;
-    bodyRequestCreatePatient.biologicalGender = selectedGender.value.id;
-//Insurence
-    if (cccdTextController.text.isNotEmpty) {
-      bodyRequestCreatePatient.idCode = cccdTextController.text;
-      bodyRequestCreatePatient.idIssuedDate =
-          DateFormat('yyyy-MM-dd').format(dateCCCDDate.value);
-      bodyRequestCreatePatient.idIssuedPlace = cccdAddressTextController.text;
+        await PatientRemote()
+            .updatePatient(payload: payload)
+            .then((value) async {
+          await initData();
+          Get.back();
+          UtilCommon.snackBar(text: 'Cập nhật thành công');
+        }).catchError((error) {
+          log("err:$error");
+          isLockButton(false);
+          UtilCommon.snackBar(text: '${error.message}', isFail: true);
+        });
+      }else{
+          Get.back();
+      }
     }
+  }
 
-    if (bhtyTextController.text.isNotEmpty) {
-      bodyRequestCreatePatient.healthInsuranceCode = bhtyTextController.text;
-      bodyRequestCreatePatient.hiIssuedPlace = bhtyAddressTextController.text;
-      bodyRequestCreatePatient.expiredDate =
-          DateFormat('yyyy-MM-dd').format(dateBHYTExp.value);
-    }
-//CodePerson
-    bodyRequestCreatePatient.district = selectedDistrict.value.districtName;
-    bodyRequestCreatePatient.province = selectedProvince.value.provinceName;
-    bodyRequestCreatePatient.ward = selectedWard.value.wardName;
-    bodyRequestCreatePatient.addressLine = address;
-    // await PatientRemote()
-    //     .createNewProfile(bodyRequest: bodyRequestCreatePatient)
-    //     .then((value) {
-    //   // if (value) {
-    //   //   Get.offAllNamed(Routes.HOME);
-    //   //   UtilCommon.snackBar(text: 'Tạo hồ sơ thành công');
-    //   // }
-    // }).catchError((error) {
-    //   log("err:$error");
-    //   isLockButton(false);
-    //   UtilCommon.snackBar(text: '${error.message}');
-    // });
+  updateBasicPatient() async {
+    PatientUpdatePayload payload = PatientUpdatePayload();
+    payload.id = patient.value.patientId;
+    payload.height = int.tryParse(heightController.text);
+    payload.weight = int.tryParse(weightController.text);
+    payload.phoneNumber = phoneTextController.text;
+    await PatientRemote().updatePatient(payload: payload).then((value) async {
+      await initData();
+      Get.back();
+      UtilCommon.snackBar(text: 'Cập nhật thành công');
+    }).catchError((error) {
+      log("err:$error");
+      isLockButton(false);
+      UtilCommon.snackBar(text: '${error.message}', isFail: true);
+    });
+  }
+
+  updateAddressPatient() async {
+    PatientUpdatePayload payload = PatientUpdatePayload();
+    payload.id = patient.value.patientId;
+    payload.addressLine = addressLineTextController.text;
+    payload.ward = selectedWard.value.wardName;
+    payload.district = selectedDistrict.value.districtName;
+    payload.province = selectedProvince.value.provinceName;
+
+    payload.phoneNumber = phoneTextController.text;
+    await PatientRemote().updatePatient(payload: payload).then((value) async {
+      await initData();
+      Get.back();
+      UtilCommon.snackBar(text: 'Cập nhật thành công');
+    }).catchError((error) {
+      log("err:$error");
+      isLockButton(false);
+      UtilCommon.snackBar(text: '${error.message}', isFail: true);
+    });
   }
 
   bool validateName() {
@@ -303,33 +322,6 @@ class ProfileDetailController extends BaseController {
     });
   }
 
-  updateProfile() async {
-    String fullName = nameTextController.text;
-    String birthDate = birthTextController.text;
-    String gender = genderTextController.text;
-    String address = addressTextController.text;
-    String bhyt = bhtyTextController.text;
-    String bhytExp = bhytExpTextController.text;
-    String bhytAddress = bhtyAddressTextController.text;
-    String cccd = cccdTextController.text;
-    String cccdDate = cccdDateTextController.text;
-    String cccdAddress = cccdAddressTextController.text;
-    // await PatientRemote().updateProfile(idPatient: 'idPatient').then((value) {
-    //   nameTextController.text;
-    //   birthTextController.text;
-    //   genderTextController.text;
-    //   addressTextController.text;
-    //   bhtyTextController.text;
-    //   bhytExpTextController.text;
-    //   bhtyAddressTextController.text;
-    //   cccdTextController.text;
-    //   cccdDateTextController.text;
-    //   cccdAddressTextController.text;
-    // }).catchError((error) {
-    //   UtilCommon.snackBar(text: '${error.message}');
-    // });
-  }
-
   initData() async {
     isLoading(true);
     await PatientRemote().getPatientById(idPatient: idPatient).then((value) {
@@ -337,10 +329,9 @@ class ProfileDetailController extends BaseController {
       nameTextController.text = value.fullname ?? '';
       birthTextController.text = UtilCommon.convertDateTime(value.dateOfBirth!);
       genderTextController.text = value.biologicalGender == 0 ? 'Nữ' : 'Nam';
-      addressTextController.text = (value.addressLine ?? '') +
-          (value.street ?? '') +
-          (value.district ?? '') +
-          (value.ward ?? '');
+      addressLineTextController.text = "${value.addressLine}";
+      addressTextController.text =
+          "${value.addressLine ?? ""} ${value.street ?? ''} ${value.ward ?? ''} ${value.district ?? ''} ${value.province ?? ''}";
       bhtyTextController.text = value.healthInsuranceCode ?? '';
       bhytExpTextController.text = value.idIssuedDate != null
           ? UtilCommon.convertDateTime(DateTime.parse(value.idIssuedDate!))
@@ -372,5 +363,18 @@ class ProfileDetailController extends BaseController {
 
   onTapUpdate() async {
     isLockUpdate(true);
+  }
+
+  Future pickImageFromCategory() async {
+    final returnImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (returnImage != null) {
+      await PatientRemote()
+          .updatePatientImage(urlImage: returnImage.path, idPaient: idPatient)
+          .then((patientData) async {
+        await initData();
+        UtilCommon.snackBar(text: 'Cập nhật thành công');
+      });
+    }
   }
 }

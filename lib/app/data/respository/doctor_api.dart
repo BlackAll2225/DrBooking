@@ -4,6 +4,7 @@ import 'package:drbooking/app/model/clinic.dart';
 import 'package:drbooking/app/model/doctor/doctor.dart';
 import 'package:drbooking/app/model/doctor/doctor_preview.dart';
 import 'package:drbooking/app/model/doctor/specicalty.dart';
+import 'package:drbooking/app/model/feedback.dart';
 
 abstract class DoctorApi {
   Future<List<DoctorPreview>> getListDoctorRandom({required String? param});
@@ -16,5 +17,7 @@ abstract class DoctorApi {
   Future<List<MedicalService>> getListMedicalServiceExamination();
   Future<List<MedicalService>> getListMedicalServiceVacination();
   Future<List<MedicalService>> getListMedicalServicePyschological();
+  Future<List<Feedback>> getFeedbackByIdDoctor({required String idDoctor});
+
 
 }

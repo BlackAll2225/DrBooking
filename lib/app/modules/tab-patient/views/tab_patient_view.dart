@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/model/patient/patient_preview.dart';
 import 'package:drbooking/app/model/profile.dart';
@@ -50,7 +51,7 @@ class TabPatientView extends BaseView<TabPatientController> {
                 )
               ],
             ),
-            SizedBoxConst.size(context: context,size: 20),
+            SizedBoxConst.size(context: context, size: 20),
             Row(
               children: [
                 Expanded(
@@ -119,11 +120,13 @@ class TabPatientView extends BaseView<TabPatientController> {
                                   }
                                   return GestureDetector(
                                       onTap: () {
-                                        Get.toNamed(
-                                            Routes.PROFILE_DETAIL, parameters:{
-                                              "idPatient": controller.listPatients
-                                              .value[index].patientId!
-                                            } );
+                                        Get.toNamed(Routes.PROFILE_DETAIL,
+                                            parameters: {
+                                              "idPatient": controller
+                                                  .listPatients
+                                                  .value[index]
+                                                  .patientId!
+                                            });
                                       },
                                       child: _cardProfile(context,
                                           profile: controller
@@ -172,9 +175,14 @@ class TabPatientView extends BaseView<TabPatientController> {
             ),
             width: UtilsReponsive.width(70, context),
             height: UtilsReponsive.width(70, context),
-            child: Image.asset(
-              ImageAssets.logo,
+            child: CachedNetworkImage(
               fit: BoxFit.fill,
+              imageUrl: profile.avatarUrl ?? '',
+              placeholder: (context, url) => const CircularProgressIndicator(
+                color: Colors.white,
+              ),
+              errorWidget: (context, url, error) =>
+                  Image.asset(ImageAssets.logo),
             ),
           ),
           Expanded(

@@ -34,7 +34,7 @@ class BookingProcessPatientController extends BaseController {
   initData() async {
     try {
       isLoading(true);
-      listPatients.value = await profileApi.getPatients(searchName: '', take: 10, skip: 0);
+      listPatients.value = await profileApi.getPatients(searchName: '', take: 100, skip: 0);
       isLoading(false);
     } catch (e) {}
   }

@@ -45,15 +45,15 @@ class MedicalRecordController extends BaseController {
 
   fetchAlClients() async {
     try {
-      if (!isFetchData.value) {
-        isLoading(true);
-        isFetchData(true);
-        // listProfile.value = await profileApi.getProfiles(
-        //     idAccount: BaseCommon.instance.accountSession!.clientId!);
-        selectedProfile.value = listProfile[0];
-        isFetchData(false);
-        isLoading(false);
+      if (!isFetchMore.value) {
+        isFetchMore(true);
+        List<PatientPreview> listData =
+            await profileApi.getPatients(searchName: '', take: 100, skip: 0);
+
+        listProfile.value = listData;
+        selectedProfile.value = listData.first;
       }
+      isFetchMore(false);
     } catch (e) {
       log("hihi" + e.toString());
     }
@@ -66,9 +66,10 @@ class MedicalRecordController extends BaseController {
   // }
 
   fetchMedicalRecord() async {
-        isFetchData(true);
+    isFetchData(true);
     await BookingRemote()
-        .getListMedicalRecordByIdPatient(patientId: selectedProfile.value.patientId!)
+        .getListMedicalRecordByIdPatient(
+            patientId: selectedProfile.value.patientId!)
         .then((value) {
       listMedicalRecord.value = value;
       isFetchData(false);
@@ -78,6 +79,13 @@ class MedicalRecordController extends BaseController {
       log("err:$error");
       UtilCommon.snackBar(text: '${error.message}', isFail: true);
     });
+  }
+
+   onTapProfile(PatientPreview patient) async {
+    selectedProfile.value = patient;
+    isLoading(true);
+    await fetchMedicalRecord();
+    isLoading(false);
   }
   //  onTapProfile(Profile profile) async{
   //   selectedProfile.value = profile;

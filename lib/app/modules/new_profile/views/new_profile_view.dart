@@ -8,6 +8,7 @@ import 'package:drbooking/app/resources/form_field_widget.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
 import 'package:drbooking/app/resources/text_style.dart';
 import 'package:drbooking/app/resources/util_common.dart';
+import 'package:drbooking/app/utils/format_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -81,9 +82,13 @@ class NewProfileView extends BaseView<NewProfileController> {
             TextConstant.subTile3(context,
                 text: '(*) Thông tin bắt buộc', color: Colors.red),
             SizedBoxConst.size(context: context, size: 20),
-            _titleText(context, title: 'Họ và tên', subTitle: '*'),
+            Obx(()=>  _titleText(context, title: 'Họ và tên', subTitle: '* ', textLimit: '( ${controller.limitName.value} / 30 )')),
             SizedBoxConst.size(context: context, size: 5),
             Obx(() => TextField(
+                  onChanged: (value) {
+                    controller.limitName.value = controller.nameTextController.text.length;
+                    controller.nameError.value = ValidationUtil.validationStringLimit(value, 30);
+                  },
                   controller: controller.nameTextController,
                   decoration: InputDecoration(
                     errorText: controller.nameError.value.isNotEmpty
@@ -430,7 +435,7 @@ class NewProfileView extends BaseView<NewProfileController> {
   }
 
   RichText _titleText(BuildContext context,
-      {required String title, required String subTitle}) {
+      {required String title, required String subTitle,  String? textLimit}) {
     return RichText(
         text: TextSpan(
             style: Theme.of(context).textTheme.titleSmall,
@@ -448,6 +453,13 @@ class NewProfileView extends BaseView<NewProfileController> {
                 color: Colors.red,
                 fontSize: UtilsReponsive.height(14, context)),
           ),
+       
+       TextSpan(
+            text: textLimit??'',
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                color: Colors.black,
+                fontSize: UtilsReponsive.height(10, context)),
+          )
         ]));
   }
 
@@ -541,7 +553,7 @@ class NewProfileView extends BaseView<NewProfileController> {
 
   onTapBirth(BuildContext context) async {
     await Get.defaultDialog(
-        title: 'Ngày cấp',
+        title: 'Ngày sinh',
         content: SizedBox(
           height: UtilsReponsive.height(300, context),
           width: UtilsReponsive.height(300, context),
@@ -573,7 +585,7 @@ class NewProfileView extends BaseView<NewProfileController> {
           child: CalendarDatePicker2(
             config: CalendarDatePicker2Config(
               currentDate: controller.dateCCCDDate.value,
-              lastDate: DateTime.now(),
+              // lastDate: DateTime.now(),
               calendarType: CalendarDatePicker2Type.single,
               centerAlignModePicker: true,
               selectedDayTextStyle:

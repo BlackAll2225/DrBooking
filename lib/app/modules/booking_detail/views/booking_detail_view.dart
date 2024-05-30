@@ -243,36 +243,42 @@ class BookingDetailView extends BaseView<BookingDetailController> {
                                   color: Colors.grey,
                                   height: UtilsReponsive.height(5, context),
                                 ),
-                                controller.appointment.value.appointmentStatus == 1 ||   controller.appointment.value.appointmentStatus == 0 ?
-                                Padding(
-                                  padding: EdgeInsets.all(
-                                      UtilsReponsive.height(20, context)),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      TextConstant.subTile3(context,
-                                          text: 'Lưu ý:',
-                                          color: ColorsManager.primary,
-                                          fontWeight: FontWeight.bold),
-                                      SizedBoxConst.size(
-                                          context: context, size: 5),
-                                      TextConstant.subTile3(context,
-                                          text:
-                                              '- Vui lòng đưa phiếu này cho quầy lễ tân',
-                                          color: Colors.black87),
-                                      SizedBoxConst.size(
-                                          context: context, size: 5),
-                                      TextConstant.subTile3(context,
-                                          text:
-                                              '- Vui lòng đến sớm trước giờ khám 15 phút',
-                                          color: Colors.black87),
-                                      SizedBoxConst.size(
-                                          context: context, size: 5),
-                                    ],
-                                  ),
-                                ):SizedBox.shrink(),
+                                controller.appointment.value
+                                                .appointmentStatus ==
+                                            1 ||
+                                        controller.appointment.value
+                                                .appointmentStatus ==
+                                            0
+                                    ? Padding(
+                                        padding: EdgeInsets.all(
+                                            UtilsReponsive.height(20, context)),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            TextConstant.subTile3(context,
+                                                text: 'Lưu ý:',
+                                                color: ColorsManager.primary,
+                                                fontWeight: FontWeight.bold),
+                                            SizedBoxConst.size(
+                                                context: context, size: 5),
+                                            TextConstant.subTile3(context,
+                                                text:
+                                                    '- Vui lòng đưa phiếu này cho quầy lễ tân',
+                                                color: Colors.black87),
+                                            SizedBoxConst.size(
+                                                context: context, size: 5),
+                                            TextConstant.subTile3(context,
+                                                text:
+                                                    '- Vui lòng đến sớm trước giờ khám 15 phút',
+                                                color: Colors.black87),
+                                            SizedBoxConst.size(
+                                                context: context, size: 5),
+                                          ],
+                                        ),
+                                      )
+                                    : SizedBox.shrink(),
                                 controller.appointment.value
                                             .appointmentStatus ==
                                         0
@@ -290,7 +296,9 @@ class BookingDetailView extends BaseView<BookingDetailController> {
                                             -1
                                     ? Center(
                                         child: RatingBarIndicator(
-                                        rating: controller.appointment.value.rating!.toDouble(),
+                                        rating: controller
+                                            .appointment.value.rating!
+                                            .toDouble(),
                                         itemBuilder: (context, index) => Icon(
                                           Icons.star,
                                           color: Colors.amber,
@@ -300,8 +308,16 @@ class BookingDetailView extends BaseView<BookingDetailController> {
                                         direction: Axis.horizontal,
                                       ))
                                     : const SizedBox.shrink(),
+                                    controller.appointment.value
+                                                .appointmentStatus ==
+                                            2 &&
+                                        controller.appointment.value.rating !=
+                                            -1?
+                                            Center(child: TextConstant.subTile3(context, text: '${controller.appointment.value.review}'))
+                                            :SizedBox(),
                                 controller.appointment.value.appointmentStatus == 2 && controller.appointment.value.rating == -1?
-                                _buttonReview(context):const SizedBox.shrink(),
+                                _buttonReview(context)
+                                :const SizedBox.shrink(),
                               ],
                             ),
                           ),
@@ -377,8 +393,7 @@ class BookingDetailView extends BaseView<BookingDetailController> {
           ),
         ),
         onPressed: () async {
-          await controller.cancelRequest();
-          // await _bottomRating(context);
+          await _bottomCancel(context);
         },
       ),
     );
@@ -434,6 +449,88 @@ class BookingDetailView extends BaseView<BookingDetailController> {
       ],
     );
   }
+  _bottomCancel(BuildContext context) {
+    double rating = 4;
+    Get.bottomSheet(Container(
+      padding: EdgeInsets.all(UtilsReponsive.height(15, context)),
+      height: UtilsReponsive.height(400, context),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(UtilsReponsive.height(15, context)),
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Center(child: TextConstant.titleH3(context, text: 'Huỷ lịch')),
+            SizedBoxConst.size(context: context),
+            ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) => GestureDetector(
+                      onTap: () {
+                        controller
+                            .reasonChoice(controller.templateReasonCancel[index]);
+                      },
+                      child: Row(
+                        children: [
+                          Obx(
+                            () => Icon(controller.reasonChoice !=
+                                    controller.templateReasonCancel[index]
+                                ? Icons.radio_button_off_outlined
+                                : Icons.radio_button_checked),
+                          ),
+                          SizedBox(width: UtilsReponsive.height(10, context)),
+                          TextConstant.subTile2(context,
+                              text: controller.templateReasonCancel[index])
+                        ],
+                      ),
+                    ),
+                separatorBuilder: (context, index) => SizedBox(
+                      height: UtilsReponsive.height(10, context),
+                    ),
+                itemCount: controller.templateReasonCancel.length),
+            SizedBox(height: UtilsReponsive.height(10, context)),
+            Obx(() => Visibility(
+                  // ignore: unrelated_type_equality_checks
+                  visible: controller.reasonChoice == 'Khác',
+                  child: FormFieldWidget(
+                      padding: UtilsReponsive.width(10, context),
+                      controllerEditting: controller.textEdittingController,
+                      radiusBorder: UtilsReponsive.height(15, context),
+                      fillColor: Colors.grey.withOpacity(0.3),
+                      setValueFunc: (value) {}),
+                )),
+            GestureDetector(
+              onTap: () async {
+                await controller.cancelRequest();
+              },
+              child: Container(
+                margin: EdgeInsets.only(
+                  top: UtilsReponsive.height(10, context),
+                ),
+                padding: EdgeInsets.symmetric(
+                    vertical: UtilsReponsive.height(10, context),
+                    horizontal: UtilsReponsive.height(15, context)),
+                decoration: BoxDecoration(
+                    color: Colors.redAccent,
+                    border: Border.all(color: Colors.white),
+                    borderRadius: BorderRadius.circular(
+                        UtilsReponsive.height(10, context))
+                    // shape: BoxShape.circle,
+                    ),
+                child: Text('Xác nhận',
+                    style: GoogleFonts.montserrat(
+                        color: Colors.white,
+                        fontSize: UtilsReponsive.formatFontSize(13, context),
+                        fontWeight: FontWeight.w600)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ));
+  }
 
   _bottomRating(BuildContext context) {
     double rating = 4;
@@ -474,28 +571,29 @@ class BookingDetailView extends BaseView<BookingDetailController> {
                 itemBuilder: (context, index) => GestureDetector(
                       onTap: () {
                         controller
-                            .reasonChoice(controller.templateReason[index]);
+                            .reasonChoice(controller.templateReasonReview[index]);
                       },
                       child: Row(
                         children: [
                           Obx(
                             () => Icon(controller.reasonChoice !=
-                                    controller.templateReason[index]
+                                    controller.templateReasonReview[index]
                                 ? Icons.radio_button_off_outlined
                                 : Icons.radio_button_checked),
                           ),
                           SizedBox(width: UtilsReponsive.height(10, context)),
                           TextConstant.subTile2(context,
-                              text: controller.templateReason[index])
+                              text: controller.templateReasonReview[index])
                         ],
                       ),
                     ),
                 separatorBuilder: (context, index) => SizedBox(
                       height: UtilsReponsive.height(10, context),
                     ),
-                itemCount: controller.templateReason.length),
+                itemCount: controller.templateReasonReview.length),
             SizedBox(height: UtilsReponsive.height(10, context)),
             Obx(() => Visibility(
+                  // ignore: unrelated_type_equality_checks
                   visible: controller.reasonChoice == 'Khác',
                   child: FormFieldWidget(
                       padding: UtilsReponsive.width(10, context),
@@ -506,8 +604,7 @@ class BookingDetailView extends BaseView<BookingDetailController> {
                 )),
             GestureDetector(
               onTap: () async {
-                // await controller.submitReview(
-                //     rating, item.id!);
+                await controller.submitReview(5);
               },
               child: Container(
                 margin: EdgeInsets.only(

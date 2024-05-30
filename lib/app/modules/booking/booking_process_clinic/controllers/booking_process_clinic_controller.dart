@@ -43,7 +43,7 @@ class BookingProcessClinicController extends BaseController {
     isLoading(false);
   }
 
-  onTapBranchCard({required Clinic clinic}) {
+  onTapClinicCard({required Clinic clinic}) {
     requestParamBooking.clinic = clinic;
     Get.toNamed(Routes.BOOKING_PROCESS_SERVICE, arguments: requestParamBooking);
   }

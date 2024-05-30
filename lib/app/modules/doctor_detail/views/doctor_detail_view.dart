@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/common/widget/app_bar_custom.dart';
 import 'package:drbooking/app/resources/assets_manager.dart';
@@ -5,6 +6,7 @@ import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
 import 'package:drbooking/app/resources/text_style.dart';
 import 'package:drbooking/app/routes/app_pages.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -17,8 +19,8 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
   @override
   Widget buildView(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar:   SizedBox(
-        height:UtilsReponsive.height(50, context),
+        bottomNavigationBar: SizedBox(
+          height: UtilsReponsive.height(50, context),
           width: double.infinity,
           // padding: EdgeInsets.symmetric(
           //     horizontal: UtilsReponsive.height(10, context)),
@@ -46,83 +48,100 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
               ),
             ),
             onPressed: () async {
-              Get.offAllNamed(Routes.HOME);
+              Get.offNamed(Routes.BOOKING_PROCESS_PATIENT);
             },
           ),
         ),
-        body:Obx(()=> _body(context)));
+        body: Obx(() => _body(context)));
   }
 
   SafeArea _body(BuildContext context) {
     return SafeArea(
-          child: Column(
-    children: [
-      AppBarCustom(
-          callback: () {
-            Get.back();
-          },
-          title: 'Thông tin bác sĩ'),
-          SizedBoxConst.size(context: context),
-      Expanded(
-          child: SingleChildScrollView(
-              child: Stack(
-        children: [
-          Container(
-            height: UtilsReponsive.height(200, context),
-            width: double.infinity,
-            child: Image.asset(ImageAssets.imageWall,fit: BoxFit.fill,),
-          ),
-          Positioned(
-            top: UtilsReponsive.height(160, context),
-            left: UtilsReponsive.height(10, context),
-            child: Row(
-              children: [
-                Container(
-                  height: UtilsReponsive.height(80, context),
-                  width: UtilsReponsive.height(80, context),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle, color: Colors.white),
-                  child: Image.asset(ImageAssets.logo),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                      vertical: UtilsReponsive.height(5, context),
-                      horizontal: UtilsReponsive.height(20, context)),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                        UtilsReponsive.height(20, context)),
-                    color: ColorsManager.primary,
+        child: Column(
+      children: [
+        AppBarCustom(
+            callback: () {
+              Get.back();
+            },
+            title: 'Thông tin bác sĩ'),
+        SizedBoxConst.size(context: context),
+        Expanded(
+            child: SingleChildScrollView(
+                child: Stack(
+          children: [
+            Container(
+              height: UtilsReponsive.height(200, context),
+              width: double.infinity,
+              child: Image.asset(
+                ImageAssets.imageWall,
+                fit: BoxFit.fill,
+              ),
+            ),
+            Positioned(
+              top: UtilsReponsive.height(160, context),
+              left: UtilsReponsive.height(10, context),
+              child: Row(
+                children: [
+                  Container(
+                    height: UtilsReponsive.height(80, context),
+                    width: UtilsReponsive.height(80, context),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.white),
+                    child: CachedNetworkImage(
+                      fit: BoxFit.fill,
+                      imageUrl: controller.doctor.value.avatarUrl ?? '',
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                      errorWidget: (context, url, error) =>
+                          Image.asset(ImageAssets.logo),
+                    ),
                   ),
-                  child: TextConstant.subTile2(context,
-                      text: '${controller.doctor.value.fullname}', color: Colors.black),
-                )
-              ],
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        vertical: UtilsReponsive.height(5, context),
+                        horizontal: UtilsReponsive.height(20, context)),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                          UtilsReponsive.height(20, context)),
+                      color: ColorsManager.primary,
+                    ),
+                    child: TextConstant.subTile2(context,
+                        text: '${controller.doctor.value.fullname}',
+                        color: Colors.white),
+                  )
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(UtilsReponsive.height(20, context)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBoxConst.size(context: context, size: 230),
-                SizedBox(
-                  width: double.infinity,
-                  child: TextConstant.subTile3(context,
-                      text:
-                          "Một số thông tin mô tả về bác sĩ.Một số thông tin mô tả về bác sĩ.Một số thông tin mô tả về bác sĩ"),
-                ),
-                Obx(() => _tabAboutFeedBack(context)),
-                SizedBoxConst.size(context: context, size: 20),
-                Obx(() => !controller.isFeedback.value
-                    ? _tabAbout(context)
-                    : _tabFeedback(context))
-              ],
-            ),
-          )
-        ],
-      )))
-    ],
-  ));
+            Padding(
+              padding: EdgeInsets.all(UtilsReponsive.height(20, context)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBoxConst.size(context: context, size: 230),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ExpandableText(
+                      "${controller.doctor.value.experience}",
+                      expandText: 'Xem thêm',
+                      collapseText: 'Thu gọn',
+                      maxLines: 3,
+                      linkColor: ColorsManager.primary,
+                    ),
+                  ),
+                  Obx(() => _tabAboutFeedBack(context)),
+                  SizedBoxConst.size(context: context, size: 20),
+                  Obx(() => !controller.isFeedback.value
+                      ? _tabAbout(context)
+                      : _tabFeedback(context))
+                ],
+              ),
+            )
+          ],
+        )))
+      ],
+    ));
   }
 
   _tabFeedback(BuildContext context) {
@@ -154,71 +173,71 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
           ),
         ),
         SizedBoxConst.size(context: context),
-        Column(
-            children: List.generate(
-                20,
-                (index) => Container(
-                      margin: EdgeInsets.only(top: 10),
-                      // padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Wrap(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 20,
-                                  ),
-                                  SizedBoxConst.sizeWith(context: context),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Ten nguoi dung',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w800)),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                    ],
-                                  ),
-                                ],
+        Obx(() => ListView.builder(
+              shrinkWrap: true,
+              itemCount: controller.listFeedback.value.length,
+              itemBuilder: (context, index) => Container(
+                padding: EdgeInsets.all(UtilsReponsive.height(10, context)),
+                 decoration: BoxDecoration(
+                            boxShadow:  [
+                              BoxShadow(
+                                color: ColorsManager.primary,
+                                spreadRadius: 2,
+                                blurRadius: 2,
+                                offset: Offset(0, 3),
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text('5.0 ⭐️⭐️⭐️⭐️⭐️',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w800)),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text('20/2/2023',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.grey.shade500,
-                                          fontWeight: FontWeight.w400))
-                                ],
-                              )
                             ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                              "orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets ",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400)),
-                        ],
-                      ),
-                    )))
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20)),
+                margin: EdgeInsets.only(top: 10),
+                // padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Wrap(
+                          children: [
+                            CircleAvatar(
+                              radius: 20,
+                            ),
+                            SizedBoxConst.sizeWith(context: context),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                        "${controller.listFeedback[index].patientProfileName}",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w800)),
+                                    SizedBoxConst.sizeWith(context: context),
+                                 TextConstant.subTile3(context, text: '${controller.listFeedback[index].rating}⭐️',size: 13)
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                       
+                      ],
+                    ),
+                     SizedBoxConst.size(context: context),
+                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                       children: [
+                         Expanded(
+                           child: TextConstant.subTile3(context, text:'${controller.listFeedback[index].feedback}',
+                              size:13),
+                         ),
+                       ],
+                     ),
+                  ],
+                ),
+              ),
+            ))
       ],
     );
   }
@@ -255,7 +274,6 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
           ),
         ),
         SizedBoxConst.size(context: context),
-      
       ],
     );
   }
@@ -267,12 +285,12 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
         Row(
           children: [
             Expanded(
-              child: _buildOverviewTile(
-                  Icons.work, 'Kinh nghiệm', '${controller.doctor.value.yearOfExperience}', context),
+              child: _buildOverviewTile(Icons.work, 'Kinh nghiệm',
+                  '${controller.doctor.value.yearOfExperience} năm', context),
             ),
             Expanded(
-              child: _buildOverviewTile(
-                  Icons.folder_special, 'Chuyên khoa', '${controller.doctor.value.specialtyName}', context),
+              child: _buildOverviewTile(Icons.folder_special, 'Chuyên khoa',
+                  '${controller.doctor.value.specialtyName}', context),
             ),
           ],
         ),
@@ -282,12 +300,12 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
         Row(
           children: [
             Expanded(
-              child: _buildOverviewTile(
-                  Icons.work, 'Chi nhánh', 'Nguyễn Văn C', context),
+              child: _buildOverviewTile(Icons.work, 'Chi nhánh',
+                  "${controller.doctor.value.clinicName}", context),
             ),
             Expanded(
-              child: _buildOverviewTile(
-                  Icons.work, 'Bằng cấp', '${controller.doctor.value.degree}', context),
+              child: _buildOverviewTile(Icons.work, 'Bằng cấp',
+                  '${controller.doctor.value.degree}', context),
             ),
           ],
         ),

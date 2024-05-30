@@ -1,7 +1,9 @@
 import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_controller.dart';
 import 'package:drbooking/app/data/remote/auth_remote.dart';
+import 'package:drbooking/app/modules/welcome_board/views/welcome_board_view.dart';
 import 'package:drbooking/app/routes/app_pages.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -13,8 +15,12 @@ class WelcomeBoardController extends BaseController {
   PageController pageController = PageController();
   RxInt indexPage = 0.obs;
   RxBool textNext = true.obs;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  String? deviceToken;
   @override
   Future<void> onInit() async {
+    _firebaseMessaging.requestPermission();
+    deviceToken = await _firebaseMessaging.getToken();
     await initDataValue();
     super.onInit();
     // await checkLocationPermission();
@@ -48,10 +54,12 @@ class WelcomeBoardController extends BaseController {
   }
 
   initDataValue() async {
-    await AuthRemote().refreshToken(deviceToken: 's').then((jwt) async {
+    await AuthRemote().refreshToken(deviceToken: '$deviceToken').then((jwt) async {
       await BaseCommon.instance.saveToken(jwt);
       await BaseCommon.instance.decodeJWT();
       Get.offAllNamed(Routes.HOME);
-    }).catchError((error) {});
+    }).catchError((err){
+      Get.off(WelcomeBoardView());
+    });
   }
 }

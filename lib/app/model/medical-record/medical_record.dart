@@ -9,33 +9,39 @@ MedicalRecord medicalRecordFromJson(String str) => MedicalRecord.fromJson(json.d
 String medicalRecordToJson(MedicalRecord data) => json.encode(data.toJson());
 
 class MedicalRecord {
+    String? patientProfileId;
     String? patientCode;
     int? biologicalGender;
-    String? dateOfBirth;
-    int? appoinmentType;
+    DateTime? dateOfBirth;
     String? phoneNumber;
-    int? weight;
     int? height;
+    int? weight;
+    int? appoinmentType;
     String? doctorName;
     String? medicalSpecialtyName;
     String? room;
     String? clinicName;
-    String? startTime;
-    String? endTime;
+    DateTime? startTime;
+    DateTime? endTime;
     int? slotNumber;
     String? note;
     String? symptom;
     String? prescription;
-    String? reExaminationDate;
+    dynamic reExaminationDate;
+    String? appointmentId;
+    String? id;
+    bool? isActive;
+    DateTime? createdAt;
 
     MedicalRecord({
+        this.patientProfileId,
         this.patientCode,
         this.biologicalGender,
         this.dateOfBirth,
-        this.appoinmentType,
         this.phoneNumber,
-        this.weight,
         this.height,
+        this.weight,
+        this.appoinmentType,
         this.doctorName,
         this.medicalSpecialtyName,
         this.room,
@@ -47,36 +53,46 @@ class MedicalRecord {
         this.symptom,
         this.prescription,
         this.reExaminationDate,
+        this.appointmentId,
+        this.id,
+        this.isActive,
+        this.createdAt,
     });
 
     MedicalRecord copyWith({
+        String? patientProfileId,
         String? patientCode,
         int? biologicalGender,
-        String? dateOfBirth,
-        int? appoinmentType,
+        DateTime? dateOfBirth,
         String? phoneNumber,
-        int? weight,
         int? height,
+        int? weight,
+        int? appoinmentType,
         String? doctorName,
         String? medicalSpecialtyName,
         String? room,
         String? clinicName,
-        String? startTime,
-        String? endTime,
+        DateTime? startTime,
+        DateTime? endTime,
         int? slotNumber,
         String? note,
         String? symptom,
         String? prescription,
-        String? reExaminationDate,
+        dynamic reExaminationDate,
+        String? appointmentId,
+        String? id,
+        bool? isActive,
+        DateTime? createdAt,
     }) => 
         MedicalRecord(
+            patientProfileId: patientProfileId ?? this.patientProfileId,
             patientCode: patientCode ?? this.patientCode,
             biologicalGender: biologicalGender ?? this.biologicalGender,
             dateOfBirth: dateOfBirth ?? this.dateOfBirth,
-            appoinmentType: appoinmentType ?? this.appoinmentType,
             phoneNumber: phoneNumber ?? this.phoneNumber,
-            weight: weight ?? this.weight,
             height: height ?? this.height,
+            weight: weight ?? this.weight,
+            appoinmentType: appoinmentType ?? this.appoinmentType,
             doctorName: doctorName ?? this.doctorName,
             medicalSpecialtyName: medicalSpecialtyName ?? this.medicalSpecialtyName,
             room: room ?? this.room,
@@ -88,47 +104,61 @@ class MedicalRecord {
             symptom: symptom ?? this.symptom,
             prescription: prescription ?? this.prescription,
             reExaminationDate: reExaminationDate ?? this.reExaminationDate,
+            appointmentId: appointmentId ?? this.appointmentId,
+            id: id ?? this.id,
+            isActive: isActive ?? this.isActive,
+            createdAt: createdAt ?? this.createdAt,
         );
 
     factory MedicalRecord.fromJson(Map<String, dynamic> json) => MedicalRecord(
+        patientProfileId: json["patientProfileId"],
         patientCode: json["patientCode"],
         biologicalGender: json["biologicalGender"],
-        dateOfBirth: json["dateOfBirth"],
-        appoinmentType: json["appoinmentType"],
+        dateOfBirth: json["dateOfBirth"] == null ? null : DateTime.parse(json["dateOfBirth"]),
         phoneNumber: json["phoneNumber"],
-        weight: json["weight"],
         height: json["height"],
+        weight: json["weight"],
+        appoinmentType: json["appoinmentType"],
         doctorName: json["doctorName"],
         medicalSpecialtyName: json["medicalSpecialtyName"],
         room: json["room"],
         clinicName: json["clinicName"],
-        startTime: json["startTime"] ,
-        endTime: json["endTime"],
+        startTime: json["startTime"] == null ? null : DateTime.parse(json["startTime"]),
+        endTime: json["endTime"] == null ? null : DateTime.parse(json["endTime"]),
         slotNumber: json["slotNumber"],
         note: json["note"],
         symptom: json["symptom"],
         prescription: json["prescription"],
-        reExaminationDate: json["reExaminationDate"] ,
+        reExaminationDate: json["reExaminationDate"],
+        appointmentId: json["appointmentId"],
+        id: json["id"],
+        isActive: json["isActive"],
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     );
 
     Map<String, dynamic> toJson() => {
+        "patientProfileId": patientProfileId,
         "patientCode": patientCode,
         "biologicalGender": biologicalGender,
-        "dateOfBirth": dateOfBirth,
-        "appoinmentType": appoinmentType,
+        "dateOfBirth": dateOfBirth?.toIso8601String(),
         "phoneNumber": phoneNumber,
-        "weight": weight,
         "height": height,
+        "weight": weight,
+        "appoinmentType": appoinmentType,
         "doctorName": doctorName,
         "medicalSpecialtyName": medicalSpecialtyName,
         "room": room,
         "clinicName": clinicName,
-        "startTime": startTime,
-        "endTime": endTime,
+        "startTime": startTime?.toIso8601String(),
+        "endTime": endTime?.toIso8601String(),
         "slotNumber": slotNumber,
         "note": note,
         "symptom": symptom,
         "prescription": prescription,
         "reExaminationDate": reExaminationDate,
+        "appointmentId": appointmentId,
+        "id": id,
+        "isActive": isActive,
+        "createdAt": createdAt?.toIso8601String(),
     };
 }

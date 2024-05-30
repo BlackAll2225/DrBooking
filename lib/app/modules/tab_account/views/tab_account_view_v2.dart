@@ -50,7 +50,9 @@ class TabAccountViewV2 extends BaseView<TabAccountController> {
                       ),
                        SizedBoxConst.size(context: context, size: 20),
                       GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Get.offAllNamed(Routes.SIGN_IN);
+                          },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [

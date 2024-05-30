@@ -20,5 +20,7 @@ class IconAssets {
   static String baseIcon = 'assets/icons';
   static String iconQuestionMark = '$baseIcon/question-mark.png';
   static String iconInformation = '$baseIcon/information.png';
+  static String iconPhone = '$baseIcon/phone.svg';
+
 
 }

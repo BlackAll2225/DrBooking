@@ -143,6 +143,7 @@ class BookingMedicalSerivceController extends BaseController {
         medicalSpecialtyName: '', medicalServiceName: 'Vui lòng chọn dịch vụ');
     selectedSlot.value = DutySchedule.emtyObject();
     selectedClinic.value = clinic;
+    requestParamBooking.clinic = clinic;
   }
 
   showBottomBranch() async {

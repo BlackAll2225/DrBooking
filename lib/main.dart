@@ -26,14 +26,13 @@ Future<void> main() async {
       debugShowCheckedModeBanner: false,
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
-      localizationsDelegates: [
-        GlobalWidgetsLocalizations.delegate,
+      localizationsDelegates:const [
         GlobalMaterialLocalizations.delegate,
-        MonthYearPickerLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
         Locale('vi', 'VN'),
-        
       ],
     ),
   );

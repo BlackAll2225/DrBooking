@@ -19,3 +19,10 @@ class FormatDataCustom {
     return "$hour:$minute";
   }
 }
+
+
+class ValidationUtil {
+
+  static String validationStringLimit(String value, int limit)=>
+    value.length > limit ? 'Giới hạn số lượng kí tự $limit' : '';
+}

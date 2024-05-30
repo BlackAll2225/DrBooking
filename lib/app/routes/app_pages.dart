@@ -14,6 +14,7 @@ import 'package:drbooking/app/modules/booking/booking_process_service/bindings/b
 import 'package:drbooking/app/modules/booking/booking_process_service/views/booking_process_service_view.dart';
 import 'package:drbooking/app/modules/booking/booking_process_time/bindings/booking_process_time_binding.dart';
 import 'package:drbooking/app/modules/booking/booking_process_time/views/booking_process_time_view.dart';
+import 'package:drbooking/app/modules/welcome_board/views/splash_screen.dart';
 import 'package:get/get.dart';
 
 import '../modules/booking_detail/bindings/booking_detail_binding.dart';
@@ -34,8 +35,8 @@ import '../modules/new_profile/bindings/new_profile_binding.dart';
 import '../modules/new_profile/views/new_profile_view.dart';
 import '../modules/personal-information/bindings/personal_information_binding.dart';
 import '../modules/personal-information/views/personal_information_view.dart';
-import '../modules/profile_detail/bindings/profile_detail_binding.dart';
-import '../modules/profile_detail/views/profile_detail_view.dart';
+import '../modules/patient_detail/bindings/patient_detail_binding.dart';
+import '../modules/patient_detail/views/patient_detail_view.dart';
 import '../modules/sign_in/bindings/sign_in_binding.dart';
 import '../modules/sign_in/views/sign_in_view.dart';
 import '../modules/sign_up/bindings/sign_up_binding.dart';
@@ -65,7 +66,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.WELCOME_BOARD,
-      page: () => const WelcomeBoardView(),
+      page: () => const SplashView(),
       binding: WelcomeBoardBinding(),
     ),
     GetPage(
@@ -140,7 +141,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PROFILE_DETAIL,
-      page: () => const ProfileDetailView(),
+      page: () => const PatientDetailView(),
       binding: ProfileDetailBinding(),
     ),
     GetPage(

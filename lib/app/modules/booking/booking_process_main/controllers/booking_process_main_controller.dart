@@ -135,6 +135,7 @@ class BookingProcessMainController extends BaseController {
     selectedDoctor.value = DoctorPreview();
     selectedSlot.value = DutySchedule.emtyObject();
     selectedClinic.value = clinic;
+    requestParamBooking.clinic = clinic;
   }
 
   showBottomBranch() async {

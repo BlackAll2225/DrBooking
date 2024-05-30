@@ -22,13 +22,19 @@ class BookingDetailController extends BaseController {
   late Rx<String> slot = ''.obs;
   Rx<AppointmentDetail> appointment = AppointmentDetail().obs;
   late Position currentPosition;
-   List<String> templateReason = [
+  List<String> templateReasonReview = [
     "Bệnh viện sạch sẽ",
     "Nhân viên chu đáo",
     "Bác sĩ tận tâm",
     "Khác"
   ];
-  TextEditingController textEdittingController = TextEditingController(text: '');
+  List<String> templateReasonCancel = [
+    "Thay đổi lịch trình",
+    "Tôi muốn chọn bác sĩ khác",
+    "Khác"
+  ];
+  TextEditingController textEdittingController =
+      TextEditingController(text: '');
 
   Rx<String> reasonChoice = 'Khác'.obs;
   @override
@@ -83,31 +89,31 @@ class BookingDetailController extends BaseController {
           Get.back();
         },
       );
-    }else{
-    await checkLocationPermission();
-    await BookingRemote()
-        .checkIn(
-            appointmentId: appointment.value.idAppointment!,
-            lat: currentPosition.latitude,
-            lng: currentPosition.longitude)
-        .then((value) async {
-      if (value) {
-        await QuickAlert.show(
-          context: Get.context!,
-          type: QuickAlertType.success,
-          title: 'Xin chân thành cảm ơn',
-          text: 'Chúc bạn có một trải nghiệm tốt đẹp',
-          confirmBtnText: 'Trở về',
-          onConfirmBtnTap: () {
-            Get.offNamed(Routes.HOME);
-          },
-        );
-      }
-    }).catchError((error) {
-      log("err:$error");
-      isLockButton(false);
-      UtilCommon.snackBar(text: '${error.message}', isFail: true);
-    });
+    } else {
+      await checkLocationPermission();
+      await BookingRemote()
+          .checkIn(
+              appointmentId: appointment.value.idAppointment!,
+              lat: currentPosition.latitude,
+              lng: currentPosition.longitude)
+          .then((value) async {
+        if (value) {
+          await QuickAlert.show(
+            context: Get.context!,
+            type: QuickAlertType.success,
+            title: 'Xin chân thành cảm ơn',
+            text: 'Chúc bạn có một trải nghiệm tốt đẹp',
+            confirmBtnText: 'Trở về',
+            onConfirmBtnTap: () {
+              Get.offNamed(Routes.HOME);
+            },
+          );
+        }
+      }).catchError((error) {
+        log("err:$error");
+        isLockButton(false);
+        UtilCommon.snackBar(text: '${error.message}', isFail: true);
+      });
     }
   }
 
@@ -122,7 +128,30 @@ class BookingDetailController extends BaseController {
     }
   }
 
+  submitReview(int rating) async {
+    String review = reasonChoice.value;
+    if (reasonChoice == 'Khác') {
+      review = textEdittingController.text;
+    }
+    await BookingRemote()
+        .feedbackAppointment(
+            appointmentId: idAppointment, rating: rating, review: review)
+        .then((value) async {
+      if (value) {
+        Get.back();
+        UtilCommon.snackBar(
+          text: 'Đánh giá thành công',
+        );
+        await fetchAppointmentDetail();
+      }
+    }).catchError(handleError);
+  }
+
   cancelRequest() async {
+    String reason = reasonChoice.value;
+    if (reasonChoice == 'Khác') {
+      reason = textEdittingController.text;
+    }
     DateTime timeA = DateTime.now();
     DateTime timeB = appointment.value.start!;
     int differenceInMinutes = timeB.difference(timeA).inHours;
@@ -139,6 +168,18 @@ class BookingDetailController extends BaseController {
       );
     } else {
       //Cancel
+       await BookingRemote()
+        .cancelAppointment(
+            appointmentId: idAppointment, cancellationReason: reason)
+        .then((value) async {
+      if (value) {
+        Get.back();
+        UtilCommon.snackBar(
+          text: 'Huỷ thành công',
+        );
+        await fetchAppointmentDetail();
+      }
+    }).catchError(handleError);
     }
   }
 }

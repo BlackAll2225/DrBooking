@@ -86,7 +86,7 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                                     color: !controller.isHistory.value
                                         ? Colors.black
                                         : Colors.white,
-                                    text: 'Kết thúc')),
+                                    text: 'Lịch sử')),
                           ),
                         ))
                       ],
@@ -397,6 +397,7 @@ class TabCalendarView extends BaseView<TabCalendarController> {
               hintText: 'Nhập tên để tìm kiếm',
             ),
           ),
+          SizedBoxConst.size(context: context, size: 20),
           Expanded(
             child: Obx(() => ListView.builder(
                 // controller: controller.scroller,
@@ -409,14 +410,34 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                           )
                         : SizedBox());
                   }
-                  return ListTile(
-                    onTap: () async {
-                      Get.back();
-                      await controller
-                          .onTapProfile(controller.listPatients.value[index]);
-                    },
-                    title: TextConstant.subTile3(context,
-                        text: controller.listPatients[index].fullname!),
+                  return Container(
+                     decoration: BoxDecoration(
+                            boxShadow:controller.listPatients[index].patientId! == controller.selectedPatient.value.patientId? [
+                              BoxShadow(
+                                color: ColorsManager.primary,
+                                spreadRadius: 2,
+                                blurRadius: 2,
+                                offset: Offset(0, 3),
+                              ),
+                            ]:[
+                               BoxShadow(
+                                color: Colors.grey,
+                                spreadRadius: 2,
+                                blurRadius: 2,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20)),
+                    child: ListTile(
+                      onTap: () async {
+                        Get.back();
+                        await controller
+                            .onTapProfile(controller.listPatients.value[index]);
+                      },
+                      title: TextConstant.subTile3(context,
+                          text: controller.listPatients[index].fullname!),
+                    ),
                   );
                 })),
           )

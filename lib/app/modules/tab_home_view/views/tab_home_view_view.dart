@@ -383,7 +383,7 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                                     fontSize: 12),
                           ),
                           TextSpan(
-                            text: '   ${doctor.rating} năm',
+                            text: '   ${doctor.yearOfExperience} năm',
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge!

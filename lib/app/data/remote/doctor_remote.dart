@@ -5,6 +5,7 @@ import 'package:drbooking/app/model/clinic.dart';
 import 'package:drbooking/app/model/doctor/doctor.dart';
 import 'package:drbooking/app/model/doctor/doctor_preview.dart';
 import 'package:drbooking/app/model/doctor/specicalty.dart';
+import 'package:drbooking/app/model/feedback.dart';
 import 'package:drbooking/app/resources/base_link.dart';
 
 class DoctorRemote implements DoctorApi {
@@ -58,6 +59,12 @@ class DoctorRemote implements DoctorApi {
     List<DoctorPreview> listDoctor = await apiBase.fetchDataList('${BaseLink.getListDoctorBySpecialAndClinic}specialtyId=$idSpecialty&&clinicId=$idClinic', (p0) => DoctorPreview.fromJson(p0));
 
     return listDoctor;
+  }
+
+  @override
+  Future<List<Feedback>> getFeedbackByIdDoctor({required String idDoctor}) async{
+    List<Feedback> listFeedback = await apiBase.fetchDataList('${BaseLink.getFeedbackByIdDoctor + idDoctor}', (p0) => Feedback.fromJson(p0));
+    return listFeedback;
   }
   
 

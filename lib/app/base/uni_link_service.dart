@@ -26,12 +26,12 @@ class UniService {
       log("link rr: " + uri.toString());
       //  Get.toNamed(Routes.SIGN_UP);
 
-    await  uniHandleLink(uri.toString());
+      await uniHandleLink(uri.toString());
     }, onError: (err) {
       log("Link err");
     });
-    uriLinkStream.listen((Uri? uri)async {
-    await  uniHandler(uri);
+    uriLinkStream.listen((Uri? uri) async {
+      await uniHandler(uri);
 
       //  Get.toNamed(Routes.SIGN_UP);
     }, onError: (err) {
@@ -39,12 +39,19 @@ class UniService {
     });
   }
 
-  static uniHandler(Uri? uri) async{
+  static uniHandler(Uri? uri) async {
     if (uri == null || uri.queryParameters.isEmpty) return;
     if (uri.path == '/payment-success') {
       Get.to(() => BookingSuccess());
+      if (uri.queryParameters['appointmentId'].toString().toUpperCase() ==
+          'FALSE') {
         await updateAppointment(
             uri.queryParameters['appointmentId'].toString());
+      } else {
+        await updateAppointmentGeneral(
+            uri.queryParameters['appointmentId'].toString());
+      }
+
       log(uri.queryParameters['appointmentId'].toString());
     }
     // Map<String, String> param = uri.queryParameters;
@@ -68,12 +75,14 @@ class UniService {
   }
 
   static updateAppointment(String idAppointment) async {
-    await ApiService().validationWithPut('https://be-graduation-thesis.azurewebsites.net/api/v1/appointment/confirm-payment', body: idAppointment);
-  //   final response = await http.put(
-  //       Uri.parse(
-  //           'https://be-graduation-thesis.azurewebsites.net/api/v1/appointment/confirm-payment'),
-  //       headers: BaseCommon.instance.headerRequest(),
-  //       body: idAppointment);
-  //   log(json.decode(response.body));
+    await ApiService().validationWithPut(
+        'https://be-graduation-thesis.azurewebsites.net/api/v1/appointment/confirm-payment',
+        body: idAppointment);
+  }
+
+  static updateAppointmentGeneral(String idAppointment) async {
+    await ApiService().validationWithPut(
+        'https://be-graduation-thesis.azurewebsites.net/api/v1/general-health-check/confirm-payment',
+        body: idAppointment);
   }
 }

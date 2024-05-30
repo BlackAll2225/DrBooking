@@ -67,7 +67,23 @@ class ApiService {
       {required Object body}) async {
     final response = await http.post(Uri.parse(apiUrl),
         headers: BaseCommon.instance.headerRequest(), body: jsonEncode(body));
-        log("payload: ${body.toString()}");
+    log("payload: ${body.toString()}");
+    log('StatusCode ${response.statusCode} - $apiUrl');
+    log('Body ${response.body}');
+    if (json.decode(response.body)['status'] == 'Status200OK') {
+      final data = json.decode(response.body)["data"];
+      return fromJson(data);
+    } else {
+      throw Exception(json.decode(response.body)['message']);
+    }
+  }
+
+  Future<T> fetchDataObjectWithPut<T>(
+      String apiUrl, T Function(Map<String, dynamic>) fromJson,
+      {required Object body}) async {
+    final response = await http.put(Uri.parse(apiUrl),
+        headers: BaseCommon.instance.headerRequest(), body: jsonEncode(body));
+    log("payload: ${body.toString()}");
     log('StatusCode ${response.statusCode} - $apiUrl');
     log('Body ${response.body}');
     if (json.decode(response.body)['status'] == 'Status200OK') {
@@ -88,7 +104,6 @@ class ApiService {
     } else {
       throw Exception(json.decode(response.body)['message']);
     }
-    
   }
 
   Future<bool> validationWithPut(String apiUrl, {required Object body}) async {
@@ -102,6 +117,5 @@ class ApiService {
     } else {
       throw Exception(json.decode(response.body)['message']);
     }
-    
   }
 }

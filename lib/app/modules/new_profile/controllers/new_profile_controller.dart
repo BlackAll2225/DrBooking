@@ -67,6 +67,8 @@ class NewProfileController extends BaseController {
   Rx<District> selectedDistrict = District().obs;
   Rx<Ward> selectedWard = Ward().obs;
 
+  final limitName = 0.obs;
+
   @override
   Future<void> onInit() async {
     super.onInit();

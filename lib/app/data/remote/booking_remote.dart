@@ -121,13 +121,13 @@ class BookingRemote implements BookingApi {
 
   @override
   Future<List<DutySchedule>> checkDutyScheduleGeneral(
-      {required PayloadGetDutySchedule payload})async {
+      {required PayloadGetDutySchedule payload}) async {
     String endpoint = 'date=${payload.date}&&clinicId=${payload.clinicId}';
     List<DutySchedule> list = await apiService.fetchDataList(
         BaseLink.checkDutyScheduleGeneral + endpoint,
         (p0) => DutySchedule.fromJson(p0));
     return list;
-}
+  }
 
   @override
   Future<List<DutySchedule>> checkDutySchedulePsychology(
@@ -141,9 +141,10 @@ class BookingRemote implements BookingApi {
 
   @override
   Future<List<DutySchedule>> checkDutyScheduleSpecialty(
-      {required PayloadGetDutySchedule payload}) async{
-        String endpoint = 'date=${payload.date}&&clinicId=${payload.clinicId}&&specialtyId=${payload.specialtyId}/${payload.doctorId??''}';
-        List<DutySchedule> list = await apiService.fetchDataList(
+      {required PayloadGetDutySchedule payload}) async {
+    String endpoint =
+        'date=${payload.date}&&clinicId=${payload.clinicId}&&specialtyId=${payload.specialtyId}/${payload.doctorId ?? ''}';
+    List<DutySchedule> list = await apiService.fetchDataList(
         BaseLink.checkDutyScheduleSpecialty + endpoint,
         (p0) => DutySchedule.fromJson(p0));
     return list;
@@ -161,30 +162,43 @@ class BookingRemote implements BookingApi {
 
   @override
   Future<bool> cancelAppointment(
-      {required String appointmentId, required String cancellationReason}) {
-    // TODO: implement cancelAppointment
-    throw UnimplementedError();
+      {required String appointmentId,
+      required String cancellationReason}) async {
+    bool check = await apiService
+        .validationWithPut(BaseLink.cancelAppointment, body: {
+      "appointmentId": appointmentId,
+      "cancellationReason": cancellationReason
+    });
+    return check;
   }
 
   @override
   Future<bool> feedbackAppointment(
       {required String appointmentId,
       required int rating,
-      required String review}) {
-    // TODO: implement feedbackAppointment
-    throw UnimplementedError();
+      required String review}) async {
+    bool check = await apiService
+        .validationWithPost(BaseLink.feedbackAppointment, body: {
+      "AppointmentId": appointmentId,
+      "rating": rating,
+      "review": review
+    });
+    return check;
   }
-  
+
   @override
-  Future<String> createBookingGeneral({required PayloadCreateBooking payload})async {
-   Map<String, dynamic> body = {};
+  Future<String> createBookingGeneral(
+      {required PayloadCreateBooking payload}) async {
+    Map<String, dynamic> body = {};
     payload.toJson().forEach((key, value) {
       if (value != null && value.toString().isNotEmpty) {
         body[key] = value;
       }
     });
-    final response = await http.post(Uri.parse(BaseLink.createAppointmentHealthCheck),
-        headers: BaseCommon.instance.headerRequest(), body: jsonEncode(body));
+    final response = await http.post(
+        Uri.parse(BaseLink.createAppointmentHealthCheck),
+        headers: BaseCommon.instance.headerRequest(),
+        body: jsonEncode(body));
 
     if (json.decode(response.body)['status'] == 'Status200OK') {
       final String payment_url = json.decode(response.body)["data"];

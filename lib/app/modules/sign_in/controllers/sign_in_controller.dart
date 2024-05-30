@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_controller.dart';
@@ -6,7 +5,6 @@ import 'package:drbooking/app/data/local/auth_local.dart';
 import 'package:drbooking/app/data/remote/auth_remote.dart';
 import 'package:drbooking/app/data/respository/auth/auth_api.dart';
 import 'package:drbooking/app/data/respository/auth/request_payload/login_payload.dart';
-import 'package:drbooking/app/resources/util_common.dart';
 import 'package:drbooking/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -73,7 +71,7 @@ class SignInController extends BaseController {
     if (!isLockButton.value && enableButton.value) {
       isLockButton(true);
       LoginPayload loginPayload =
-          LoginPayload(phoneNumber: "3574920985", password: "string");
+          LoginPayload(phoneNumber: "8635301090", password: "string");
       await authApi.login(payload: loginPayload).then((jwt) async {
         await BaseCommon.instance.saveToken(jwt);
         await BaseCommon.instance.decodeJWT();

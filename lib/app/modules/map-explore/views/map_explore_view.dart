@@ -62,7 +62,7 @@ class MapExploreView extends BaseView<MapExploreController> {
                             width: UtilsReponsive.width(20, context),
                           ),
                           Text(
-                            'Map',
+                            'Bản đồ các chi nhánh',
                             style: GoogleFonts.montserrat(
                                 color: Colors.black,
                                 fontSize:
