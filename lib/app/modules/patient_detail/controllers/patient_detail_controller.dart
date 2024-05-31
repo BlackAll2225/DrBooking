@@ -10,6 +10,8 @@ import 'package:drbooking/app/model/address/province.dart';
 import 'package:drbooking/app/model/address/ward.dart';
 import 'package:drbooking/app/model/patient/patient.dart';
 import 'package:drbooking/app/model/patient/request_body_create_patient.dart';
+import 'package:drbooking/app/modules/tab-patient/controllers/tab_patient_controller.dart';
+import 'package:drbooking/app/modules/tab_calendar/controllers/tab_calendar_controller.dart';
 import 'package:drbooking/app/resources/util_common.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -127,8 +129,8 @@ class PatientDetailController extends BaseController {
           isLockButton(false);
           UtilCommon.snackBar(text: '${error.message}', isFail: true);
         });
-      }else{
-          Get.back();
+      } else {
+        Get.back();
       }
     }
   }
@@ -376,5 +378,16 @@ class PatientDetailController extends BaseController {
         UtilCommon.snackBar(text: 'Cập nhật thành công');
       });
     }
+  }
+
+  Future deletePatient() async {
+    Get.back();
+    await PatientRemote()
+        .deletePatient(patienttId: idPatient)
+        .then((check) async {
+      Get.back();
+      await Get.find<TabPatientController>().fetchWithSearch();
+      UtilCommon.snackBar(text: 'Xoá thành công');
+    }).catchError(handleError);
   }
 }

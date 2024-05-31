@@ -84,15 +84,29 @@ class PatientRemote implements PatientApi {
     // }
     var formData = dio.FormData.fromMap({'file': multiPartFile});
     var response = await dioRequest.put(
-      BaseLink.updatePatientImage+'id=$idPaient',
+      BaseLink.updatePatientImage + 'id=$idPaient',
       data: formData,
     );
     log('updatePatientImage - status code : ${response.statusCode}');
     log('updatePatientImage - body code : ');
     final body = response.data;
     if (body["status"] == "Status200OK") {
-      return Patient.fromJson( body["data"]);
+      return Patient.fromJson(body["data"]);
     }
     throw Exception(throw Exception(body['message']));
+  }
+
+  @override
+  Future<bool> deletePatient({required String patienttId}) async {
+    final response = await http.delete(
+      Uri.parse(BaseLink.deletePatient + patienttId),
+      headers: BaseCommon.instance.headerRequest(),
+    );
+      log(json.decode(response.body).toString());
+    if (json.decode(response.body)['status'] == 'Status200OK') {
+      return true;
+    } else{
+      throw Exception(throw Exception(json.decode(response.body)['message']));
+    }
   }
 }

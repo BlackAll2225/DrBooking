@@ -36,6 +36,12 @@ class PatientLocal implements PatientApi{
     // TODO: implement updatePatientImage
     throw UnimplementedError();
   }
+  
+  @override
+  Future<bool> deletePatient({required String patienttId}) {
+    // TODO: implement deletePatient
+    throw UnimplementedError();
+  }
  
 
 }

@@ -10,4 +10,6 @@ abstract class PatientApi {
   Future<Patient> createPatient({required PatientPayload payload});
   Future<Patient> updatePatient({required PatientUpdatePayload payload});
   Future<Patient> updatePatientImage({required String urlImage, required String idPaient});
+  Future<bool> deletePatient({required String patienttId});
+
 }

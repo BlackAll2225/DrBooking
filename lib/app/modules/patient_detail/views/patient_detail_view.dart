@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:quickalert/quickalert.dart';
 
 import '../controllers/patient_detail_controller.dart';
 
@@ -29,10 +30,30 @@ class PatientDetailView extends BaseView<PatientDetailController> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           AppBarCustom(
-              callback: () {
-                Get.back();
-              },
-              title: ""),
+            callback: () {
+              Get.back();
+            },
+            title: "",
+            traling: GestureDetector(
+                onTap: () async {
+                  await QuickAlert.show(
+                      context: context, type: QuickAlertType.warning,
+                      showConfirmBtn: true,
+                      showCancelBtn: true,
+                      confirmBtnText: 'Xác nhận',
+                      cancelBtnText: 'Huỷ bỏ',
+                      title: 'Xác nhận',
+                      text: 'Bạn có chắc là muốn xoá thông tin bệnh nhân',
+                      onConfirmBtnTap: () async{
+                        await controller.deletePatient();
+                      },
+                      );
+                },
+                child: Icon(
+                  Icons.delete,
+                  color: Colors.redAccent,
+                )),
+          ),
           Obx(
             () => controller.isLoading.value
                 ? LoadingWidget()
@@ -212,17 +233,17 @@ class PatientDetailView extends BaseView<PatientDetailController> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Get.back();
-                            },
-                            child: Icon(Icons.close))
-                        ],
-                      ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Icon(Icons.close))
+                    ],
+                  ),
                   Row(
                     children: [
                       Expanded(
@@ -347,7 +368,8 @@ class PatientDetailView extends BaseView<PatientDetailController> {
                 ]))),
         isDismissible: false);
   }
-showBottomUpdateBasic(BuildContext context) {
+
+  showBottomUpdateBasic(BuildContext context) {
     controller.heightController.text =
         '${controller.patient.value.height ?? '0'}';
     controller.weightController.text =
@@ -429,7 +451,7 @@ showBottomUpdateBasic(BuildContext context) {
     ));
   }
 
-showBottomUpdateInsurance(BuildContext context) {
+  showBottomUpdateInsurance(BuildContext context) {
     controller.heightController.text =
         '${controller.patient.value.height ?? '0'}';
     controller.weightController.text =
@@ -437,128 +459,129 @@ showBottomUpdateInsurance(BuildContext context) {
     controller.phoneTextController.text =
         controller.patient.value.phoneNumber ?? '0';
 
-    Get.bottomSheet(Container(
-      padding: EdgeInsets.all(UtilsReponsive.height(20, context)),
-      width: double.infinity,
-      height: UtilsReponsive.height(400, context),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(UtilsReponsive.height(20, context)),
-            topRight: Radius.circular(UtilsReponsive.height(20, context)),
-          )),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-             Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          GestureDetector(
-                            onTap: () async{
-                              Get.back();
-                              await controller.initData();
-                            },
-                            child: Icon(Icons.close))
-                        ],
+    Get.bottomSheet(
+        Container(
+          padding: EdgeInsets.all(UtilsReponsive.height(20, context)),
+          width: double.infinity,
+          height: UtilsReponsive.height(400, context),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(UtilsReponsive.height(20, context)),
+                topRight: Radius.circular(UtilsReponsive.height(20, context)),
+              )),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                        onTap: () async {
+                          Get.back();
+                          await controller.initData();
+                        },
+                        child: Icon(Icons.close))
+                  ],
+                ),
+                SizedBoxConst.size(context: context),
+                _titleText(context, title: 'Số BHYT', subTitle: ''),
+                SizedBoxConst.size(context: context, size: 5),
+                TextField(
+                  controller: controller.bhtyTextController,
+                  keyboardType: TextInputType.number,
+                ),
+                Obx(
+                  () => Visibility(
+                    visible: controller.bhtyError.value.isNotEmpty,
+                    child: GestureDetector(
+                      onTap: () {
+                        controller.resetBhyt();
+                      },
+                      child: RichText(
+                          text: TextSpan(
+                              style: Theme.of(context).textTheme.titleSmall,
+                              children: <TextSpan>[
+                            TextSpan(
+                                text: controller.bhtyError.value,
+                                style: GoogleFonts.montserrat(
+                                    fontSize:
+                                        UtilsReponsive.height(12, context),
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.red)),
+                            TextSpan(
+                                text: 'vào đây',
+                                style: GoogleFonts.montserrat(
+                                    decoration: TextDecoration.underline,
+                                    fontSize:
+                                        UtilsReponsive.height(12, context),
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue)),
+                          ])),
+                    ),
+                  ),
+                ),
+                SizedBoxConst.size(context: context, size: 20),
+                Row(
+                  children: [
+                    _titleText(context, title: 'Ngày hết hạn', subTitle: ''),
+                    SizedBoxConst.sizeWith(context: context, size: 5),
+                    GestureDetector(
+                      onTap: () => onTapBHYTDate(context),
+                      child: Container(
+                          padding:
+                              EdgeInsets.all(UtilsReponsive.height(5, context)),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius:
+                                  BorderRadius.circular(UtilsReponsive.height(
+                                5,
+                                context,
+                              ))),
+                          child: Obx(() {
+                            controller.dateBHYTExp.value;
+                            return TextConstant.subTile3(context,
+                                text: controller.bhytExpTextController.text);
+                          })),
+                    )
+                  ],
+                ),
+                SizedBoxConst.size(context: context, size: 20),
+                _titleText(context, title: 'Nơi cấp', subTitle: ''),
+                SizedBoxConst.size(context: context, size: 5),
+                TextField(
+                  controller: controller.bhtyAddressTextController,
+                ),
+                SizedBoxConst.size(context: context, size: 20),
+                ConstrainedBox(
+                    constraints: BoxConstraints.tightFor(width: context.width),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        backgroundColor:
+                            MaterialStateProperty.all(ColorsManager.primary),
+                        padding: MaterialStateProperty.all(EdgeInsets.all(14)),
                       ),
-                      SizedBoxConst.size(context: context),
-            _titleText(context, title: 'Số BHYT', subTitle: ''),
-          SizedBoxConst.size(context: context, size: 5),
-          TextField(
-            controller: controller.bhtyTextController,
-            keyboardType: TextInputType.number,
-          ),
-          Obx(
-            () => Visibility(
-              visible: controller.bhtyError.value.isNotEmpty,
-              child: GestureDetector(
-                onTap: () {
-                  controller.resetBhyt();
-                },
-                child: RichText(
-                    text: TextSpan(
-                        style: Theme.of(context).textTheme.titleSmall,
-                        children: <TextSpan>[
-                      TextSpan(
-                          text: controller.bhtyError.value,
-                          style: GoogleFonts.montserrat(
-                              fontSize: UtilsReponsive.height(12, context),
-                              fontWeight: FontWeight.w600,
-                              color: Colors.red)),
-                      TextSpan(
-                          text: 'vào đây',
-                          style: GoogleFonts.montserrat(
-                              decoration: TextDecoration.underline,
-                              fontSize: UtilsReponsive.height(12, context),
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue)),
-                    ])),
-              ),
+                      child: TextConstant.subTile2(
+                        context,
+                        text: 'Cập nhật',
+                        color: Colors.white,
+                      ),
+                      onPressed: () async {
+                        await controller.updateInsurance();
+                      },
+                    )),
+              ],
             ),
           ),
-          SizedBoxConst.size(context: context, size: 20),
-          Row(
-            children: [
-              
-              _titleText(context, title: 'Ngày hết hạn', subTitle: ''),
-              SizedBoxConst.sizeWith(context: context, size: 5),
-              GestureDetector(
-                onTap: () => onTapBHYTDate(context),
-                child: Container(
-                    padding: EdgeInsets.all(UtilsReponsive.height(5, context)),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius:
-                            BorderRadius.circular(UtilsReponsive.height(
-                          5,
-                          context,
-                        ))),
-                    child: Obx(() {
-                      controller.dateBHYTExp.value;
-                      return TextConstant.subTile3(context,
-                          text: controller.bhytExpTextController.text);
-                    })),
-              )
-            ],
-          ),
-          SizedBoxConst.size(context: context, size: 20),
-          _titleText(context, title: 'Nơi cấp', subTitle: ''),
-          SizedBoxConst.size(context: context, size: 5),
-          TextField(
-            controller: controller.bhtyAddressTextController,
-          ),
-          SizedBoxConst.size(context: context, size: 20),
-            ConstrainedBox(
-                constraints: BoxConstraints.tightFor(width: context.width),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    backgroundColor:
-                        MaterialStateProperty.all(ColorsManager.primary),
-                    padding: MaterialStateProperty.all(EdgeInsets.all(14)),
-                  ),
-                  child: TextConstant.subTile2(
-                    context,
-                    text: 'Cập nhật',
-                    color: Colors.white,
-                  ),
-                  onPressed: () async {
-                    await controller.updateInsurance();
-                  },
-                )),
-          ],
         ),
-      ),
-    ),
-    isDismissible: false
-    );
-    
+        isDismissible: false);
   }
 
   Row _textData(BuildContext context,
@@ -636,7 +659,6 @@ showBottomUpdateInsurance(BuildContext context) {
     );
   }
 
-
   Container _dividerColor(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: UtilsReponsive.height(5, context)),
@@ -646,9 +668,8 @@ showBottomUpdateInsurance(BuildContext context) {
     );
   }
 
-
- RichText _titleText(BuildContext context,
-      {required String title, required String subTitle,  String? textLimit}) {
+  RichText _titleText(BuildContext context,
+      {required String title, required String subTitle, String? textLimit}) {
     return RichText(
         text: TextSpan(
             style: Theme.of(context).textTheme.titleSmall,
@@ -666,15 +687,15 @@ showBottomUpdateInsurance(BuildContext context) {
                 color: Colors.red,
                 fontSize: UtilsReponsive.height(14, context)),
           ),
-       
-       TextSpan(
-            text: textLimit??'',
+          TextSpan(
+            text: textLimit ?? '',
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 color: Colors.black,
                 fontSize: UtilsReponsive.height(10, context)),
           )
         ]));
   }
+
   onTapCccdDate(BuildContext context) async {
     await Get.defaultDialog(
         title: 'Ngày cấp',

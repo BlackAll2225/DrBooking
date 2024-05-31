@@ -17,6 +17,7 @@ class BaseLink {
   static String getPatients = '$domain/api/v1/patient-profile/many-by-client/';
   static String getPatientById = '$domain/api/v1/patient-profile/single-by-id/';
   static String updatePatientImage = '$domain/api/v1/patient-profile/avatar/';
+  static String deletePatient = '$domain/api/v1/patient-profile/soft-delete/';
 
 
 
