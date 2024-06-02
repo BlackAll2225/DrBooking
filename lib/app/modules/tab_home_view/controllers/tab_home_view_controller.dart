@@ -76,6 +76,7 @@ class TabHomeViewController extends BaseController {
   @override
   Future<void> onInit() async {
     await initalData();
+    super.onInit();
     Timer.periodic(Duration(seconds: 3), (Timer timer) {
       if (currentPage < imgaeList.length - 1) {
         currentPage.value++;
@@ -89,7 +90,6 @@ class TabHomeViewController extends BaseController {
         curve: Curves.easeIn,
       );
     });
-    super.onInit();
 
   }
 

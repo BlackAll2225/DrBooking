@@ -18,8 +18,9 @@ class SignUpView extends BaseView<SignUpController> {
       body: SafeArea(
         child: Container(
           height: double.infinity,
-          color: ColorsManager.primary.withOpacity(0.15),
+          // color: ColorsManager.primary.withOpacity(0.15),
           child: SingleChildScrollView(
+               padding: EdgeInsets.all(UtilsReponsive.height(20, context)),
             child: Form(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),

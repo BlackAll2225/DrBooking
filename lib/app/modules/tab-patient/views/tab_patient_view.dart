@@ -26,64 +26,65 @@ class TabPatientView extends BaseView<TabPatientController> {
         padding: EdgeInsets.all(UtilsReponsive.height(15, context)),
         height: double.infinity,
         alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(child: SizedBox()),
-                Expanded(
-                  flex: 3,
-                  child: Center(
-                      child:
-                          TextConstant.titleH3(context, text: 'Quản lý hồ sơ')),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                      onTap: () {
-                        controller.onTapCreateButton();
-                      },
-                      child: Icon(
-                        Icons.add,
-                        color: ColorsManager.primary,
-                      )),
-                )
-              ],
-            ),
-            SizedBoxConst.size(context: context, size: 20),
-            Row(
-              children: [
-                Expanded(
-                  flex: 9,
-                  child: TextField(
-                    onChanged: (value) async {
-                      await controller.fetchWithSearch();
-                    },
-                    controller: controller.searchTextController,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: UtilsReponsive.height(5, context),
-                          horizontal: UtilsReponsive.height(15, context)),
-                      suffixIcon: IconButton(
-                          onPressed: () async {
-                            await controller.clearText();
-                          },
-                          icon: Icon(Icons.close)),
-                      // contentPadding: EdgeInsets.all(5),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                              UtilsReponsive.height(10, context))),
-                      hintText: 'Nhập tên để tìm kiếm',
+        child: Obx(
+          () => controller.isLoading.value
+              ? const Center(child: LoadingWidget())
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(child: SizedBox()),
+                        Expanded(
+                          flex: 3,
+                          child: Center(
+                              child: TextConstant.titleH3(context,
+                                  text: 'Quản lý hồ sơ')),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                              onTap: () {
+                                controller.onTapCreateButton();
+                              },
+                              child: Icon(
+                                Icons.add,
+                                color: ColorsManager.primary,
+                              )),
+                        )
+                      ],
                     ),
-                  ),
-                ),
-              ],
-            ),
-            Obx(
-              () => controller.isLoading.value
-                  ? const Center(child: LoadingWidget())
-                  : Expanded(
+                    SizedBoxConst.size(context: context, size: 20),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 9,
+                          child: TextField(
+                            onChanged: (value) async {
+                              await controller.fetchWithSearch();
+                            },
+                            controller: controller.searchTextController,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: UtilsReponsive.height(5, context),
+                                  horizontal:
+                                      UtilsReponsive.height(15, context)),
+                              suffixIcon: IconButton(
+                                  onPressed: () async {
+                                    await controller.clearText();
+                                  },
+                                  icon: Icon(Icons.close)),
+                              // contentPadding: EdgeInsets.all(5),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      UtilsReponsive.height(10, context))),
+                              hintText: 'Nhập tên để tìm kiếm',
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Expanded(
                       child: Obx(
                         () => (!controller.isFetchMore.value &&
                                 controller.listPatients.value.isEmpty)
@@ -134,8 +135,8 @@ class TabPatientView extends BaseView<TabPatientController> {
                                 }),
                       ),
                     ),
-            ),
-          ],
+                  ],
+                ),
         ),
       ),
     );

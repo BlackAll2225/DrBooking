@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/model/booking/booking_preview.dart';
 import 'package:drbooking/app/model/patient/patient_preview.dart';
@@ -125,8 +126,8 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                 ],
               ),
             ),
-            Obx(()=>
-             Visibility(
+            Obx(
+              () => Visibility(
                 visible: controller.isHistory.value,
                 child: SizedBox(
                   height: UtilsReponsive.height(50, context),
@@ -134,21 +135,29 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                   child: Row(
                     children: [
                       Expanded(
-                          child: TextConstant.subTile3(context, text: 'Tháng:')),
+                          child:
+                              TextConstant.subTile3(context, text: 'Tháng:')),
                       Expanded(
                         flex: 2,
                         child: GestureDetector(
                           onTap: () async {
-                            final selected = await showMonthYearPicker(
-                                context: context,
-                                initialDate: controller.selectedTime.value ??
-                                    DateTime.now(),
-                                firstDate: DateTime(2019),
-                                lastDate: DateTime(DateTime.now().year + 1),
-                                locale: Locale('vi', 'VN'));
-                            if (selected != null) {
-                              await controller.fetchBookingWithTime(selected);
-                            }
+                            Get.defaultDialog(
+                              title: 'Chọn',
+                              content: 
+                              SizedBox(
+                              width: 300,
+                              height: 400,
+                              child: MonthPicker(
+                                currentDate: controller.selectedTime.value,
+                                minDate: DateTime(1999,1),
+                                maxDate: DateTime.now(),
+                                onDateSelected: (selected) async {
+                                  Get.back();
+                                  await controller
+                                      .fetchBookingWithTime(selected);
+                                },
+                              ),
+                            ));
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(
@@ -330,11 +339,13 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                       horizontal: UtilsReponsive.height(10, context),
                       vertical: UtilsReponsive.height(5, context)),
                   decoration: BoxDecoration(
-                      color: true ? Colors.green : Colors.brown,
+                      color: appointmentTypeList[booking.appoinmentType!].color,
                       borderRadius: BorderRadius.circular(
                           UtilsReponsive.height(8, context))),
                   child: TextConstant.subTile3(context,
-                      text: appointmentTypeList[booking.appoinmentType!>0 ?booking.appoinmentType!: 0]
+                      text: appointmentTypeList[booking.appoinmentType! > 0
+                              ? booking.appoinmentType!
+                              : 0]
                           .label
                           .toString(),
                       color: Colors.white),
@@ -411,24 +422,27 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                         : SizedBox());
                   }
                   return Container(
-                     decoration: BoxDecoration(
-                            boxShadow:controller.listPatients[index].patientId! == controller.selectedPatient.value.patientId? [
-                              BoxShadow(
-                                color: ColorsManager.primary,
-                                spreadRadius: 2,
-                                blurRadius: 2,
-                                offset: Offset(0, 3),
-                              ),
-                            ]:[
-                               BoxShadow(
-                                color: Colors.grey,
-                                spreadRadius: 2,
-                                blurRadius: 2,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20)),
+                    decoration: BoxDecoration(
+                        boxShadow: controller.listPatients[index].patientId! ==
+                                controller.selectedPatient.value.patientId
+                            ? [
+                                BoxShadow(
+                                  color: ColorsManager.primary,
+                                  spreadRadius: 2,
+                                  blurRadius: 2,
+                                  offset: Offset(0, 3),
+                                ),
+                              ]
+                            : [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  spreadRadius: 2,
+                                  blurRadius: 2,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20)),
                     child: ListTile(
                       onTap: () async {
                         Get.back();

@@ -37,6 +37,8 @@ dependencies:
   intl:
   image_picker:
   month_year_picker:
+  flutter_local_notifications: ^17.1.2
+  date_picker_plus:
   dio:
   flutter: 
     sdk: flutter

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_controller.dart';
 import 'package:drbooking/app/data/remote/auth_remote.dart';
@@ -54,12 +56,13 @@ class WelcomeBoardController extends BaseController {
   }
 
   initDataValue() async {
+    log('Device: $deviceToken');
     await AuthRemote().refreshToken(deviceToken: '$deviceToken').then((jwt) async {
       await BaseCommon.instance.saveToken(jwt);
       await BaseCommon.instance.decodeJWT();
       Get.offAllNamed(Routes.HOME);
     }).catchError((err){
-      Get.off(WelcomeBoardView());
+      Get.to(WelcomeBoardView());
     });
   }
 }

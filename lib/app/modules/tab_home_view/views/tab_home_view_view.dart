@@ -328,7 +328,7 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                                     size: 12,
                                     color: Colors.grey.withOpacity(0.8)),
                                 TextConstant.subTile2(context,
-                                    text: '${doctor.email}',
+                                    text: 'Chi nhánh ${doctor.clinicName}',
                                     size: 12,
                                     color: Colors.grey.withOpacity(0.8)),
                               ],
@@ -357,7 +357,7 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                               fontSize:
                                   UtilsReponsive.formatFontSize(12, context),
                               fontWeight: FontWeight.bold),
-                        ),
+                      ),
                       ),
                       onPressed: () async {
                         controller.opTapCardDoctor(idDoctor: '${doctor.id}');

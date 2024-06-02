@@ -53,7 +53,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyD1p9tBlvuozOhKDxujYnO50woPH9Nn2Wc',
+    apiKey: 'AIzaSyCpfWeE1FWvfG0xSxWSmujJDAshWesUX0g',
     appId: '1:434413082334:android:ac7cc3a51fb454e3d9144f',
     messagingSenderId: '434413082334',
     projectId: 'drbooking-app',
