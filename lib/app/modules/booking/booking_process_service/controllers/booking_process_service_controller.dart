@@ -15,11 +15,11 @@ class BookingProcessServiceController extends BaseController {
   final RequestParamBooking requestParamBooking;
 
   List<ButtonService> listService = [
-    ButtonService(content: "Khám tổng quát",path: Routes.BOOKING_GENERAL, imageUrl: ImageAssets.iconGeneralCheck, isService: false, type: TypeService.generalExam),
-    ButtonService(content: "Khám Chuyên Khoa",path: Routes.BOOKING_PROCESS_MAIN, imageUrl: ImageAssets.iconSpecialCheck, isService: true,type: TypeService.specialtyExam),
-    ButtonService(content: "Xét nghiệm",path: Routes.BOOKING_MEDICAL_SERIVCE, imageUrl: ImageAssets.iconLabCheck, isService: false,type: TypeService.labExam),
-    ButtonService(content: "Tiêm chủng",path: Routes.BOOKING_MEDICAL_SERIVCE, imageUrl: ImageAssets.iconLabCheck, isService: true, type: TypeService.vaccination),
-    ButtonService(content: "Tâm lý",path: Routes.BOOKING_MEDICAL_SERIVCE, imageUrl: ImageAssets.iconLabCheck, isService: true, type: TypeService.psychological),
+    ButtonService(content: "Khám tổng quát",path: Routes.BOOKING_GENERAL, imageUrl: ImageAssets.iconGeneralCheck, isService: false, type: TypeService.generalExam, appointmentType: appointmentTypeList.last),
+    ButtonService(content: "Khám Chuyên Khoa",path: Routes.BOOKING_PROCESS_MAIN, imageUrl: ImageAssets.iconSpecialCheck, isService: true,type: TypeService.specialtyExam, appointmentType: appointmentTypeList[2]),
+    ButtonService(content: "Xét nghiệm",path: Routes.BOOKING_MEDICAL_SERIVCE, imageUrl: ImageAssets.iconLabCheck, isService: false,type: TypeService.labExam, appointmentType: appointmentTypeList[0]),
+    ButtonService(content: "Tiêm chủng",path: Routes.BOOKING_MEDICAL_SERIVCE, imageUrl: ImageAssets.iconLabCheck, isService: true, type: TypeService.vaccination, appointmentType: appointmentTypeList[5]),
+    ButtonService(content: "Tâm lý",path: Routes.BOOKING_MEDICAL_SERIVCE, imageUrl: ImageAssets.iconLabCheck, isService: true, type: TypeService.psychological, appointmentType: appointmentTypeList[4]),
 
   ];
   @override

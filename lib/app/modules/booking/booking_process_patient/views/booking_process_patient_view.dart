@@ -13,7 +13,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../controllers/booking_process_patient_controller.dart';
 
-class BookingProcessPatientView extends BaseView<BookingProcessPatientController> {
+class BookingProcessPatientView
+    extends BaseView<BookingProcessPatientController> {
   const BookingProcessPatientView({Key? key}) : super(key: key);
   @override
   Widget buildView(BuildContext context) {
@@ -29,24 +30,47 @@ class BookingProcessPatientView extends BaseView<BookingProcessPatientController
                         color: ColorsManager.primary,
                       ),
                     )
-                  : ListView.separated(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: UtilsReponsive.height(10, context),
-                          vertical: UtilsReponsive.height(20, context)),
-                      itemCount: controller.listPatients.value.length,
-                      separatorBuilder: (context, index) =>
+                  : Padding(
+                      padding:
+                          EdgeInsets.all(UtilsReponsive.height(20, context)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextConstant.subTile2(context,
+                              text: '* Ấn để chọn bệnh nhân',
+                              color: ColorsManager.primary),
                           SizedBoxConst.size(context: context),
-                      itemBuilder: (context, index) => GestureDetector(
-                          onTap: () {
-                              controller.onTapProfileCard(patient: controller.listPatients[index]);},
-                          child: _cardProfile(context,
-                              profile: controller.listPatients[index])))))
+                          Expanded(
+                            child: ListView.separated(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        UtilsReponsive.height(10, context),
+                                    vertical:
+                                        UtilsReponsive.height(20, context)),
+                                itemCount: controller.listPatients.value.length,
+                                separatorBuilder: (context, index) =>
+                                    SizedBoxConst.size(context: context),
+                                itemBuilder: (context, index) =>
+                                    GestureDetector(
+                                        onTap: () {
+                                          controller.onTapProfileCard(
+                                              patient: controller
+                                                  .listPatients[index]);
+                                        },
+                                        child: _cardProfile(context,
+                                            profile: controller
+                                                .listPatients[index]))),
+                          ),
+                        ],
+                      ),
+                    )))
         ],
       ),
     ));
   }
 
-  Container _cardProfile(BuildContext context, {required PatientPreview profile}) {
+  Container _cardProfile(BuildContext context,
+      {required PatientPreview profile}) {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),

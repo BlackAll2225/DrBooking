@@ -145,9 +145,9 @@ class BookingDetailView extends BaseView<BookingDetailController> {
                                             .appointment.value.slotNumber! -
                                         1]),
                                 SizedBoxConst.size(context: context),
-                                _textData(context,
-                                    title: 'Đối tượng',
-                                    content: 'Không ưu tiên'),
+                                // _textData(context,
+                                //     title: 'Đối tượng',
+                                //     content: 'Không ưu tiên'),
                                 SizedBoxConst.size(context: context),
                                 _textData(context,
                                     title: 'Chi nhánh',
@@ -167,7 +167,8 @@ class BookingDetailView extends BaseView<BookingDetailController> {
                                 SizedBoxConst.size(context: context),
                                 _textData(context,
                                     title: 'Dịch vụ',
-                                    content: 'Khám theo yêu cầu'),
+                                    content:  appointmentTypeList[controller
+                                        .appointment.value.appoinmentType!].label),
                                 SizedBoxConst.size(context: context),
                                 _textData(context,
                                     title: 'Chuyên khoa',
@@ -604,7 +605,7 @@ class BookingDetailView extends BaseView<BookingDetailController> {
                 )),
             GestureDetector(
               onTap: () async {
-                await controller.submitReview(5);
+                await controller.submitReview(rating.round());
               },
               child: Container(
                 margin: EdgeInsets.only(

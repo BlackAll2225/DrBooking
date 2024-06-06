@@ -142,16 +142,17 @@ class AuthRemote implements AuthApi {
   }
 
   @override
-  Future<bool> sendEmailOTP() async {
+  Future<bool> sendEmailOTP({required String email}) async {
     final response = await http.post(Uri.parse(BaseLink.sendOTP),
-        headers: {'Authorization': 'bearer ${BaseCommon.instance.accessToken}'},
-        body: {});
-    log(response.body);
+        headers: {'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json; charset=UTF-8',},
+        body: jsonEncode(email));
+    log(jsonEncode(response.body));
     final body = json.decode(response.body);
     if (body["status"] == "Status200OK") {
-      return body["data"];
+      return true;
     }
-    throw Exception(throw Exception(body['message']));
+    throw Exception(body['message']);
   }
 
   @override

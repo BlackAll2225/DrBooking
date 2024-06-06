@@ -88,7 +88,7 @@ class Doctor {
         phoneNumber: json["phoneNumber"],
         degree: json["degree"],
         experience: json["experience"],
-        yearOfExperience: json["yearOfExperience"],
+        yearOfExperience: json["yearOfExperience"] == '0' ?'Chưa cập nhật' : json["yearOfExperience"] + ' năm',
         education: json["education"],
         specialtyName: json["specialtyName"],
         avatarUrl: json["avatarUrl"],

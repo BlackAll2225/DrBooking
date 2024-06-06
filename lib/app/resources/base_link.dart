@@ -10,7 +10,7 @@ class BaseLink {
   static const confirmOTP = '$domain/api/v1/authention/client/confirm-email-otp';
   static const updateAvatar = '$domain/api/v1/client/update-avatar';
   static const changePassword = '$domain/api/v1/authention/client-change-password';
-
+  static const updateForgotPass = '$domain/api/v1/authention/client/forgot-password';
 
   static String createPatient = '$domain/api/v1/patient-profile';
   static String updatePatient = '$domain/api/v1/patient-profile';

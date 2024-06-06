@@ -1,16 +1,18 @@
 import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_view.dart';
+import 'package:drbooking/app/modules/forgot_password/controllers/forgot_password_controller.dart';
+import 'package:drbooking/app/modules/forgot_password/views/forgot_change_view.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
+import 'package:drbooking/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../controllers/verify_otp_controller.dart';
-
-class VerifyOtpView extends BaseView<VerifyOtpController> {
-  const VerifyOtpView({Key? key}) : super(key: key);
+class VerifyOtpFogotView extends BaseView<ForgotPasswordController> {
+  const VerifyOtpFogotView({Key? key}) : super(key: key);
   @override
   Widget buildView(BuildContext context) {
     return Scaffold(
@@ -51,21 +53,22 @@ class VerifyOtpView extends BaseView<VerifyOtpController> {
                       child: Align(
                           alignment: Alignment.topCenter,
                           child: RichText(
-                            text:  TextSpan(
-                              style:  TextStyle(
+                            text: TextSpan(
+                              style: TextStyle(
                                 fontSize: 14.0,
                                 color: Colors.black,
                               ),
                               children: <TextSpan>[
-                                 TextSpan(
+                                TextSpan(
                                     text:
                                         'Chúng tôi đã gửi cho bạn số OTP gồm 6 chữ số vào email của bạn ',
                                     style: GoogleFonts.montserrat(
                                         fontSize:
                                             UtilsReponsive.height(14, context),
                                         fontWeight: FontWeight.w500)),
-                                 TextSpan(
-                                    text: '${BaseCommon.instance.accountSession!.email}',
+                                TextSpan(
+                                    text:
+                                        '${controller.emailController.text}',
                                     style: GoogleFonts.montserrat(
                                         fontSize:
                                             UtilsReponsive.height(14, context),
@@ -88,7 +91,7 @@ class VerifyOtpView extends BaseView<VerifyOtpController> {
               showFieldAsBox: true,
               onCodeChanged: (String code) {},
               onSubmit: (String verificationCode) async {
-                await controller.confirmOTP(verificationCode);
+                // await controller.confirmOTP(verificationCode);
               }, // end onSubmit
             ),
             SizedBox(
@@ -119,6 +122,7 @@ class VerifyOtpView extends BaseView<VerifyOtpController> {
                           "Tiếp tục",
                         ),
                   onPressed: () async {
+                    Get.to(()=>ForgotChangeView());
                     // if (controller.enableButton.isTrue) {
                     // }
                   },
@@ -133,20 +137,11 @@ class VerifyOtpView extends BaseView<VerifyOtpController> {
               children: [
                 Text('Đã nhận được mã OTP? '),
                 TextButton(
-                    onPressed: () async {
-                      if (controller.countDown.value == 0) {
-                        controller.countDownFunction();
-                      }
-                    },
-                    child: Obx(
-                      () => Text(
-                        controller.countDown == 0
-                            ? 'Gửi lại'
-                            : 'Gửi lại sau 00:' +
-                                '${controller.countDown.value < 10 ? '0' : ''}' +
-                                '${controller.countDown}',
+                    onPressed: () async {},
+                    child: Text(
+                        'Gửi lại',
                       ),
-                    ))
+                    )
               ],
             ),
           ],

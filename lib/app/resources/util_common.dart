@@ -43,6 +43,15 @@ List<AppointmentType> appointmentTypeList = [
   AppointmentType(label: 'Tổng quát', color: Colors.amber),
 ];
 
+List<String> urlImage = [
+  'assets/images/img1.jpg',
+  'assets/images/img2.jpg',
+  'assets/images/img3.jpg',
+  'assets/images/img4.jpg',
+  'assets/images/img5.jpg',
+];
+
+
 enum TypeService {
   generalExam,
   specialtyExam,

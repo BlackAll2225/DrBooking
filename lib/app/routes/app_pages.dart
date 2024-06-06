@@ -1,22 +1,21 @@
-import 'package:drbooking/app/modules/booking/booking_general/bindings/booking_general_binding.dart';
-import 'package:drbooking/app/modules/booking/booking_general/views/booking_general_view.dart';
-import 'package:drbooking/app/modules/booking/booking_medical_serivce/bindings/booking_medical_serivce_binding.dart';
-import 'package:drbooking/app/modules/booking/booking_medical_serivce/views/booking_medical_serivce_view.dart';
-import 'package:drbooking/app/modules/booking/booking_process_clinic/bindings/booking_process_clinic_binding.dart';
-import 'package:drbooking/app/modules/booking/booking_process_clinic/views/booking_process_clinic_view.dart';
-import 'package:drbooking/app/modules/booking/booking_process_confirm/bindings/booking_process_confirm_binding.dart';
-import 'package:drbooking/app/modules/booking/booking_process_confirm/views/booking_process_confirm_view.dart';
-import 'package:drbooking/app/modules/booking/booking_process_main/bindings/booking_process_main_binding.dart';
-import 'package:drbooking/app/modules/booking/booking_process_main/views/booking_process_main_view.dart';
-import 'package:drbooking/app/modules/booking/booking_process_patient/bindings/booking_process_patient_binding.dart';
-import 'package:drbooking/app/modules/booking/booking_process_patient/views/booking_process_patient_view.dart';
-import 'package:drbooking/app/modules/booking/booking_process_service/bindings/booking_process_service_binding.dart';
-import 'package:drbooking/app/modules/booking/booking_process_service/views/booking_process_service_view.dart';
-import 'package:drbooking/app/modules/booking/booking_process_time/bindings/booking_process_time_binding.dart';
-import 'package:drbooking/app/modules/booking/booking_process_time/views/booking_process_time_view.dart';
-import 'package:drbooking/app/modules/welcome_board/views/splash_screen.dart';
 import 'package:get/get.dart';
 
+import '../modules/booking/booking_general/bindings/booking_general_binding.dart';
+import '../modules/booking/booking_general/views/booking_general_view.dart';
+import '../modules/booking/booking_medical_serivce/bindings/booking_medical_serivce_binding.dart';
+import '../modules/booking/booking_medical_serivce/views/booking_medical_serivce_view.dart';
+import '../modules/booking/booking_process_clinic/bindings/booking_process_clinic_binding.dart';
+import '../modules/booking/booking_process_clinic/views/booking_process_clinic_view.dart';
+import '../modules/booking/booking_process_confirm/bindings/booking_process_confirm_binding.dart';
+import '../modules/booking/booking_process_confirm/views/booking_process_confirm_view.dart';
+import '../modules/booking/booking_process_main/bindings/booking_process_main_binding.dart';
+import '../modules/booking/booking_process_main/views/booking_process_main_view.dart';
+import '../modules/booking/booking_process_patient/bindings/booking_process_patient_binding.dart';
+import '../modules/booking/booking_process_patient/views/booking_process_patient_view.dart';
+import '../modules/booking/booking_process_service/bindings/booking_process_service_binding.dart';
+import '../modules/booking/booking_process_service/views/booking_process_service_view.dart';
+import '../modules/booking/booking_process_time/bindings/booking_process_time_binding.dart';
+import '../modules/booking/booking_process_time/views/booking_process_time_view.dart';
 import '../modules/booking_detail/bindings/booking_detail_binding.dart';
 import '../modules/booking_detail/views/booking_detail_view.dart';
 import '../modules/change-password/bindings/change_password_binding.dart';
@@ -25,6 +24,8 @@ import '../modules/doctor/bindings/doctor_binding.dart';
 import '../modules/doctor/views/doctor_view.dart';
 import '../modules/doctor_detail/bindings/doctor_detail_binding.dart';
 import '../modules/doctor_detail/views/doctor_detail_view.dart';
+import '../modules/forgot_password/bindings/forgot_password_binding.dart';
+import '../modules/forgot_password/views/forgot_password_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/map-explore/bindings/map_explore_binding.dart';
@@ -33,10 +34,10 @@ import '../modules/medical_record/bindings/medical_record_binding.dart';
 import '../modules/medical_record/views/medical_record_view.dart';
 import '../modules/new_profile/bindings/new_profile_binding.dart';
 import '../modules/new_profile/views/new_profile_view.dart';
-import '../modules/personal-information/bindings/personal_information_binding.dart';
-import '../modules/personal-information/views/personal_information_view.dart';
 import '../modules/patient_detail/bindings/patient_detail_binding.dart';
 import '../modules/patient_detail/views/patient_detail_view.dart';
+import '../modules/personal-information/bindings/personal_information_binding.dart';
+import '../modules/personal-information/views/personal_information_view.dart';
 import '../modules/sign_in/bindings/sign_in_binding.dart';
 import '../modules/sign_in/views/sign_in_view.dart';
 import '../modules/sign_up/bindings/sign_up_binding.dart';
@@ -49,7 +50,7 @@ import '../modules/tab_home_view/views/tab_home_view_view.dart';
 import '../modules/verify_otp/bindings/verify_otp_binding.dart';
 import '../modules/verify_otp/views/verify_otp_view.dart';
 import '../modules/welcome_board/bindings/welcome_board_binding.dart';
-import '../modules/welcome_board/views/welcome_board_view.dart';
+import '../modules/welcome_board/views/splash_screen.dart';
 
 part 'app_routes.dart';
 
@@ -193,6 +194,11 @@ class AppPages {
       name: _Paths.BOOKING_MEDICAL_SERIVCE,
       page: () => const BookingMedicalSerivceView(),
       binding: BookingMedicalSerivceBinding(),
+    ),
+    GetPage(
+      name: _Paths.FORGOT_PASSWORD,
+      page: () => const ForgotPasswordView(),
+      binding: ForgotPasswordBinding(),
     ),
   ];
 }

@@ -89,6 +89,7 @@ class BookingProcessTimeController extends BaseController {
   checkTimeByTypeService(DateTime dateTime) async {
     isLoading(true);
     listDutySchedule.value = [];
+    selectedSlot.value = DutySchedule.emtyObject();
     switch (type) {
       case TypeService.generalExam:
         await checkTimeGeneral(

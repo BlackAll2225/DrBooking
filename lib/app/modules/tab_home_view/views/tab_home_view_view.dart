@@ -402,7 +402,7 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                         RatingBar.builder(
                             unratedColor: const Color(0xff979797),
                             itemSize: 12,
-                            initialRating: doctor.rating??0,
+                            initialRating: doctor.rating! == -1 ? 4 : doctor.rating!,
                             direction: Axis.horizontal,
                             itemCount: 5,
                             itemBuilder: (context, _) => const Icon(
@@ -414,7 +414,7 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                           width: 4,
                         ),
                         Text(
-                          '(${doctor.rating})',
+                          '(${doctor.rating == -1 ? 4.5 : doctor.rating})',
                           style: Theme.of(context)
                               .textTheme
                               .titleSmall!

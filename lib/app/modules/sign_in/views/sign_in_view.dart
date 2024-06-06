@@ -113,9 +113,15 @@ class SignInView extends BaseView<SignInController> {
                                       context: context, size: 15),
                                   Align(
                                       alignment: Alignment.topRight,
-                                      child: TextConstant.subTile3(context,
-                                          text: 'Quên mật khẩu?',
-                                          fontWeight: FontWeight.w500)),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Get.toNamed(Routes.FORGOT_PASSWORD);
+                                        },
+                                        child: TextConstant.subTile3(context,
+                                            color: Colors.blue,
+                                            text: 'Quên mật khẩu ?',
+                                            fontWeight: FontWeight.bold),
+                                      )),
                                   SizedBoxConst.size(
                                       context: context, size: 15),
                                   Obx(() => ConstrainedBox(

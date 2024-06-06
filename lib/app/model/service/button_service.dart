@@ -9,11 +9,13 @@ class ButtonService {
   bool isService;
   TypeService type;
   String path;
+  AppointmentType? appointmentType;
   ButtonService(
       {required this.content,
       required this.imageUrl,
       required this.isService,
       required this.path,
+       this.appointmentType,
       required this.type});
 
   factory ButtonService.fromJson(Map<String, dynamic> json) => ButtonService(

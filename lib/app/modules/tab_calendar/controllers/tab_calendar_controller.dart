@@ -1,18 +1,13 @@
 import 'dart:developer';
 
-import 'package:drbooking/app/base/base_common.dart';
 import 'package:drbooking/app/base/base_controller.dart';
-import 'package:drbooking/app/data/local/booking_local.dart';
 import 'package:drbooking/app/data/remote/booking_remote.dart';
 import 'package:drbooking/app/data/remote/patient_remote.dart';
-import 'package:drbooking/app/model/booking/payload/get_appointment_payload.dart';
 import 'package:drbooking/app/data/respository/booking_api.dart';
 import 'package:drbooking/app/data/respository/patient/patient_api.dart';
 import 'package:drbooking/app/model/booking/booking_preview.dart';
+import 'package:drbooking/app/model/booking/payload/get_appointment_payload.dart';
 import 'package:drbooking/app/model/patient/patient_preview.dart';
-import 'package:drbooking/app/model/profile.dart';
-import 'package:drbooking/app/resources/util_common.dart';
-import 'package:drbooking/app/utils/format_data.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';

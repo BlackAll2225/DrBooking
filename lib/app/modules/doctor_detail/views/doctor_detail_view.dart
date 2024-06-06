@@ -5,6 +5,7 @@ import 'package:drbooking/app/resources/assets_manager.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
 import 'package:drbooking/app/resources/text_style.dart';
+import 'package:drbooking/app/resources/util_common.dart';
 import 'package:drbooking/app/routes/app_pages.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
@@ -83,6 +84,7 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
               child: Row(
                 children: [
                   Container(
+                    clipBehavior: Clip.antiAlias,
                     height: UtilsReponsive.height(80, context),
                     width: UtilsReponsive.height(80, context),
                     decoration: BoxDecoration(
@@ -123,7 +125,7 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
                   SizedBox(
                     width: double.infinity,
                     child: ExpandableText(
-                      "${controller.doctor.value.experience}",
+                      "${controller.doctor.value.experience ?? ''}",
                       expandText: 'Xem thêm',
                       collapseText: 'Thu gọn',
                       maxLines: 3,
@@ -158,17 +160,17 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
                       color: Colors.grey.shade500,
                       fontWeight: FontWeight.w800)),
               TextSpan(
-                  text: '   4.9 ⭐️⭐️⭐️⭐️⭐️',
+                  text: '   ${controller.doctor.value.rating} ⭐️',
                   style: TextStyle(
                       fontSize: 12,
                       color: Colors.black,
                       fontWeight: FontWeight.w800)),
-              TextSpan(
-                  text: '   (124)',
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey.shade500,
-                      fontWeight: FontWeight.w800)),
+              // TextSpan(
+              //     text: '   (124)',
+              //     style: TextStyle(
+              //         fontSize: 12,
+              //         color: Colors.grey.shade500,
+              //         fontWeight: FontWeight.w800)),
             ],
           ),
         ),
@@ -178,17 +180,17 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
               itemCount: controller.listFeedback.value.length,
               itemBuilder: (context, index) => Container(
                 padding: EdgeInsets.all(UtilsReponsive.height(10, context)),
-                 decoration: BoxDecoration(
-                            boxShadow:  [
-                              BoxShadow(
-                                color: ColorsManager.primary,
-                                spreadRadius: 2,
-                                blurRadius: 2,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20)),
+                decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: ColorsManager.primary,
+                        spreadRadius: 2,
+                        blurRadius: 2,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20)),
                 margin: EdgeInsets.only(top: 10),
                 // padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
@@ -198,13 +200,30 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
                       children: [
                         Wrap(
                           children: [
-                            CircleAvatar(
-                              radius: 20,
+                            Container(
+                              clipBehavior: Clip.hardEdge,
+                              height: UtilsReponsive.height(50, context),
+                              width: UtilsReponsive.height(50, context),
+                              padding: EdgeInsets.all(
+                                  UtilsReponsive.height(5, context)),
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: ColorsManager.primary),
+                                  shape: BoxShape.circle),
+                              child: Container(
+                                  clipBehavior: Clip.hardEdge,
+                                  height: UtilsReponsive.height(80, context),
+                                  width: UtilsReponsive.height(80, context),
+                                  decoration: const BoxDecoration(
+                                      shape: BoxShape.circle),
+                                  child:
+                                      Image.asset('assets/images/user1.png')),
                             ),
                             SizedBoxConst.sizeWith(context: context),
                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                              SizedBoxConst.size(context: context),
                                 Row(
                                   children: [
                                     Text(
@@ -214,26 +233,30 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
                                             color: Colors.black,
                                             fontWeight: FontWeight.w800)),
                                     SizedBoxConst.sizeWith(context: context),
-                                 TextConstant.subTile3(context, text: '${controller.listFeedback[index].rating}⭐️',size: 13)
+                                    TextConstant.subTile3(context,
+                                        text:
+                                            '${controller.listFeedback[index].rating}⭐️',
+                                        size: 13)
                                   ],
                                 ),
                               ],
                             ),
                           ],
                         ),
-                       
                       ],
                     ),
-                     SizedBoxConst.size(context: context),
-                     Row(
+                    SizedBoxConst.size(context: context),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                       children: [
-                         Expanded(
-                           child: TextConstant.subTile3(context, text:'${controller.listFeedback[index].feedback}',
-                              size:13),
-                         ),
-                       ],
-                     ),
+                      children: [
+                        Expanded(
+                          child: TextConstant.subTile3(context,
+                              text:
+                                  '${controller.listFeedback[index].feedback}',
+                              size: 13),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -260,16 +283,21 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
           child: ListView.separated(
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemCount: 5,
+            itemCount: urlImage.length,
             separatorBuilder: (context, index) =>
                 SizedBoxConst.sizeWith(context: context),
             itemBuilder: (context, index) => Container(
+              clipBehavior: Clip.antiAlias,
               height: UtilsReponsive.height(80, context),
               width: UtilsReponsive.width(100, context),
               decoration: BoxDecoration(
                   borderRadius:
                       BorderRadius.circular(UtilsReponsive.height(10, context)),
                   color: ColorsManager.primary),
+              child: Image.asset(
+                urlImage[index],
+                fit: BoxFit.fill,
+              ),
             ),
           ),
         ),
@@ -286,7 +314,7 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
           children: [
             Expanded(
               child: _buildOverviewTile(Icons.work, 'Kinh nghiệm',
-                  '${controller.doctor.value.yearOfExperience} năm', context),
+                  '${controller.doctor.value.yearOfExperience}', context),
             ),
             Expanded(
               child: _buildOverviewTile(Icons.folder_special, 'Chuyên khoa',
@@ -304,8 +332,11 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
                   "${controller.doctor.value.clinicName}", context),
             ),
             Expanded(
-              child: _buildOverviewTile(Icons.work, 'Bằng cấp',
-                  '${controller.doctor.value.degree}', context),
+              child: _buildOverviewTile(
+                  Icons.work,
+                  'Bằng cấp',
+                  '${controller.doctor.value.degree ?? 'Chưa cập nhật'}',
+                  context),
             ),
           ],
         ),

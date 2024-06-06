@@ -117,8 +117,8 @@ class BookingProcessConfirmView
                               _textData(context,
                                   title: 'Thời gian', content: listTime[controller.requestParam.dutySchedule!.slotNumber-1]),
                               SizedBoxConst.size(context: context),
-                              _textData(context,
-                                  title: 'Đối tượng', content: 'Không ưu tiên'),
+                              // _textData(context,
+                              //     title: 'Đối tượng', content: 'Không ưu tiên'),
                               SizedBoxConst.size(context: context),
                               _textData(context,
                                   title: 'Chi nhánh',
@@ -136,7 +136,7 @@ class BookingProcessConfirmView
                               SizedBoxConst.size(context: context),
                               _textData(context,
                                   title: 'Dịch vụ',
-                                  content: 'Khám theo yêu cầu'),
+                                  content: controller.requestParam.dataButton!.appointmentType!.label),
                               SizedBoxConst.size(context: context),
                               _textData(context,
                                   title: 'Chuyên khoa', content: controller.requestParam.specialty?.name??''),
@@ -219,9 +219,11 @@ class BookingProcessConfirmView
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        TextConstant.subTile2(context, text: title, color: Colors.black87),
-        TextConstant.subTile2(context,
-            text: content, fontWeight: FontWeight.bold),
+        Expanded(child: TextConstant.subTile2(context, text: title, color: Colors.black87)),
+        Expanded(
+          child: TextConstant.subTile2(context,
+              text: content, fontWeight: FontWeight.bold),
+        ),
       ],
     );
   }

@@ -105,8 +105,8 @@ class BookingRemote implements BookingApi {
     if (json.decode(response.body)['status'] == 'Status200OK') {
       final String payment_url = json.decode(response.body)["data"];
       return payment_url;
-    } else
-      throw Exception('Failed to load data');
+    }
+    throw Exception(throw Exception(body['message']));
   }
 
   @override
@@ -164,11 +164,11 @@ class BookingRemote implements BookingApi {
   Future<bool> cancelAppointment(
       {required String appointmentId,
       required String cancellationReason}) async {
-    bool check = await apiService
-        .validationWithPut(BaseLink.cancelAppointment, body: {
-      "appointmentId": appointmentId,
-      "cancellationReason": cancellationReason
-    });
+    bool check = await apiService.validationWithPut(BaseLink.cancelAppointment,
+        body: {
+          "appointmentId": appointmentId,
+          "cancellationReason": cancellationReason
+        });
     return check;
   }
 
@@ -203,7 +203,7 @@ class BookingRemote implements BookingApi {
     if (json.decode(response.body)['status'] == 'Status200OK') {
       final String payment_url = json.decode(response.body)["data"];
       return payment_url;
-    } else
-      throw Exception('Failed to load data');
+    }
+    throw Exception(throw Exception(body['message']));
   }
 }

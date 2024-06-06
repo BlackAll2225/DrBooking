@@ -46,7 +46,7 @@ class BookingProcessMainView extends BaseView<BookingProcessMainController> {
                   ),
                 ),
                 TextConstant.titleH2(context,
-                    text: 'Chi tiết lịch khám', fontWeight: FontWeight.w700),
+                    text: 'Khám chuyên khoa', fontWeight: FontWeight.w700),
                 const SizedBox.shrink(),
               ],
             ),

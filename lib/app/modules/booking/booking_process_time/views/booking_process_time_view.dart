@@ -84,32 +84,37 @@ class BookingProcessTimeView extends BaseView<BookingProcessTimeController> {
                 children: [
                   Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Chọn thời gian',
-                        // style: TextStyleConstant.black16RobotoBold,
-                      )),
+                      child: TextConstant.subTile2(context,
+                          text: 'Chọn thời gian', fontWeight: FontWeight.bold
+                          // style: TextStyleConstant.black16RobotoBold,
+                          )),
                   Wrap(
                     children: [
                       Container(
-                        height: 10,
-                        width: 10,
+                        height: UtilsReponsive.height(15, context),
+                        width: UtilsReponsive.height(15, context),
+                        decoration: BoxDecoration(
+                            color: ColorsManager.primary,
+                            shape: BoxShape.circle),
                         margin: EdgeInsets.only(left: 10),
-                        color: ColorsManager.primary,
                       ),
-                      Text("Đang chọn"),
+                      TextConstant.subTile3(context, text: "Đang chọn"),
                       Container(
-                        height: 10,
-                        width: 10,
+                        height: UtilsReponsive.height(15, context),
+                        width: UtilsReponsive.height(15, context),
+                        decoration: BoxDecoration(
+                            color: Colors.red, shape: BoxShape.circle),
                         margin: EdgeInsets.only(left: 10),
-                        color: Colors.red,
                       ),
-                      Text("Bận"),
+                      TextConstant.subTile3(context, text: "Bận"),
                       Container(
-                          height: 10,
-                          width: 10,
-                          margin: EdgeInsets.only(left: 10),
-                          color: Colors.grey.withOpacity(0.3)),
-                      Text("Trống"),
+                        height: UtilsReponsive.height(15, context),
+                        width: UtilsReponsive.height(15, context),
+                        decoration: BoxDecoration(
+                            color: Colors.blueGrey, shape: BoxShape.circle),
+                        margin: EdgeInsets.only(left: 10),
+                      ),
+                      TextConstant.subTile3(context, text: "Trống"),
                     ],
                   )
                 ],
@@ -148,6 +153,26 @@ class BookingProcessTimeView extends BaseView<BookingProcessTimeController> {
                                 child: Container(
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
+                                    boxShadow: controller.selectedSlot.value
+                                                .dutyScheduleId ==
+                                            controller.listDutySchedule[index]
+                                                .dutyScheduleId
+                                        ? [
+                                            BoxShadow(
+                                              color: ColorsManager.primary,
+                                              spreadRadius: 6,
+                                              blurRadius: 0.2,
+                                              offset: Offset(0, 2),
+                                            ),
+                                          ]
+                                        : [
+                                          const  BoxShadow(
+                                              color: Colors.grey,
+                                              spreadRadius: 0.3,
+                                              blurRadius: 0.2,
+                                              offset: Offset(0, 3),
+                                            ),
+                                          ],
                                     color: controller.selectedSlot.value
                                                 .dutyScheduleId ==
                                             controller.listDutySchedule[index]
@@ -187,10 +212,10 @@ class BookingProcessTimeView extends BaseView<BookingProcessTimeController> {
           EdgeInsets.symmetric(horizontal: UtilsReponsive.height(10, context)),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: ColorsManager.primary,
+          backgroundColor: isEnable ? ColorsManager.primary : Colors.grey,
           shape: RoundedRectangleBorder(
               side: BorderSide(
-                  color: isEnable ? ColorsManager.primary : Colors.grey ,
+                  color: isEnable ? ColorsManager.primary : Colors.grey,
                   width: UtilsReponsive.height(2, context)),
               borderRadius: BorderRadius.circular(5)),
           padding: EdgeInsets.symmetric(
@@ -203,8 +228,10 @@ class BookingProcessTimeView extends BaseView<BookingProcessTimeController> {
               text: 'Xác nhận', color: isEnable ? Colors.white : Colors.black),
         ),
         onPressed: () async {
-          controller.onTapSubmitButton();
-          Get.back();
+          if (isEnable) {
+            controller.onTapSubmitButton();
+            Get.back();
+          }
         },
       ),
     );

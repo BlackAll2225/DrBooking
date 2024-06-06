@@ -36,7 +36,7 @@ class TabAccountViewV2 extends BaseView<TabAccountController> {
                   padding: EdgeInsets.all(UtilsReponsive.height(20, context)),
                   child: Column(
                     children: [
-                      _dashboard(context),
+                      // _dashboard(context),
                       SizedBoxConst.size(context: context, size: 30),
                       ListView.separated(
                         shrinkWrap: true,
@@ -50,7 +50,8 @@ class TabAccountViewV2 extends BaseView<TabAccountController> {
                       ),
                        SizedBoxConst.size(context: context, size: 20),
                       GestureDetector(
-                          onTap: () {
+                          onTap: () async{
+                            await BaseCommon.instance.removeToken();
                             Get.offAllNamed(Routes.SIGN_IN);
                           },
                           child: Row(

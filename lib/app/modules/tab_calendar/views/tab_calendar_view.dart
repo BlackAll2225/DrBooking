@@ -142,22 +142,21 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                         child: GestureDetector(
                           onTap: () async {
                             Get.defaultDialog(
-                              title: 'Chọn',
-                              content: 
-                              SizedBox(
-                              width: 300,
-                              height: 400,
-                              child: MonthPicker(
-                                currentDate: controller.selectedTime.value,
-                                minDate: DateTime(1999,1),
-                                maxDate: DateTime.now(),
-                                onDateSelected: (selected) async {
-                                  Get.back();
-                                  await controller
-                                      .fetchBookingWithTime(selected);
-                                },
-                              ),
-                            ));
+                                title: 'Chọn',
+                                content: SizedBox(
+                                  width: 300,
+                                  height: 400,
+                                  child: MonthPicker(
+                                    currentDate: controller.selectedTime.value,
+                                    minDate: DateTime(1999, 1),
+                                    maxDate: DateTime.now(),
+                                    onDateSelected: (selected) async {
+                                      Get.back();
+                                      await controller
+                                          .fetchBookingWithTime(selected);
+                                    },
+                                  ),
+                                ));
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(
@@ -194,26 +193,35 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                         ),
                       )
                     : Expanded(
-                        child: Obx(() => ListView.separated(
-                            controller: controller.scroller,
-                            shrinkWrap: true,
-                            itemCount:
-                                controller.listBookingPreview.value.length + 1,
-                            separatorBuilder: (context, index) =>
-                                SizedBoxConst.size(context: context),
-                            itemBuilder: (context, index) {
-                              if (index ==
-                                  controller.listBookingPreview.value.length) {
-                                return Obx(() => controller.isFetchMore.value
-                                    ? CupertinoActivityIndicator(
-                                        color: ColorsManager.primary,
-                                      )
-                                    : SizedBox());
-                              }
-                              return _itemCard(context,
-                                  booking:
-                                      controller.listBookingPreview[index]);
-                            })),
+                        child: Obx(() => RefreshIndicator(
+                              onRefresh: () async {
+                                await controller.fetchPatientsWithSearch();
+                              },
+                              child: ListView.separated(
+                                  physics: AlwaysScrollableScrollPhysics(),
+                                  controller: controller.scroller,
+                                  shrinkWrap: true,
+                                  itemCount: controller
+                                          .listBookingPreview.value.length +
+                                      1,
+                                  separatorBuilder: (context, index) =>
+                                      SizedBoxConst.size(context: context),
+                                  itemBuilder: (context, index) {
+                                    if (index ==
+                                        controller
+                                            .listBookingPreview.value.length) {
+                                      return Obx(
+                                          () => controller.isFetchMore.value
+                                              ? CupertinoActivityIndicator(
+                                                  color: ColorsManager.primary,
+                                                )
+                                              : SizedBox());
+                                    }
+                                    return _itemCard(context,
+                                        booking: controller
+                                            .listBookingPreview[index]);
+                                  }),
+                            )),
                       )),
             SizedBoxConst.size(
                 context: context, size: UtilsReponsive.height(15, context)),
@@ -410,9 +418,10 @@ class TabCalendarView extends BaseView<TabCalendarController> {
           ),
           SizedBoxConst.size(context: context, size: 20),
           Expanded(
-            child: Obx(() => ListView.builder(
+            child: Obx(() => ListView.separated(
                 // controller: controller.scroller,
                 itemCount: controller.listPatients.value.length + 1,
+                separatorBuilder: (context, index) => SizedBoxConst.size(context: context),
                 itemBuilder: (context, index) {
                   if (index == controller.listPatients.value.length) {
                     return Obx(() => controller.isProcessSub.value
@@ -429,7 +438,7 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                                 BoxShadow(
                                   color: ColorsManager.primary,
                                   spreadRadius: 2,
-                                  blurRadius: 2,
+                                  blurRadius: 1,
                                   offset: Offset(0, 3),
                                 ),
                               ]
@@ -437,7 +446,7 @@ class TabCalendarView extends BaseView<TabCalendarController> {
                                 BoxShadow(
                                   color: Colors.grey,
                                   spreadRadius: 2,
-                                  blurRadius: 2,
+                                  blurRadius: 1,
                                   offset: Offset(0, 3),
                                 ),
                               ],

@@ -277,7 +277,8 @@ class MedicalRecordView extends BaseView<MedicalRecordController> {
                     title: 'Chi nhánh', content: medicalRecord.medicalSpecialtyName??''),
                 SizedBoxConst.size(context: context),
                 _textData(context,
-                    title: 'Bác sĩ khám', content: medicalRecord.doctorName??''),
+                    title: 'Bác sĩ khám', content: medicalRecord.reExaminationDate!=null? DateFormat('dd/MM/yyyy')
+                      .format(DateTime.parse(medicalRecord.reExaminationDate)):''),
                 SizedBoxConst.size(context: context),
                 _textData(context, title: 'Triệu chứng', content: ''),
                 SizedBoxConst.size(context: context),

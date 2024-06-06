@@ -101,38 +101,48 @@ class TabPatientView extends BaseView<TabPatientController> {
                                       color: Colors.grey),
                                 ],
                               )
-                            : ListView.separated(
-                                controller: controller.scroller,
-                                padding: EdgeInsets.only(
-                                    top: UtilsReponsive.height(10, context)),
-                                itemCount:
-                                    controller.listPatients.value.length + 1,
-                                separatorBuilder: (context, index) =>
-                                    SizedBoxConst.size(context: context),
-                                itemBuilder: (context, index) {
-                                  if (index ==
-                                      controller.listPatients.value.length) {
-                                    return Obx(
-                                        () => controller.isFetchMore.value
-                                            ? CupertinoActivityIndicator(
-                                                color: ColorsManager.primary,
-                                              )
-                                            : SizedBox());
-                                  }
-                                  return GestureDetector(
-                                      onTap: () {
-                                        Get.toNamed(Routes.PROFILE_DETAIL,
-                                            parameters: {
-                                              "idPatient": controller
-                                                  .listPatients
-                                                  .value[index]
-                                                  .patientId!
-                                            });
-                                      },
-                                      child: _cardProfile(context,
-                                          profile: controller
-                                              .listPatients.value[index]));
-                                }),
+                            : RefreshIndicator(
+                                onRefresh: () async {
+                                  await controller.fetchWithSearch();
+                                },
+                                child: ListView.separated(
+                                    physics: AlwaysScrollableScrollPhysics(),
+                                    controller: controller.scroller,
+                                    padding: EdgeInsets.only(
+                                        top:
+                                            UtilsReponsive.height(10, context)),
+                                    itemCount:
+                                        controller.listPatients.value.length +
+                                            1,
+                                    separatorBuilder: (context, index) =>
+                                        SizedBoxConst.size(context: context),
+                                    itemBuilder: (context, index) {
+                                      if (index ==
+                                          controller
+                                              .listPatients.value.length) {
+                                        return Obx(
+                                            () => controller.isFetchMore.value
+                                                ? CupertinoActivityIndicator(
+                                                    color:
+                                                        ColorsManager.primary,
+                                                  )
+                                                : SizedBox());
+                                      }
+                                      return GestureDetector(
+                                          onTap: () {
+                                            Get.toNamed(Routes.PROFILE_DETAIL,
+                                                parameters: {
+                                                  "idPatient": controller
+                                                      .listPatients
+                                                      .value[index]
+                                                      .patientId!
+                                                });
+                                          },
+                                          child: _cardProfile(context,
+                                              profile: controller
+                                                  .listPatients.value[index]));
+                                    }),
+                              ),
                       ),
                     ),
                   ],

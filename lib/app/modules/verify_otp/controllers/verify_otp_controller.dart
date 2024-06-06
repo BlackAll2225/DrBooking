@@ -46,12 +46,12 @@ class VerifyOtpController extends BaseController {
   }
 
   sendOTP() async {
-    await AuthRemote().sendEmailOTP().then((value) {
-      if (!value) {
-        Get.back();
-        UtilCommon.snackBar(text: 'Có gì đó không đúng', isFail: true);
-      }
-    }).catchError(handleError);
+    // await AuthRemote().sendEmailOTP().then((value) {
+    //   if (!value) {
+    //     Get.back();
+    //     UtilCommon.snackBar(text: 'Có gì đó không đúng', isFail: true);
+    //   }
+    // }).catchError(handleError);
   }
 
   confirmOTP(String code) async {

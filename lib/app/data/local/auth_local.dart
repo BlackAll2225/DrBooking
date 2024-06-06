@@ -42,7 +42,7 @@ class AuthLocal implements AuthApi{
   }
 
   @override
-  Future<bool> sendEmailOTP() {
+  Future<bool> sendEmailOTP({required String email}) {
     // TODO: implement sendEmailOTP
     throw UnimplementedError();
   }

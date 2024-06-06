@@ -10,6 +10,8 @@ abstract class BaseController extends GetxController {
   Rx<bool> isFetchData = false.obs;
   Rx<bool> isFetchMore = false.obs;
   Rx<bool> isLockButton = false.obs;
+  Rx<bool> isEnableButton = false.obs;
+
 
   FutureOr<Null> handleError(dynamic error) async {
     try {

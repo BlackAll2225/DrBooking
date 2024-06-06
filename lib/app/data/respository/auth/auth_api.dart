@@ -12,7 +12,7 @@ abstract class AuthApi {
   //3
   Future<String> refreshToken({required String deviceToken});
   //4
-  Future<bool> sendEmailOTP();
+  Future<bool> sendEmailOTP({required String email});
   //5
   Future<String> confirmOTP({required ConfirmOtpPayload payload});
   //6

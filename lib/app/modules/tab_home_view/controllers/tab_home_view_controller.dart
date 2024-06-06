@@ -20,7 +20,7 @@ import 'package:line_icons/line_icons.dart';
 
 class TabHomeViewController extends BaseController {
   final isLocal = BaseCommon.instance.mode == LOCAL_MODE;
-
+  
   final count = 0.obs;
   RxList<DoctorPreview> listDoctorPreview = <DoctorPreview>[].obs;
   RxList<AppointmentPreview> listBookingPreview = <AppointmentPreview>[].obs;
@@ -29,7 +29,7 @@ class TabHomeViewController extends BaseController {
         title: "Đặt lịch",
         colorBackground: Colors.redAccent,
         colorText: Colors.black,
-        icon: Icon(
+        icon:const Icon(
           Icons.add,
           color: Colors.white,
         ),
@@ -38,7 +38,7 @@ class TabHomeViewController extends BaseController {
         title: "Chi nhánh",
         colorBackground: ColorsManager.primary,
         colorText: Colors.black,
-        icon: Icon(
+        icon:const Icon(
           Icons.map,
           color: Colors.white,
         ),
@@ -118,7 +118,7 @@ class TabHomeViewController extends BaseController {
   getListDoctorRandom() async {
     isLoading.value = true;
     listDoctorPreview.value =
-        await doctorApi.getListDoctorRandom(param: "clinic-khaihoang");
+        await doctorApi.getListDoctorRandom(param: null);
     isLoading.value = false;
   }
 
