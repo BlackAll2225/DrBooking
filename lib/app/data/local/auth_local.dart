@@ -64,5 +64,11 @@ class AuthLocal implements AuthApi{
     // TODO: implement changePassForgot
     throw UnimplementedError();
   }
+  
+  @override
+  Future<String> updateNameAccount({required String name}) {
+    // TODO: implement updateNameAccount
+    throw UnimplementedError();
+  }
  
 }

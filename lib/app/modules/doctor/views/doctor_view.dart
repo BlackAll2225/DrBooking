@@ -206,7 +206,7 @@ class DoctorView extends BaseView<BookingProcessMainController> {
                 doctor.rating == -1?SizedBox():  RatingBar.builder(
                       unratedColor: const Color(0xff979797),
                       itemSize: 12,
-                      initialRating:  doctor.rating! == -1 ? 4 : doctor.rating!,
+                      initialRating:  doctor.rating! == -1 ? 4 : doctor.rating!.floorToDouble(),
                       direction: Axis.horizontal,
                       itemCount: 5,
                       itemBuilder: (context, _) => const Icon(

@@ -23,7 +23,7 @@ class Doctor {
     String? employeeCode;
     String? email;
     int? biologicalGender;
-    int? rating;
+    double? rating;
     DateTime? dateOfBirth;
 
     Doctor({
@@ -60,7 +60,7 @@ class Doctor {
         String? employeeCode,
         String? email,
         int? biologicalGender,
-        int? rating,
+        double? rating,
         DateTime? dateOfBirth,
     }) => 
         Doctor(
@@ -97,7 +97,7 @@ class Doctor {
         employeeCode: json["employeeCode"],
         email: json["email"],
         biologicalGender: json["biologicalGender"],
-        rating: json["rating"],
+        rating: json["rating"].toDouble(),
         dateOfBirth: json["dateOfBirth"] == null ? null : DateTime.parse(json["dateOfBirth"]),
     );
 
@@ -116,7 +116,7 @@ class Doctor {
         "employeeCode": employeeCode,
         "email": email,
         "biologicalGender": biologicalGender,
-        "rating": rating,
+        "rating": rating?.toDouble(),
         "dateOfBirth": dateOfBirth?.toIso8601String(),
     };
 }

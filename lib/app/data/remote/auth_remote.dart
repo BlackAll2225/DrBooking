@@ -208,6 +208,19 @@ class AuthRemote implements AuthApi {
     if (body["status"] == "Status200OK") {
       return body["data"];
     }
-   throw Exception(body['message']);
+    throw Exception(body['message']);
+  }
+
+  @override
+  Future<String> updateNameAccount({required String name}) async {
+    final response = await http.put(Uri.parse(BaseLink.updateNameAccount),
+        headers: BaseCommon.instance.headerRequest(), body: jsonEncode(name));
+    log((response.body));
+    final body = json.decode(response.body);
+    if (body["status"] == "Status200OK") {
+      final data = body['data'];
+      return data;
+    }
+    throw Exception(body['message']);
   }
 }

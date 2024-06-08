@@ -25,9 +25,14 @@ class PersonalInformationController extends BaseController {
 
   AuthApi authApi = AuthRemote();
   Rx<AccountSession> account = AccountSession().obs;
+
+  final isUpdateName = false.obs;
+  final isUpdatePhone = false.obs;
+  TextEditingController nameController = TextEditingController(text: '');
   @override
   Future<void> onInit() async {
     account.value = BaseCommon.instance.accountSession!;
+    nameController.text = account.value.fullName!;
     isLoading(false);
     super.onInit();
   }
@@ -89,9 +94,24 @@ class PersonalInformationController extends BaseController {
           .then((jwt) async {
         await BaseCommon.instance.saveToken(jwt);
         await BaseCommon.instance.decodeJWT();
-            account.value = BaseCommon.instance.accountSession!;
-            UtilCommon.snackBar(text: 'Cập nhật thành công');
+        account.value = BaseCommon.instance.accountSession!;
+        UtilCommon.snackBar(text: 'Cập nhật thành công');
       });
     }
+  }
+
+  revertName() {
+    isUpdateName.value = false;
+    nameController.text = account.value.fullName!;
+  }
+
+  updateName() async {
+    isUpdateName.value = false;
+    AuthRemote().updateNameAccount(name: nameController.text).then((jwt) async {
+      await BaseCommon.instance.saveToken(jwt);
+      await BaseCommon.instance.decodeJWT();
+      account.value = BaseCommon.instance.accountSession!;
+      UtilCommon.snackBar(text: 'Cập nhật thành công');
+    }).catchError(handleError);
   }
 }

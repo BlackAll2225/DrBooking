@@ -25,4 +25,6 @@ abstract class AuthApi {
   Future<bool> changePassword({required String currentPassword, required String newPassword});
 
   Future<String> changePassForgot({required String otp, required String email, required String password});
+
+  Future<String> updateNameAccount({required String name});
 }

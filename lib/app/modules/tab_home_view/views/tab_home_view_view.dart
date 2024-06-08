@@ -421,7 +421,7 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                             unratedColor: const Color(0xff979797),
                             itemSize: 12,
                             initialRating:
-                                doctor.rating! == -1 ? 4 : doctor.rating!,
+                                doctor.rating! == -1 ? 4 : doctor.rating!.floorToDouble(),
                             direction: Axis.horizontal,
                             itemCount: 5,
                             itemBuilder: (context, _) => const Icon(
@@ -433,7 +433,7 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                           width: 4,
                         ),
                         Text(
-                          '(${doctor.rating == -1 ? 'Đang cập nhật' : doctor.rating})',
+                          '(${doctor.rating == -1 ? 'Đang cập nhật' : doctor.rating!.toStringAsFixed(1)})',
                           style: Theme.of(context)
                               .textTheme
                               .titleSmall!

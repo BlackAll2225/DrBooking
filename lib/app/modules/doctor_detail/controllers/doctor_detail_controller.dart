@@ -41,16 +41,19 @@ class DoctorDetailController extends BaseController {
   updateTabFeedBack(bool value) async {
     isFeedback.value = value;
     if (value) {
-        await doctorApi.getFeedbackByIdDoctor(idDoctor: idDoctor).then((value) {
+      await doctorApi.getFeedbackByIdDoctor(idDoctor: idDoctor).then((value) {
         listFeedback.value = value;
-       });
+      });
     }
   }
 
   fetchDataDoctor() async {
+    isLoading(true);
     await doctorApi.getDoctorDetailById(id: idDoctor).then((value) {
       doctor.value = value;
+      isLoading(false);
     }).catchError((error) {
+      isLoading(false);
       log("err" + error.toString());
       isLockButton(false);
       UtilCommon.snackBar(text: '${error.message}');

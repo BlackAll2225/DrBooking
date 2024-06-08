@@ -3,6 +3,7 @@ import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/common/widget/app_bar_custom.dart';
 import 'package:drbooking/app/resources/assets_manager.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
+import 'package:drbooking/app/resources/loading_widget.dart';
 import 'package:drbooking/app/resources/reponsive_utils.dart';
 import 'package:drbooking/app/resources/text_style.dart';
 import 'package:drbooking/app/resources/util_common.dart';
@@ -53,7 +54,9 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
             },
           ),
         ),
-        body: Obx(() => _body(context)));
+        body: Obx(() =>
+        controller.isLoading.value?LoadingWidget():
+         _body(context)));
   }
 
   SafeArea _body(BuildContext context) {
@@ -160,7 +163,7 @@ class DoctorDetailView extends BaseView<DoctorDetailController> {
                       color: Colors.grey.shade500,
                       fontWeight: FontWeight.w800)),
               TextSpan(
-                  text: '   ${controller.doctor.value.rating} ⭐️',
+                  text: '   ${controller.doctor.value.rating!.toStringAsFixed(1)} ⭐️',
                   style: TextStyle(
                       fontSize: 12,
                       color: Colors.black,
