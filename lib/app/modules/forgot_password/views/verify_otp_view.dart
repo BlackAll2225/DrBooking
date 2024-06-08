@@ -85,13 +85,12 @@ class VerifyOtpFogotView extends BaseView<ForgotPasswordController> {
               borderRadius: BorderRadius.circular(10),
               focusedBorderColor: Color(0xFF5CB85C),
               fieldWidth: UtilsReponsive.height(50, context),
-
               numberOfFields: 6,
               borderColor: Color(0xFF5CB85C),
               showFieldAsBox: true,
-              onCodeChanged: (String code) {},
+              onCodeChanged: (String code) {controller.otp.value = code;},
               onSubmit: (String verificationCode) async {
-                // await controller.confirmOTP(verificationCode);
+                await controller.changePassword(verificationCode);
               }, // end onSubmit
             ),
             SizedBox(
@@ -122,7 +121,8 @@ class VerifyOtpFogotView extends BaseView<ForgotPasswordController> {
                           "Tiếp tục",
                         ),
                   onPressed: () async {
-                    Get.to(()=>ForgotChangeView());
+                 await   controller.changePassword(controller.otp.value);
+                    // Get.to(()=>ForgotChangeView());
                     // if (controller.enableButton.isTrue) {
                     // }
                   },

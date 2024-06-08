@@ -1,4 +1,5 @@
 import 'package:drbooking/app/base/base_view.dart';
+import 'package:drbooking/app/common/widget/app_bar_custom.dart';
 import 'package:drbooking/app/resources/assets_manager.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
 import 'package:drbooking/app/resources/form_field_widget.dart';
@@ -21,35 +22,11 @@ class BookingMedicalSerivceView
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.only(
-                top: UtilsReponsive.height(20, context),
-                right: UtilsReponsive.height(10, context),
-                left: UtilsReponsive.height(10, context)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(UtilsReponsive.height(5, context)),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Colors.grey,
-                            width: UtilsReponsive.height(2, context)),
-                        borderRadius: BorderRadius.circular(
-                            UtilsReponsive.height(10, context))),
-                    child: const Icon(Icons.arrow_back_ios_new),
-                  ),
-                ),
-                Obx(() => TextConstant.titleH2(context,
-                    text: controller.title.value, fontWeight: FontWeight.w700)),
-                const SizedBox.shrink(),
-              ],
-            ),
-          ),
+              AppBarCustom(
+                callback: () {
+                  Get.back();
+                },
+                title: controller.title.value),
           Expanded(
               child: SingleChildScrollView(
             padding: EdgeInsets.all(UtilsReponsive.height(20, context)),

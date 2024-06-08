@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drbooking/app/base/base_view.dart';
+import 'package:drbooking/app/common/widget/app_bar_custom.dart';
 import 'package:drbooking/app/modules/doctor/views/doctor_view.dart';
 import 'package:drbooking/app/resources/assets_manager.dart';
 import 'package:drbooking/app/resources/color_manager.dart';
@@ -22,35 +24,11 @@ class BookingProcessMainView extends BaseView<BookingProcessMainController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.only(
-                top: UtilsReponsive.height(20, context),
-                right: UtilsReponsive.height(10, context),
-                left: UtilsReponsive.height(10, context)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(UtilsReponsive.height(5, context)),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Colors.grey,
-                            width: UtilsReponsive.height(2, context)),
-                        borderRadius: BorderRadius.circular(
-                            UtilsReponsive.height(10, context))),
-                    child: Icon(Icons.arrow_back_ios_new),
-                  ),
-                ),
-                TextConstant.titleH2(context,
-                    text: 'Khám chuyên khoa', fontWeight: FontWeight.w700),
-                const SizedBox.shrink(),
-              ],
-            ),
-          ),
+           AppBarCustom(
+                callback: () {
+                  Get.back();
+                },
+                title: 'Khám chuyên khoa'),
           Expanded(
               child: SingleChildScrollView(
             padding: EdgeInsets.all(UtilsReponsive.height(20, context)),
@@ -392,9 +370,14 @@ class BookingProcessMainView extends BaseView<BookingProcessMainController> {
             ),
             width: UtilsReponsive.width(70, context),
             height: UtilsReponsive.width(70, context),
-            child: Image.asset(
-              ImageAssets.logo,
+            child: CachedNetworkImage(
               fit: BoxFit.fill,
+              imageUrl: controller.requestParamBooking.patient?.avatarUrl ?? '',
+              placeholder: (context, url) => const CircularProgressIndicator(
+                color: Colors.white,
+              ),
+              errorWidget: (context, url, error) =>
+                  Image.asset(ImageAssets.logo),
             ),
           ),
           Expanded(

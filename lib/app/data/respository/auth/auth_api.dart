@@ -23,4 +23,6 @@ abstract class AuthApi {
   Future<String> updateAvatarClientProfile({required String stringPathImage});
   //9
   Future<bool> changePassword({required String currentPassword, required String newPassword});
+
+  Future<String> changePassForgot({required String otp, required String email, required String password});
 }

@@ -24,16 +24,7 @@ class AppBarCustom extends StatelessWidget {
                   onTap: () {
                   callback();
                   },
-                  child: Container(
-                    padding: EdgeInsets.all(UtilsReponsive.height(5, context)),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Colors.grey,
-                            width: UtilsReponsive.height(2, context)),
-                        borderRadius: BorderRadius.circular(
-                            UtilsReponsive.height(10, context))),
-                    child: Icon(Icons.arrow_back_ios_new),
-                  ),
+                  child: Icon(Icons.arrow_back_ios_new),
                 ),
           TextConstant.titleH2(context,
               text: title, fontWeight: FontWeight.w700),

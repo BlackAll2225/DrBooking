@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drbooking/app/base/base_view.dart';
 import 'package:drbooking/app/common/widget/app_bar_custom.dart';
 import 'package:drbooking/app/model/patient/patient_preview.dart';
@@ -92,9 +93,14 @@ class BookingProcessPatientView
             ),
             width: UtilsReponsive.width(70, context),
             height: UtilsReponsive.width(70, context),
-            child: Image.asset(
-              ImageAssets.logo,
+            child: CachedNetworkImage(
               fit: BoxFit.fill,
+              imageUrl: profile.avatarUrl ?? '',
+              placeholder: (context, url) => const CircularProgressIndicator(
+                color: Colors.white,
+              ),
+              errorWidget: (context, url, error) =>
+                  Image.asset(ImageAssets.logo),
             ),
           ),
           Expanded(

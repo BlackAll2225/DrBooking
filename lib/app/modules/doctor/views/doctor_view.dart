@@ -191,7 +191,7 @@ class DoctorView extends BaseView<BookingProcessMainController> {
                           color: const Color(0xff979797), fontSize: 12),
                     ),
                     TextSpan(
-                      text: '   ${doctor.rating} năm',
+                      text: '   ${doctor.yearOfExperience} năm',
                       style: Theme.of(context)
                           .textTheme
                           .bodyLarge!
@@ -203,10 +203,10 @@ class DoctorView extends BaseView<BookingProcessMainController> {
                   Text('Đánh giá  ',
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           color: const Color(0xff979797), fontSize: 12)),
-                  RatingBar.builder(
+                doctor.rating == -1?SizedBox():  RatingBar.builder(
                       unratedColor: const Color(0xff979797),
                       itemSize: 12,
-                      initialRating: doctor.rating!.toDouble(),
+                      initialRating:  doctor.rating! == -1 ? 4 : doctor.rating!,
                       direction: Axis.horizontal,
                       itemCount: 5,
                       itemBuilder: (context, _) => const Icon(
@@ -218,7 +218,7 @@ class DoctorView extends BaseView<BookingProcessMainController> {
                     width: 4,
                   ),
                   Text(
-                    '(${doctor.rating})',
+                     '(${doctor.rating == -1 ? 'Đang cập nhật' : doctor.rating})',
                     style: Theme.of(context)
                         .textTheme
                         .titleSmall!

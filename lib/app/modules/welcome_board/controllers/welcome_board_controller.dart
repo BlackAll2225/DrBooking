@@ -59,7 +59,8 @@ class WelcomeBoardController extends BaseController {
     await AuthRemote().refreshToken(deviceToken: '$deviceToken').then((jwt) async {
       await BaseCommon.instance.saveToken(jwt);
       await BaseCommon.instance.decodeJWT();
-      Get.offAllNamed(Routes.HOME);
+      await Future.delayed(Duration(seconds: 1));
+      Get.offAllNamed(Routes.CHECK_PERMISSION);
     }).catchError((err){
       Get.to(WelcomeBoardView());
     });

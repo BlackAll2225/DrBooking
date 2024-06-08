@@ -20,6 +20,8 @@ import '../modules/booking_detail/bindings/booking_detail_binding.dart';
 import '../modules/booking_detail/views/booking_detail_view.dart';
 import '../modules/change-password/bindings/change_password_binding.dart';
 import '../modules/change-password/views/change_password_view.dart';
+import '../modules/check_permission/bindings/check_permission_binding.dart';
+import '../modules/check_permission/views/check_permission_view.dart';
 import '../modules/doctor/bindings/doctor_binding.dart';
 import '../modules/doctor/views/doctor_view.dart';
 import '../modules/doctor_detail/bindings/doctor_detail_binding.dart';
@@ -199,6 +201,11 @@ class AppPages {
       name: _Paths.FORGOT_PASSWORD,
       page: () => const ForgotPasswordView(),
       binding: ForgotPasswordBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHECK_PERMISSION,
+      page: () => const CheckPermissionView(),
+      binding: CheckPermissionBinding(),
     ),
   ];
 }

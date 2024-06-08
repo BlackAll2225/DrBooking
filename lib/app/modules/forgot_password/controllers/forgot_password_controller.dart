@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:drbooking/app/base/base_controller.dart';
 import 'package:drbooking/app/data/remote/auth_remote.dart';
 import 'package:drbooking/app/modules/forgot_password/views/verify_otp_view.dart';
+import 'package:drbooking/app/resources/util_common.dart';
+import 'package:drbooking/app/routes/app_pages.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
@@ -13,6 +17,7 @@ class ForgotPasswordController extends BaseController {
   TextEditingController rePasswordController = TextEditingController(text: '');
   final errorPassword = ''.obs;
   final errorOldPassword = ''.obs;
+  final otp = ''.obs;
 
   @override
   void onInit() {
@@ -42,25 +47,45 @@ class ForgotPasswordController extends BaseController {
   }
 
   sendOTP() async {
-    if (isEnableButton.value) {
+    if (isEnableButton.value &&  validate()) {
       AuthRemote().sendEmailOTP(email: emailController.text).then((value) {
-      Get.to(() =>const VerifyOtpFogotView());
+        Get.to(() => const VerifyOtpFogotView());
+      }).catchError(handleError);
+    }else{
+      log('message ${validate()}');
+    }
+  }
+
+  bool validate() {
+    if (newPasswordController.text.isEmpty ||
+        rePasswordController.text.isEmpty) {
+      UtilCommon.snackBar(text: 'Vui lòng nhập đủ thông tin', isFail: true);
+      return false;
+    }
+    if (newPasswordController.text != rePasswordController.text) {
+      errorPassword('Nhập lại mật khẩu mới không khớp');
+      return false;
+    }
+    errorPassword('');
+    if (newPasswordController.text.length < 6) {
+      errorPassword('Độ dài mật khẩu tối thiểu 6 kí tự');
+      return false;
+    }
+    errorPassword('');
+    return true;
+  }
+
+  changePassword(String verificationCode) async {
+    if (validate()) {
+      await AuthRemote()
+          .changePassForgot(
+              email: emailController.text,
+              password: newPasswordController.text,
+              otp: verificationCode)
+          .then((value) {
+          Get.offAllNamed(Routes.SIGN_IN);
+          UtilCommon.snackBar(text: 'Cập nhật thành công');
       }).catchError(handleError);
     }
   }
-  // changePassword() async {
-  //   if (validate()) {
-  //     await AuthRemote()
-  //         .changePassword(
-  //             currentPassword: oldPasswordController.text,
-  //             newPassword: newPasswordController.text)
-  //         .then((value) {
-  //       if (value) {
-  //         Get.back();
-  //         UtilCommon.snackBar(text: 'Cập nhật thành công');
-  //       }
-  //     }).catchError(handleError);
-  //   }
-  // }
-  changePassword(){}
 }

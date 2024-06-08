@@ -25,11 +25,12 @@ class NotificationHelper {
     log(tz.TZDateTime.from(data, tz.local).toString());
     log(tz.TZDateTime.now(tz.local).toString());
 
-    log((tz.TZDateTime.from(data, tz.local).microsecondsSinceEpoch>
-       tz.TZDateTime.now(tz.local).microsecondsSinceEpoch).toString());
+    log((tz.TZDateTime.from(data, tz.local).microsecondsSinceEpoch >
+            tz.TZDateTime.now(tz.local).microsecondsSinceEpoch)
+        .toString());
 
-    if (tz.TZDateTime.from(data, tz.local).microsecondsSinceEpoch>
-       tz.TZDateTime.now(tz.local).microsecondsSinceEpoch) {
+    if (tz.TZDateTime.from(data, tz.local).microsecondsSinceEpoch >
+        tz.TZDateTime.now(tz.local).microsecondsSinceEpoch) {
       log('ok ID ${id}');
       tz.TZDateTime dataFinal = tz.TZDateTime.from(data, tz.local);
       await _notification.zonedSchedule(
@@ -43,7 +44,8 @@ class NotificationHelper {
   static DateTime combineDateAndTime(DateTime date, TimeOfDay time) {
     return DateTime(date.year, date.month, date.day, time.hour, time.minute);
   }
+
   static cancelAllNotifications() async {
-  await _notification.cancelAll();
-}
+    await _notification.cancelAll();
+  }
 }

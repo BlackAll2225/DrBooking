@@ -144,8 +144,10 @@ class AuthRemote implements AuthApi {
   @override
   Future<bool> sendEmailOTP({required String email}) async {
     final response = await http.post(Uri.parse(BaseLink.sendOTP),
-        headers: {'Content-Type': 'application/json; charset=UTF-8',
-          'Accept': 'application/json; charset=UTF-8',},
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json; charset=UTF-8',
+        },
         body: jsonEncode(email));
     log(jsonEncode(response.body));
     final body = json.decode(response.body);
@@ -190,5 +192,22 @@ class AuthRemote implements AuthApi {
   Future<PersonalAccount> updateClientProfile({required String idClient}) {
     // TODO: implement updateClientProfile
     throw UnimplementedError();
+  }
+
+  @override
+  Future<String> changePassForgot(
+      {required String otp,
+      required String email,
+      required String password}) async {
+    final response = await http.put(Uri.parse(BaseLink.updateForgotPass),
+        headers: BaseCommon.instance.headerRequest(),
+        body:
+            jsonEncode({"email": email, "otp": otp, "newPassword": password}));
+    log(response.body);
+    final body = json.decode(response.body);
+    if (body["status"] == "Status200OK") {
+      return body["data"];
+    }
+   throw Exception(body['message']);
   }
 }

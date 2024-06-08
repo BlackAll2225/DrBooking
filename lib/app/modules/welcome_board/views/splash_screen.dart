@@ -25,12 +25,12 @@ class SplashView extends BaseView<WelcomeBoardController> {
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
             colors: [
-              Colors.white,
-              ColorsManager.primary,
-              Colors.white,
-              Colors.white,
-              ColorsManager.primary,
-              Colors.white,
+              ColorsManager.primary.withOpacity(0.1),
+             Colors.white,
+             Colors.white,
+             Colors.white,
+
+              ColorsManager.primary.withOpacity(0.1),
 
             ], // Thay đổi màu sắc theo ý muốn
           ),
@@ -50,8 +50,15 @@ class SplashView extends BaseView<WelcomeBoardController> {
                                                       ImageAssets.logo),
                                                   fit: BoxFit.fitWidth)))),
               Text(
-                'Dr. Booking',
+                'DR. BOOKING',
                 style: GoogleFonts.montserratAlternates(
+                   shadows: [
+                      BoxShadow(
+                        color: Colors.black87,
+                        spreadRadius: 10,
+                        blurRadius: 2,
+                        offset: Offset(2, 4),
+                      ),],
                     letterSpacing: 3,
                     color: ColorsManager.primary,
                     fontSize: UtilsReponsive.formatFontSize(42, context),

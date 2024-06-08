@@ -38,30 +38,46 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                    height: 50,
-                    width: 50,
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                        color: ColorsManager.primary, shape: BoxShape.circle),
-                    child: CachedNetworkImage(
-                                        fit: BoxFit.fill,
-                                        imageUrl:                         BaseCommon.instance.accountSession!.avatarUrl!,
-                                        placeholder: (context, url) =>
-                                            const CircularProgressIndicator(color: Colors.white,),
-                                        errorWidget: (context, url, error) =>
-                                            Image.asset(ImageAssets.logo),
-                                      ),),
+                      clipBehavior: Clip.hardEdge,
+                      height: UtilsReponsive.height(50, context),
+                      width: UtilsReponsive.height(50, context),
+                      padding:
+                          EdgeInsets.all(UtilsReponsive.height(2, context)),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: ColorsManager.primary),
+                          shape: BoxShape.circle),
+                      child: Container(
+                        clipBehavior: Clip.hardEdge,
+                        height: UtilsReponsive.height(80, context),
+                        width: UtilsReponsive.height(80, context),
+                        decoration: const BoxDecoration(shape: BoxShape.circle),
+                        child: CachedNetworkImage(
+                          fit: BoxFit.fill,
+                          imageUrl:
+                              BaseCommon.instance.accountSession!.avatarUrl ??
+                                  '',
+                          placeholder: (context, url) =>
+                              const CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                          errorWidget: (context, url, error) =>
+                              Image.asset(ImageAssets.logo),
+                        ),
+                      ),
+                    ),
+                    SizedBoxConst.sizeWith(context: context),
                     Expanded(
                       flex: 3,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TextConstant.subTile3(
+                          TextConstant.subTile2(
                             context,
                             text: 'Xin chào, ',
                           ),
-                          TextConstant.subTile3(
+                          SizedBoxConst.size(context: context,size: 5),
+                          TextConstant.subTile1(
                             context,
                             text:
                                 '${BaseCommon.instance.accountSession?.fullName}',
@@ -136,7 +152,9 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                 color: ColorsManager.primary,
               ),
               Obx(() => ListView.separated(
-                    itemCount: controller.listDoctorPreview.value.length > 5?5:controller.listDoctorPreview.value.length,
+                    itemCount: controller.listDoctorPreview.value.length > 5
+                        ? 5
+                        : controller.listDoctorPreview.value.length,
                     shrinkWrap: true,
                     primary: false,
                     separatorBuilder: (context, index) =>
@@ -357,7 +375,7 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                               fontSize:
                                   UtilsReponsive.formatFontSize(12, context),
                               fontWeight: FontWeight.bold),
-                      ),
+                        ),
                       ),
                       onPressed: () async {
                         controller.opTapCardDoctor(idDoctor: '${doctor.id}');
@@ -399,10 +417,11 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                                 .copyWith(
                                     color: const Color(0xff979797),
                                     fontSize: 12)),
-                        RatingBar.builder(
+                      doctor.rating == -1?SizedBox():      RatingBar.builder(
                             unratedColor: const Color(0xff979797),
                             itemSize: 12,
-                            initialRating: doctor.rating! == -1 ? 4 : doctor.rating!,
+                            initialRating:
+                                doctor.rating! == -1 ? 4 : doctor.rating!,
                             direction: Axis.horizontal,
                             itemCount: 5,
                             itemBuilder: (context, _) => const Icon(
@@ -414,7 +433,7 @@ class TabHomeView extends BaseView<TabHomeViewController> {
                           width: 4,
                         ),
                         Text(
-                          '(${doctor.rating == -1 ? 4.5 : doctor.rating})',
+                          '(${doctor.rating == -1 ? 'Đang cập nhật' : doctor.rating})',
                           style: Theme.of(context)
                               .textTheme
                               .titleSmall!

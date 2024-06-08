@@ -51,7 +51,7 @@ class TabHomeViewController extends BaseController {
           Icons.history,
           color: Colors.white,
         ),
-        path: ''),
+        path: Routes.TAB_HISTORY),
     ButtonFeature(
         title: "Bệnh án",
         colorBackground: Colors.green,

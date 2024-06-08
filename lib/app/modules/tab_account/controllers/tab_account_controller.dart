@@ -16,7 +16,7 @@ class TabAccountController extends BaseController {
   final count = 0.obs;
   List<NavAccount> listNav = [
     NavAccount(title: 'Thông tin tài khoản', icon: Icon(Icons.person, color: ColorsManager.primary,), path: Routes.PERSONAL_INFORMATION, textColor: Colors.black, backgroundColor:ColorsManager.primary)
-    ,NavAccount(title: 'Lịch sử', icon: Icon(Icons.history,color: ColorsManager.primary), path: '', textColor: Colors.black, backgroundColor:ColorsManager.primary)
+    ,NavAccount(title: 'Lịch sử', icon: Icon(Icons.history,color: ColorsManager.primary), path: Routes.TAB_HISTORY, textColor: Colors.black, backgroundColor:ColorsManager.primary)
     ,NavAccount(title: 'Đổi mật khẩu', icon: Icon(Icons.password,color: ColorsManager.primary), path: Routes.CHANGE_PASSWORD, textColor: Colors.black, backgroundColor:ColorsManager.primary)
     ,NavAccount(title: 'Các chi nhánh', icon: Icon(Icons.location_city_outlined, color: ColorsManager.primary), path: 'path', textColor: Colors.black, backgroundColor:ColorsManager.primary)
     ,NavAccount(title: 'Trung tâm trợ giúp', icon: Icon(Icons.phone, color: ColorsManager.primary), path: 'path', textColor: Colors.black, backgroundColor:ColorsManager.primary)

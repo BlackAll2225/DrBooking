@@ -75,7 +75,7 @@ class SignInController extends BaseController {
       await authApi.login(payload: loginPayload).then((jwt) async {
         await BaseCommon.instance.saveToken(jwt);
         await BaseCommon.instance.decodeJWT();
-        Get.offAllNamed(Routes.HOME);
+        Get.offAllNamed(Routes.CHECK_PERMISSION);
         isLockButton(false);
       }).catchError(handleError);
     }

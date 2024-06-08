@@ -35,6 +35,7 @@ abstract class Routes {
   static const BOOKING_GENERAL = _Paths.BOOKING_GENERAL;
   static const BOOKING_MEDICAL_SERIVCE = _Paths.BOOKING_MEDICAL_SERIVCE;
   static const FORGOT_PASSWORD = _Paths.FORGOT_PASSWORD;
+  static const CHECK_PERMISSION = _Paths.CHECK_PERMISSION;
 }
 
 abstract class _Paths {
@@ -71,4 +72,5 @@ abstract class _Paths {
   static const BOOKING_GENERAL = '/booking-general';
   static const BOOKING_MEDICAL_SERIVCE = '/booking-medical-serivce';
   static const FORGOT_PASSWORD = '/forgot-password';
+  static const CHECK_PERMISSION = '/check-permission';
 }
