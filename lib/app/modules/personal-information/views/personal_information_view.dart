@@ -107,28 +107,32 @@ class PersonalInformationView extends BaseView<PersonalInformationController> {
                                         ),
                                       ],
                                     ),
-                                    Obx(() => controller.isUpdateName.value
-                                        ? Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              GestureDetector(
+                                    Obx(() => controller.isUpdatePhone.value
+                                        ? SizedBox()
+                                        : controller.isUpdateName.value
+                                            ? Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  GestureDetector(
+                                                      onTap: () {
+                                                        controller.revertName();
+                                                      },
+                                                      child: Icon(Icons.close)),
+                                                  GestureDetector(
+                                                      onTap: () async {
+                                                        await controller
+                                                            .updateName();
+                                                      },
+                                                      child: Icon(Icons.check))
+                                                ],
+                                              )
+                                            : GestureDetector(
                                                 onTap: () {
-                                                  controller.revertName();
+                                                  controller.isUpdateName
+                                                      .value = true;
                                                 },
-                                                child: Icon(Icons.close)),
-                                              GestureDetector(
-                                                onTap: () async{
-                                                 await controller.updateName();
-                                                },child: Icon(Icons.check))
-                                            ],
-                                          )
-                                        : GestureDetector(
-                                            onTap: () {
-                                              controller.isUpdateName.value =
-                                                  true;
-                                            },
-                                            child: Icon(Icons.edit)))
+                                                child: Icon(Icons.edit)))
                                   ],
                                 ),
                               ),
@@ -136,13 +140,13 @@ class PersonalInformationView extends BaseView<PersonalInformationController> {
                                 padding: UtilsReponsive.paddingOnly(context,
                                     top: 20, right: 20, left: 20),
                                 child: Obx(() => FormFieldWidget(
-                                  controllerEditting: controller.nameController,
+                                      controllerEditting:
+                                          controller.nameController,
                                       padding: 20,
                                       borderColor: Colors.grey,
                                       radiusBorder: 10,
                                       setValueFunc: (v) {},
                                       isEnabled: controller.isUpdateName.value,
-                                      
                                     )),
                               ),
                               Padding(
@@ -175,16 +179,49 @@ class PersonalInformationView extends BaseView<PersonalInformationController> {
                               ),
                               Padding(
                                 padding: UtilsReponsive.paddingOnly(context,
-                                    top: 30, left: 20),
+                                    top: 30, left: 20, right: 20),
                                 child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Icon(Icons.phone),
-                                    SizedBoxConst.sizeWith(
-                                        context: context, size: 5),
-                                    TextConstant.subTile3(
-                                      context,
-                                      text: "Số điện thoại",
+                                    Row(
+                                      children: [
+                                        Icon(Icons.phone),
+                                        SizedBoxConst.sizeWith(
+                                            context: context, size: 5),
+                                        TextConstant.subTile3(
+                                          context,
+                                          text: "Số điện thoại",
+                                        ),
+                                      ],
                                     ),
+                                    Obx(() => controller.isUpdateName.value
+                                        ? SizedBox()
+                                        : controller.isUpdatePhone.value
+                                            ? Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  GestureDetector(
+                                                      onTap: () {
+                                                        controller
+                                                            .revertPhone();
+                                                      },
+                                                      child: Icon(Icons.close)),
+                                                  GestureDetector(
+                                                      onTap: () async {
+                                                        await controller
+                                                            .sendMailChangePhone();
+                                                      },
+                                                      child: Icon(Icons.check))
+                                                ],
+                                              )
+                                            : GestureDetector(
+                                                onTap: () {
+                                                  controller.isUpdatePhone
+                                                      .value = true;
+                                                },
+                                                child: Icon(Icons.edit)))
                                   ],
                                 ),
                               ),
@@ -193,19 +230,13 @@ class PersonalInformationView extends BaseView<PersonalInformationController> {
                                       top: 20, right: 20, left: 20),
                                   child: Obx(
                                     () => FormFieldWidget(
-                                      suffixIcon: Icon(
-                                        Icons.edit,
-                                        color: controller.isUpdateName.value
-                                            ? Colors.white
-                                            : Colors.grey,
-                                      ),
+                                      controllerEditting:
+                                          controller.phoneController,
                                       padding: 20,
                                       borderColor: Colors.grey,
                                       radiusBorder: 10,
-                                      isEnabled: !controller.isLockUpdate.value,
+                                      isEnabled: controller.isUpdatePhone.value,
                                       setValueFunc: (v) {},
-                                      initValue:
-                                          controller.account.value.phoneNumber,
                                     ),
                                   )),
                               // Padding(

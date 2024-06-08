@@ -70,5 +70,17 @@ class AuthLocal implements AuthApi{
     // TODO: implement updateNameAccount
     throw UnimplementedError();
   }
+  
+  @override
+  Future<String> changePhone({required String otp, required String phone}) {
+    // TODO: implement changePhone
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<bool> sendEmailOTPChangePhone() {
+    // TODO: implement sendEmailOTPChangePhone
+    throw UnimplementedError();
+  }
  
 }

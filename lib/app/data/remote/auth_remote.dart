@@ -81,9 +81,8 @@ class AuthRemote implements AuthApi {
     if (body["status"] == "Status200OK") {
       final data = body['data'];
       return data;
-    } else {
-      throw Exception(body['message']);
     }
+    throw Exception(body['message']);
   }
 
   @override
@@ -220,6 +219,35 @@ class AuthRemote implements AuthApi {
     if (body["status"] == "Status200OK") {
       final data = body['data'];
       return data;
+    }
+    throw Exception(body['message']);
+  }
+
+  @override
+  Future<String> changePhone(
+      {required String otp, required String phone}) async {
+    final response = await http.put(Uri.parse(BaseLink.updatePhone),
+        headers: BaseCommon.instance.headerRequest(),
+        body: jsonEncode({"otp": otp, "phone": phone}));
+    log((response.body));
+    final body = json.decode(response.body);
+    if (body["status"] == "Status200OK") {
+      final data = body['data'];
+      return data;
+    }
+    throw Exception(body['message']);
+  }
+
+  @override
+  Future<bool> sendEmailOTPChangePhone() async {
+    final response = await http.post(
+      Uri.parse(BaseLink.sendMailChangePhone),
+      headers: BaseCommon.instance.headerRequest(),
+    );
+    log((response.body));
+    final body = json.decode(response.body);
+    if (body["status"] == "Status200OK") {
+      return true;
     }
     throw Exception(body['message']);
   }
